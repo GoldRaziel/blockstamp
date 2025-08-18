@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "BLOCKSTAMP — Proof of Existence",
@@ -9,7 +10,8 @@ export const metadata: Metadata = {
     description: "Hash locale, richiesta di marcatura su Bitcoin/OpenTimestamps.",
     type: "website"
   },
-  icons: { icon: "/logo.svg" } // usiamo SVG così non serve un .ico binario
+  // usa direttamente il PNG come favicon/icon
+  icons: { icon: "/logo.png", shortcut: "/logo.png", apple: "/logo.png" }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -19,10 +21,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <header className="border-b border-white/10">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-sky-400">
-                <path d="M12 2L3 6v6c0 5 4 9 9 10 5-1 9-5 9-10V6l-9-4Z" stroke="currentColor" strokeWidth="1.5"/>
-                <path d="M8 12l3 3 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+              <Image
+                src="/logo.png"
+                alt="BLOCKSTAMP logo"
+                width={28}
+                height={28}
+                priority
+                className="rounded"
+              />
               <span className="font-semibold tracking-wide">BLOCKSTAMP</span>
             </div>
             <nav className="text-sm">
