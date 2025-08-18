@@ -4,13 +4,12 @@ import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "BLOCKSTAMP — Proof of Existence",
-  description: "Hash locale, richiesta di marcatura su Bitcoin/OpenTimestamps. Privacy by design.",
+  description: "Hash locale, prova di esistenza su blockchain. Privacy by design.",
   openGraph: {
     title: "BLOCKSTAMP — Proof of Existence",
-    description: "Hash locale, richiesta di marcatura su Bitcoin/OpenTimestamps.",
+    description: "Hash locale e timestamp pubblico su blockchain.",
     type: "website"
   },
-  // usa direttamente il PNG come favicon/icon
   icons: { icon: "/logo.png", shortcut: "/logo.png", apple: "/logo.png" }
 };
 
@@ -21,20 +20,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <header className="border-b border-white/10">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Image
-                src="/logo.png"
-                alt="BLOCKSTAMP logo"
-                width={28}
-                height={28}
-                priority
-                className="rounded"
-              />
+              <Image src="/logo.png" alt="BLOCKSTAMP logo" width={28} height={28} priority className="rounded" />
               <span className="font-semibold tracking-wide">BLOCKSTAMP</span>
             </div>
             <nav className="text-sm">
               <a className="hover:underline" href="/">Home</a>
               <span className="mx-3 opacity-50">•</span>
-              <a className="hover:underline" href="#pricing">Prezzi</a>
+              <a className="hover:underline" href="#how-it-works">Come funziona</a>
+              <span className="mx-3 opacity-50">•</span>
+              <a className="hover:underline" href="#pricing">Prezzo</a>
               <span className="mx-3 opacity-50">•</span>
               <a className="hover:underline" href="#faq">FAQ</a>
             </nav>
