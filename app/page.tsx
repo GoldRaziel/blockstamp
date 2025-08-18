@@ -56,6 +56,9 @@ export default function Page() {
   return (
     <div className="space-y-10">
       <section className="text-center space-y-6">
+        import Image from "next/image";
+// ...
+<Image src="/logo.png" alt="BLOCKSTAMP" width={96} height={96} className="mx-auto mb-2" priority />
         <h1 className="text-4xl md:text-5xl font-semibold leading-tight">
           Proof of Existence<br/>
           <span className="text-sky-400">Hash locale</span> · Privacy by design
@@ -152,3 +155,4 @@ export default function Page() {
     </div>
   );
 }
+
