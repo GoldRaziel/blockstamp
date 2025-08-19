@@ -18,28 +18,32 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="it">
       <body>
         <header className="border-b border-white/10">
-          <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-            {/* LOGO: dimensioni ridotte del 50% */}
-            <a href="/" className="flex items-center gap-3" aria-label="Vai alla Home">
-              <Image
-                src="/logo.png"
-                alt="BLOCKSTAMP logo"
-                width={1000}
-                height={500}
-                priority
-                sizes="(max-width: 768px) 160px, 320px"
-                className="h-auto max-h-12 md:max-h-20 w-auto"  // Mobile 80px, Desktop 120px
-              />
-            </a>
+          <div className="container mx-auto px-4 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+            {/* Logo */}
+            <div className="flex justify-start">
+              <a href="/" className="flex items-center gap-3" aria-label="Vai alla Home">
+                <Image
+                  src="/logo.png"
+                  alt="BLOCKSTAMP logo"
+                  width={1000}
+                  height={500}
+                  priority
+                  sizes="(max-width: 768px) 200px, 400px"
+                  className="h-auto max-h-14 md:max-h-20 w-auto"  
+                  // Mobile = 56px (+15%), Desktop = 80px invariato
+                />
+              </a>
+            </div>
 
-            <nav className="text-sm">
-              <a className="hover:underline" href="/">Home</a>
-              <span className="mx-3 opacity-50">•</span>
-              <a className="hover:underline" href="#how-it-works">Come funziona</a>
-              <span className="mx-3 opacity-50">•</span>
-              <a className="hover:underline" href="#pricing">Prezzo</a>
-              <span className="mx-3 opacity-50">•</span>
-              <a className="hover:underline" href="#faq">FAQ</a>
+            {/* Nav */}
+            <nav className="text-sm flex flex-col items-start gap-2 md:flex-row md:items-center md:gap-4">
+              <a className="hover:underline whitespace-nowrap" href="/">Home</a>
+              <span className="opacity-50 hidden md:inline">•</span>
+              <a className="hover:underline whitespace-nowrap" href="#how-it-works">Procedura</a>
+              <span className="opacity-50 hidden md:inline">•</span>
+              <a className="hover:underline whitespace-nowrap" href="#pricing">Prezzo</a>
+              <span className="opacity-50 hidden md:inline">•</span>
+              <a className="hover:underline whitespace-nowrap" href="#faq">FAQ</a>
             </nav>
           </div>
         </header>
@@ -55,4 +59,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
-
