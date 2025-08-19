@@ -25,7 +25,7 @@ export default function Page() {
       setFile(f);
     } catch (e: any) {
       console.error(e);
-      setError(e?.message || "Errore durante il calcolo dell'hash.");
+      setError(e?.message || "Errore durante il calcolo dell'impronta.");
     } finally {
       setBusy(false);
     }
@@ -35,10 +35,10 @@ export default function Page() {
     if (!hash || !file) return;
     const payload = {
       hash,
-      algo: "sha256",
+      algo: "sha256", // backend: lasciato invariato per compatibilità
       filename: file.name,
       size: file.size,
-      timestamp_request: new Date().toISOString(),
+      timestamp_request: new Date().toISOString(), // backend: campo tecnico, non mostrato in UI
       note: "MVP: invia questo file via email per la marcatura su blockchain."
     };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
@@ -57,22 +57,27 @@ export default function Page() {
 
   return (
     <div className="space-y-14">
-      {/* HERO (senza logo) */}
+      {/* HERO centrato */}
       <section className="text-center space-y-6">
         <h1 className="text-4xl md:text-5xl font-semibold leading-tight">
-          Proof of Existence
+          Proteggi la tua idea
           <br />
-          <span className="text-sky-400">Hash locale</span> · Privacy by design
+          <span className="text-sky-400">
+            incidila in modo indelebile sulla blockchain di Bitcoin
+          </span>
         </h1>
         <p className="text-lg opacity-90 max-w-3xl mx-auto">
-          Proteggi l&apos;esistenza e l&apos;integrità dei tuoi file con un <b>timestamp pubblico</b> su blockchain.
-          Il contenuto <b>non viene mai caricato</b>: calcoliamo l&apos;impronta (SHA‑256) <b>in locale</b> nel tuo browser.
+          Il modo più sicuro al mondo per registrare e proteggere i tuoi diritti intellettuali.
+          Niente burocrazia, niente attese: prova, dimostra, tutela.
         </p>
       </section>
 
-      {/* WIDGET HASH */}
+      {/* WIDGET: STAMP and VERIFY */}
       <section className="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <h2 className="text-xl font-bold tracking-wide mb-4 text-center">STAMP and VERIFY</h2>
+
         <div className="grid md:grid-cols-2 gap-6 items-start">
+          {/* Colonna sinistra: selezione file */}
           <div className="space-y-3">
             <label className="block text-sm opacity-80">Seleziona file</label>
             <input
@@ -81,7 +86,7 @@ export default function Page() {
                          file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100"
               onChange={(e) => handleFile(e.target.files?.[0] || null)}
             />
-            {busy && <div className="text-sm opacity-80">Calcolo hash…</div>}
+            {busy && <div className="text-sm opacity-80">Calcolo in corso…</div>}
             {error && <div className="text-sm text-red-400">{error}</div>}
             {file && !busy && (
               <div className="text-sm opacity-80">
@@ -91,13 +96,14 @@ export default function Page() {
             )}
           </div>
 
+          {/* Colonna destra: impronta + azioni */}
           <div className="space-y-3">
-            <label className="block text-sm opacity-80">SHA-256</label>
+            <label className="block text-sm opacity-80">Impronta del file</label>
             <textarea
               className="w-full h-32 rounded-lg bg-black/40 border border-white/10 p-3 text-sm font-mono"
               readOnly
               value={hash}
-              placeholder="L'hash verrà mostrato qui…"
+              placeholder="L'impronta verrà mostrata qui…"
             />
             <div className="flex gap-3">
               <button
@@ -105,7 +111,7 @@ export default function Page() {
                 disabled={!hash}
                 className="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 disabled:opacity-40"
               >
-                Copia hash
+                Copia impronta
               </button>
               <button
                 onClick={downloadRequestJson}
@@ -122,30 +128,29 @@ export default function Page() {
         </div>
       </section>
 
-      {/* COME FUNZIONA */}
-      <section id="how-it-works" className="space-y-5">
-        <h2 className="text-3xl font-semibold">Come funziona</h2>
+      {/* PROCEDURA */}
+      <section id="procedura" className="space-y-5">
+        <h2 className="text-3xl font-semibold">Procedura</h2>
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-            <div className="text-sm opacity-70 mb-2">1 · Hash locale</div>
+            <div className="text-sm opacity-70 mb-2">1 · Impronta locale</div>
             <p className="text-sm opacity-90">
-              Selezioni il file. Generiamo l&apos;impronta crittografica <b>SHA‑256</b> <i>in locale</i>. L&apos;hash
-              identifica univocamente il contenuto (se cambi un solo bit, l&apos;hash cambia).
+              Selezioni il file. Generiamo <b>in locale</b> un’impronta univoca del contenuto. Se cambi anche un solo
+              bit, l’impronta cambia.
             </p>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-            <div className="text-sm opacity-70 mb-2">2 · Richiesta di marcatura</div>
+            <div className="text-sm opacity-70 mb-2">2 · Richiesta di registrazione</div>
             <p className="text-sm opacity-90">
-              Crei un <code>request.json</code> con hash, nome file e timestamp. Con il servizio a pagamento,
-              l&apos;impronta viene <b>ancorata sulla blockchain di Bitcoin</b> tramite un impegno crittografico
-              incluso in transazione.
+              Crei un <code>request.json</code> con i dati necessari. Con il servizio a pagamento, l’impronta viene
+              <b> ancorata sulla blockchain di Bitcoin</b> tramite un impegno crittografico incluso in transazione.
             </p>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-            <div className="text-sm opacity-70 mb-2">3 · Prova &amp; Verifica</div>
+            <div className="text-sm opacity-70 mb-2">3 · Prova &amp; verifica</div>
             <p className="text-sm opacity-90">
-              Ricevi una prova contenente il riferimento on‑chain (es. TXID) e le istruzioni di verifica. In futuro
-              basterà ricalcolare l&apos;hash del file e controllare che coincida con l&apos;impegno registrato.
+              Ricevi una prova con il riferimento on‑chain e le istruzioni per la verifica. In futuro ti basta
+              ricalcolare l’impronta del file e controllare che coincida con quella registrata.
             </p>
           </div>
         </div>
@@ -156,10 +161,10 @@ export default function Page() {
         <h2 className="text-3xl font-semibold">Perché blockchain (e perché è solida)</h2>
         <ul className="list-disc pl-6 space-y-2 text-sm opacity-90">
           <li><b>Immutabilità:</b> i blocchi sono protetti da crittografia e consenso distribuito.</li>
-          <li><b>Timestamp pubblico:</b> l&apos;esistenza del tuo hash è ancorata a una data/ora verificabile globalmente.</li>
-          <li><b>Nessuna fiducia in terzi:</b> la prova è verificabile da chiunque, con strumenti pubblici.</li>
-          <li><b>Privacy:</b> registriamo <i>solo</i> l&apos;impronta; il file non viene mai condiviso.</li>
-          <li><b>Costi e velocità:</b> per la <i>prova di esistenza</i> spesso è più rapido ed economico di pratiche notarili tradizionali.</li>
+          <li><b>Riferimento pubblico:</b> l’ancoraggio fornisce una prova pubblica e verificabile globalmente.</li>
+          <li><b>Nessuna fiducia in terzi:</b> la prova è verificabile da chiunque con strumenti pubblici.</li>
+          <li><b>Privacy:</b> registriamo <i>solo</i> l’impronta; il file non viene mai condiviso.</li>
+          <li><b>Costi e velocità:</b> per la prova di esistenza spesso è più rapido ed economico di pratiche notarili tradizionali.</li>
         </ul>
 
         <div className="text-xs opacity-70 bg-white/5 border border-white/10 rounded-2xl p-4">
@@ -169,7 +174,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* PREZZO UNICO */}
+      {/* PREZZO */}
       <section id="pricing" className="space-y-4">
         <h2 className="text-3xl font-semibold">Prezzo</h2>
         <div className="grid md:grid-cols-1 gap-6">
@@ -179,11 +184,11 @@ export default function Page() {
               <div className="text-2xl font-semibold">200 AED (55 USD)</div>
             </div>
             <p className="text-sm opacity-80 mt-2">
-              Ancoraggio dell&apos;impronta del tuo file su blockchain Bitcoin con guida alla verifica.
+              Ancoraggio dell’impronta del tuo file su Bitcoin con guida alla verifica.
             </p>
             <ul className="mt-4 space-y-1 text-sm opacity-90 list-disc pl-5">
-              <li>Hash locale (privacy by design)</li>
-              <li>Ancoraggio on‑chain con riferimento TXID</li>
+              <li>Impronta calcolata in locale (privacy by design)</li>
+              <li>Ancoraggio on‑chain con riferimento pubblico</li>
               <li>Documento di prova e istruzioni</li>
               <li>Assistenza base via email</li>
             </ul>
@@ -204,30 +209,31 @@ export default function Page() {
         <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
           <summary className="cursor-pointer font-medium">Il mio file viene caricato o salvato da qualche parte?</summary>
           <p className="mt-2 text-sm opacity-90">
-            No. Calcoliamo l&apos;hash localmente nel tuo browser. Registriamo solo l&apos;impronta (non reversibile).
+            No. L’impronta viene calcolata localmente nel tuo browser. Registriamo solo l’impronta (non reversibile).
           </p>
         </details>
 
         <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
-          <summary className="cursor-pointer font-medium">Cosa dimostra la prova su blockchain?</summary>
+          <summary className="cursor-pointer font-medium">Cosa dimostra la prova sulla blockchain?</summary>
           <p className="mt-2 text-sm opacity-90">
-            Dimostra che un contenuto con <b>quell&apos;hash specifico</b> esisteva almeno alla data/ora del blocco.
-            Non rivela il contenuto e non certifica chi sei: è una prova tecnica di esistenza/integrità.
+            Dimostra che un contenuto con <b>quell’impronta specifica</b> era stato registrato su Bitcoin almeno alla data
+            del blocco di riferimento. Non rivela il contenuto e non certifica la tua identità: è una prova tecnica
+            di esistenza/integrità.
           </p>
         </details>
 
         <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
           <summary className="cursor-pointer font-medium">Come verifico in futuro?</summary>
           <p className="mt-2 text-sm opacity-90">
-            Ricalcoli l&apos;hash del file originale e lo confronti con quello incluso nella prova on‑chain.
-            Se combaciano, hai integrità + timestamp pubblico.
+            Ricalcoli l’impronta del file originale e la confronti con quella inclusa nella prova on‑chain.
+            Se combaciano, hai integrità e ancoraggio pubblico su Bitcoin.
           </p>
         </details>
 
         <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
           <summary className="cursor-pointer font-medium">E se perdo il file?</summary>
           <p className="mt-2 text-sm opacity-90">
-            L&apos;hash non permette di ricostruirlo. Conserva backup sicuri del file originale: la prova serve a
+            L’impronta non permette di ricostruirlo. Conserva backup sicuri del file originale: la prova serve a
             dimostrarne esistenza e integrità, non a recuperarne il contenuto.
           </p>
         </details>
