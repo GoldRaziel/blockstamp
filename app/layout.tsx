@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 height={500}
                 priority
                 sizes="(max-width: 768px) 160px, 320px"
-                className="h-20 md:h-30 w-auto"  // Mobile 80px, Desktop 120px
+                className="h-auto max-h-12 md:max-h-20 w-auto"  // Mobile 80px, Desktop 120px
               />
             </a>
 
@@ -55,3 +55,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+
