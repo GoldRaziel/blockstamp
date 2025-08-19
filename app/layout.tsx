@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <a href="/" className="flex items-center gap-3" aria-label="Vai alla Home">
               <Image
                 src="/logo-navbar.png"     // <— se il file è .svg usa "/logo-navbar.svg"
-                alt="BLOCKSTAMP logo"
+                alt="logo.png"
                 width={800}                 // dimensione nativa di riferimento per Next.js
                 height={400}                // mantiene il ratio originale
                 priority
@@ -55,3 +55,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+
