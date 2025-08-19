@@ -17,11 +17,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="it">
       <body>
-        <header className="border-b border-white/10">
-          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        {/* HEADER sticky/fisso */}
+        <header className="fixed top-0 inset-x-0 z-50 border-b border-white/10 bg-[#0b0f14]/70 backdrop-blur supports-[backdrop-filter]:bg-[#0b0f14]/60">
+          <div className="container mx-auto px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Image src="/logo.png" alt="BLOCKSTAMP logo" width={28} height={28} priority className="rounded" />
-              <span className="font-semibold tracking-wide">BLOCKSTAMP</span>
+              {/* Logo in navbar (consigliato tenere SOLO qui, togli dall'hero) */}
+              <Image
+                src="/logo.png"
+                alt="BLOCKSTAMP logo"
+                width={160}
+                height={160}
+                priority
+                className="h-9 w-auto rounded"
+                sizes="(max-width: 768px) 120px, 160px"
+              />
             </div>
             <nav className="text-sm">
               <a className="hover:underline" href="/">Home</a>
@@ -34,7 +43,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </nav>
           </div>
         </header>
+
+        {/* SPACER: evita che il contenuto finisca sotto l'header fisso */}
+        <div className="h-16 md:h-[72px]" />
+
+        {/* MAIN */}
         <main className="container mx-auto px-4 py-10">{children}</main>
+
         <footer className="border-t border-white/10 mt-16">
           <div className="container mx-auto px-4 py-6 text-sm opacity-80">
             © {new Date().getFullYear()} BLOCKSTAMP — Proof of Existence
