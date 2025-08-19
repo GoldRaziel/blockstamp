@@ -18,18 +18,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="it">
       <body>
         <header className="border-b border-white/10">
-          <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-            {/* LOGO ridotto a 1/3 e cliccabile verso Home */}
-           <a href="/" className="flex items-center gap-3" aria-label="Vai alla Home">
-  <Image
-    src="/logo.png"
-    alt="BLOCKSTAMP logo"
-    width={160}
-    height={160}
-    priority
-    className="h-8 w-auto rounded"
-  />
-</a>
+          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+            {/* LOGO a 320x320 e cliccabile verso Home */}
+            <a href="/" className="flex items-center gap-3" aria-label="Vai alla Home">
+              <Image
+                src="/logo.png"
+                alt="BLOCKSTAMP logo"
+                width={320}
+                height={320}
+                priority
+                className="w-auto h-16 md:h-20 rounded"
+              />
+            </a>
 
             <nav className="text-sm">
               <a className="hover:underline" href="/">Home</a>
@@ -54,4 +54,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
-
