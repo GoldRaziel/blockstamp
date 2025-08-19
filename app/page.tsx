@@ -73,18 +73,16 @@ export default function Page() {
       {/* HERO */}
       <section className="hero text-center space-y-6">
         <h1 className="text-4xl md:text-5xl font-semibold leading-tight">
-          <span className="text-white">Proteggi la Tua </span>
-          <span className="text-sky-400">Idea</span>
-          <br />
-          <span className="text-white">nella </span>
-          <span className="text-sky-400">Blockchain</span>
-          <span className="text-white text-2xl align-middle"> • </span>
-          <span className="text-sky-400">Bitcoin</span>
-        </h1>
+  <span className="text-white">Proteggi la Tua </span>
+  <span className="text-sky-400">Idea</span>
+  <br />
+  <span className="text-white">nella </span>
+  <span className="text-sky-400">Blockchain</span>
+  <span className="text-sky-400 text-2xl align-middle"> • </span>
+  <span className="text-white">Bitcoin</span>
+</h1>
         <p className="text-lg opacity-90 max-w-3xl mx-auto">
-          Il modo più sicuro al mondo per registrare e proteggere i tuoi diritti intellettuali.
-          <br />
-          Niente burocrazia, niente attese, niente costi esorbitanti.
+          Il modo più sicuro e veloce al mondo per registrare e proteggere i tuoi diritti intellettuali.
         </p>
       </section>
 
@@ -282,3 +280,4 @@ export default function Page() {
     </div>
   );
 }
+
