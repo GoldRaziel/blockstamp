@@ -1,11 +1,14 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 
 function toHex(buffer: ArrayBuffer) {
-  return [...new Uint8Array(buffer)]
-    .map((x) => x.toString(16).padStart(2, "0"))
-    .join("");
+  const bytes = new Uint8Array(buffer);
+  let out = "";
+  for (let i = 0; i < bytes.length; i++) {
+    out += bytes[i].toString(16).padStart(2, "0");
+  }
+  return out;
 }
 
 export default function Page() {
@@ -50,9 +53,19 @@ export default function Page() {
     URL.revokeObjectURL(url);
   }
 
-  function copyHash() {
+  async function copyHash() {
     if (!hash) return;
-    navigator.clipboard.writeText(hash);
+    try {
+      await navigator.clipboard.writeText(hash);
+    } catch {
+      // fallback minimale
+      const ta = document.createElement("textarea");
+      ta.value = hash;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    }
   }
 
   return (
@@ -220,7 +233,7 @@ export default function Page() {
             </p>
             <ul className="mt-4 space-y-1 text-sm opacity-90 list-disc pl-5">
               <li>Impronta calcolata in locale (privacy by design)</li>
-              <li>Ancoraggio on‑chain con riferimento pubblico</li>
+              <li>Ancoraggio on-chain con riferimento pubblico</li>
               <li>Documento di prova e istruzioni</li>
               <li>Assistenza base via email</li>
             </ul>
