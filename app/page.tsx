@@ -20,7 +20,7 @@ export default function Page() {
     setError("");
     try {
       const buf = await f.arrayBuffer();
-      const digest = await crypto.subtle.digest("SHA-256", buf);
+      const digest = await crypto.subtle.digest("SHA-256", buf); // calcolo tecnico (non mostrato in UI)
       setHash(toHex(digest));
       setFile(f);
     } catch (e: any) {
@@ -35,10 +35,10 @@ export default function Page() {
     if (!hash || !file) return;
     const payload = {
       hash,
-      algo: "sha256", // backend: lasciato invariato per compatibilità
+      algo: "sha256",
       filename: file.name,
       size: file.size,
-      timestamp_request: new Date().toISOString(), // backend: campo tecnico, non mostrato in UI
+      timestamp_request: new Date().toISOString(),
       note: "MVP: invia questo file via email per la marcatura su blockchain."
     };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
@@ -56,28 +56,29 @@ export default function Page() {
   }
 
   return (
-    <div className="space-y-14">
-      {/* HERO centrato */}
+    <div className="space-y-16">
+      {/* HERO */}
       <section className="text-center space-y-6">
         <h1 className="text-4xl md:text-5xl font-semibold leading-tight">
-          Proteggi la tua idea
-          <br />
-          <span className="text-sky-400">
-            incidila in modo indelebile sulla blockchain di Bitcoin
-          </span>
+          <span className="block text-white">Proteggi la Tua Idea</span>
+          <span className="block text-sky-400">Nella Blockchain</span>
+          <span className="block text-white">Bitcoin</span>
         </h1>
+
         <p className="text-lg opacity-90 max-w-3xl mx-auto">
           Il modo più sicuro al mondo per registrare e proteggere i tuoi diritti intellettuali.
-          Niente burocrazia, niente attese: prova, dimostra, tutela.
+          Niente burocrazia, niente attese, niente costi esorbitanti.
+          <br />
+          <b>Tutela la tua idea, il tuo progetto in modo veloce e intelligente.</b>
         </p>
       </section>
 
-      {/* WIDGET: STAMP and VERIFY */}
-      <section className="bg-white/5 border border-white/10 rounded-2xl p-6">
+      {/* STAMP and VERIFY */}
+      <section id="upload" className="bg-white/5 border border-white/10 rounded-2xl p-6">
         <h2 className="text-xl font-bold tracking-wide mb-4 text-center">STAMP and VERIFY</h2>
 
         <div className="grid md:grid-cols-2 gap-6 items-start">
-          {/* Colonna sinistra: selezione file */}
+          {/* Selezione file */}
           <div className="space-y-3">
             <label className="block text-sm opacity-80">Seleziona file</label>
             <input
@@ -96,7 +97,7 @@ export default function Page() {
             )}
           </div>
 
-          {/* Colonna destra: impronta + azioni */}
+          {/* Impronta + azioni */}
           <div className="space-y-3">
             <label className="block text-sm opacity-80">Impronta del file</label>
             <textarea
@@ -128,49 +129,82 @@ export default function Page() {
         </div>
       </section>
 
-      {/* PROCEDURA */}
+      {/* PROCEDURA (semplice) */}
       <section id="procedura" className="space-y-5">
         <h2 className="text-3xl font-semibold">Procedura</h2>
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-            <div className="text-sm opacity-70 mb-2">1 · Impronta locale</div>
+            <div className="text-sm opacity-70 mb-2">1 · Carica il tuo file</div>
             <p className="text-sm opacity-90">
-              Selezioni il file. Generiamo <b>in locale</b> un’impronta univoca del contenuto. Se cambi anche un solo
-              bit, l’impronta cambia.
+              Scegli il documento, l’idea o il progetto che vuoi proteggere.
+              Nessun contenuto viene reso pubblico: resta solo tuo.
             </p>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-            <div className="text-sm opacity-70 mb-2">2 · Richiesta di registrazione</div>
+            <div className="text-sm opacity-70 mb-2">2 · Registrazione su Blockchain</div>
             <p className="text-sm opacity-90">
-              Crei un <code>request.json</code> con i dati necessari. Con il servizio a pagamento, l’impronta viene
-              <b> ancorata sulla blockchain di Bitcoin</b> tramite un impegno crittografico incluso in transazione.
+              Creiamo una traccia indelebile che dimostra l’esistenza della tua idea in una data certa.
+              Questa prova viene incisa sulla blockchain di Bitcoin, la più sicura al mondo.
             </p>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-            <div className="text-sm opacity-70 mb-2">3 · Prova &amp; verifica</div>
+            <div className="text-sm opacity-70 mb-2">3 · Prova e Verifica</div>
             <p className="text-sm opacity-90">
-              Ricevi una prova con il riferimento on‑chain e le istruzioni per la verifica. In futuro ti basta
-              ricalcolare l’impronta del file e controllare che coincida con quella registrata.
+              Ricevi una ricevuta digitale che potrai esibire in ogni momento per dimostrare i tuoi diritti.
+              In futuro ti basterà confrontarla con il tuo file per provarne l’autenticità.
             </p>
           </div>
         </div>
       </section>
 
+      {/* GUIDA (sezione, non pagina) */}
+      <section id="guida" className="space-y-6">
+        <h2 className="text-3xl font-semibold">Guida: proteggi al meglio la tua idea</h2>
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+            <h3 className="text-lg font-semibold mb-2">1 · Crea un file ZIP</h3>
+            <p className="text-sm opacity-90">
+              Inserisci <b>più materiale possibile</b>: documenti, testi, immagini, bozze, progetti,
+              struttura del sito, contratti — tutto ciò che dimostra la paternità dell’idea.
+            </p>
+          </div>
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+            <h3 className="text-lg font-semibold mb-2">2 · Carica in HOME</h3>
+            <p className="text-sm opacity-90">
+              Vai alla sezione <a href="#upload" className="underline">Upload</a> e carica il tuo ZIP.
+              Riceverai un <b>codice .ots</b> a conferma della richiesta: salvalo <b>dentro la stessa cartella ZIP</b>.
+            </p>
+          </div>
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+            <h3 className="text-lg font-semibold mb-2">3 · Registrazione entro 72 ore</h3>
+            <p className="text-sm opacity-90">
+              Entro <b>72 ore</b> riceverai il codice di registrazione su blockchain Bitcoin che certifica
+              l’esistenza del tuo file a livello globale, rendendo la tua idea <b>protetta e immodificabile</b>.
+            </p>
+          </div>
+        </div>
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-5 text-center">
+          <p className="text-sm opacity-90 max-w-3xl mx-auto">
+            Risultato: una <b>prova tecnica e legale</b> incisa sulla blockchain di Bitcoin —
+            valida in tutto il mondo e non manipolabile da nessuno.
+          </p>
+        </div>
+      </section>
+
       {/* PERCHÉ BLOCKCHAIN */}
       <section id="why" className="space-y-5">
-        <h2 className="text-3xl font-semibold">Perché blockchain (e perché è solida)</h2>
+        <h2 className="text-3xl font-semibold">Perché Blockchain</h2>
         <ul className="list-disc pl-6 space-y-2 text-sm opacity-90">
-          <li><b>Immutabilità:</b> i blocchi sono protetti da crittografia e consenso distribuito.</li>
-          <li><b>Riferimento pubblico:</b> l’ancoraggio fornisce una prova pubblica e verificabile globalmente.</li>
-          <li><b>Nessuna fiducia in terzi:</b> la prova è verificabile da chiunque con strumenti pubblici.</li>
-          <li><b>Privacy:</b> registriamo <i>solo</i> l’impronta; il file non viene mai condiviso.</li>
-          <li><b>Costi e velocità:</b> per la prova di esistenza spesso è più rapido ed economico di pratiche notarili tradizionali.</li>
+          <li><b>Immutabilità:</b> una volta registrata, la prova non può essere alterata.</li>
+          <li><b>Prova pubblica:</b> riferimento verificabile da chiunque, ovunque.</li>
+          <li><b>Privacy:</b> registriamo solo l’impronta; il file resta tuo.</li>
+          <li><b>Nessuna intermediazione:</b> prova indipendente, senza fiducia cieca in terzi.</li>
+          <li><b>Validità globale:</b> una registrazione unica, riconoscibile ovunque.</li>
         </ul>
 
         <div className="text-xs opacity-70 bg-white/5 border border-white/10 rounded-2xl p-4">
           <b>Nota legale:</b> questa soluzione fornisce una <i>prova tecnica di esistenza e integrità</i>.
-          Non sostituisce tutti gli atti o le funzioni del notaio (es. attestazioni d’identità, autentiche, rogiti).
-          La rilevanza giuridica può variare per giurisdizione: valuta il contesto d’uso con il tuo consulente legale.
+          Non sostituisce tutti gli atti o le funzioni del notaio. Valuta il contesto d’uso con il tuo consulente.
         </div>
       </section>
 
@@ -192,10 +226,7 @@ export default function Page() {
               <li>Documento di prova e istruzioni</li>
               <li>Assistenza base via email</li>
             </ul>
-            <a
-              href="#"
-              className="mt-4 inline-block px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500"
-            >
+            <a href="#" className="mt-4 inline-block px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500">
               Acquista protezione
             </a>
           </div>
@@ -216,25 +247,24 @@ export default function Page() {
         <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
           <summary className="cursor-pointer font-medium">Cosa dimostra la prova sulla blockchain?</summary>
           <p className="mt-2 text-sm opacity-90">
-            Dimostra che un contenuto con <b>quell’impronta specifica</b> era stato registrato su Bitcoin almeno alla data
-            del blocco di riferimento. Non rivela il contenuto e non certifica la tua identità: è una prova tecnica
-            di esistenza/integrità.
+            Dimostra che un contenuto con <b>quell’impronta specifica</b> era stato registrato su Bitcoin almeno alla
+            data di riferimento. Non rivela il contenuto e non certifica la tua identità.
           </p>
         </details>
 
         <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
           <summary className="cursor-pointer font-medium">Come verifico in futuro?</summary>
           <p className="mt-2 text-sm opacity-90">
-            Ricalcoli l’impronta del file originale e la confronti con quella inclusa nella prova on‑chain.
-            Se combaciano, hai integrità e ancoraggio pubblico su Bitcoin.
+            Ricalcoli l’impronta del file originale e la confronti con quella inclusa nella prova. Se combaciano,
+            hai integrità e riferimento pubblico su Bitcoin.
           </p>
         </details>
 
         <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
           <summary className="cursor-pointer font-medium">E se perdo il file?</summary>
           <p className="mt-2 text-sm opacity-90">
-            L’impronta non permette di ricostruirlo. Conserva backup sicuri del file originale: la prova serve a
-            dimostrarne esistenza e integrità, non a recuperarne il contenuto.
+            L’impronta non permette di ricostruirlo. Conserva backup sicuri del file originale: la prova dimostra
+            esistenza e integrità, non recupera il contenuto.
           </p>
         </details>
       </section>
