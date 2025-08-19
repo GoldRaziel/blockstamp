@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 
 function toHex(buffer: ArrayBuffer) {
@@ -58,16 +57,8 @@ export default function Page() {
 
   return (
     <div className="space-y-14">
-      {/* HERO */}
+      {/* HERO (senza logo) */}
       <section className="text-center space-y-6">
-        <Image
-          src="/logo.png"
-          alt="BLOCKSTAMP"
-          width={96}
-          height={96}
-          className="mx-auto mb-2 rounded"
-          priority
-        />
         <h1 className="text-4xl md:text-5xl font-semibold leading-tight">
           Proof of Existence
           <br />
