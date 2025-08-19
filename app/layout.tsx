@@ -18,16 +18,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="it">
       <body>
         <header className="border-b border-white/10">
-          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-            {/* LOGO a 320x320 e cliccabile verso Home */}
+          <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+            {/* LOGO: proporzioni sempre corrette (no deformazione) */}
             <a href="/" className="flex items-center gap-3" aria-label="Vai alla Home">
               <Image
-                src="/logo.png"
+                src="/logo-navbar.png"     // <— se il file è .svg usa "/logo-navbar.svg"
                 alt="BLOCKSTAMP logo"
-                width={320}
-                height={320}
+                width={800}                 // dimensione nativa di riferimento per Next.js
+                height={400}                // mantiene il ratio originale
                 priority
-                className="w-auto h-16 md:h-20 rounded"
+                sizes="(max-width: 768px) 180px, 320px"
+                className="h-16 md:h-24 w-auto"  // altezza fissa, larghezza auto → no stretch
               />
             </a>
 
