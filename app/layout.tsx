@@ -19,16 +19,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <header className="border-b border-white/10">
           <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-            {/* LOGO: aumentato di 2,5 volte */}
+            {/* LOGO: dimensioni ridotte del 50% */}
             <a href="/" className="flex items-center gap-3" aria-label="Vai alla Home">
               <Image
                 src="/logo.png"
                 alt="BLOCKSTAMP logo"
-                width={2000}                 // valori di riferimento grandi per Next.js
-                height={1000}
+                width={1000}
+                height={500}
                 priority
-                sizes="(max-width: 768px) 320px, 640px"
-                className="h-40 md:h-60 w-auto"  // Mobile 160px, Desktop 240px
+                sizes="(max-width: 768px) 160px, 320px"
+                className="h-20 md:h-30 w-auto"  // Mobile 80px, Desktop 120px
               />
             </a>
 
