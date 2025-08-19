@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
 import { useState } from "react";
 
 function toHex(buffer: ArrayBuffer) {
-  return Array.prototype.map
-    .call(new Uint8Array(buffer), (x: number) => ("00" + x.toString(16)).slice(-2))
+  return [...new Uint8Array(buffer)]
+    .map((x) => x.toString(16).padStart(2, "0"))
     .join("");
 }
 
@@ -20,7 +20,7 @@ export default function Page() {
     setError("");
     try {
       const buf = await f.arrayBuffer();
-      const digest = await crypto.subtle.digest("SHA-256", buf); // calcolo tecnico (non mostrato in UI)
+      const digest = await crypto.subtle.digest("SHA-256", buf);
       setHash(toHex(digest));
       setFile(f);
     } catch (e: any) {
@@ -59,28 +59,26 @@ export default function Page() {
     <div className="space-y-16">
       {/* HERO */}
       <section className="hero text-center space-y-6">
-  <h1 className="text-4xl md:text-5xl font-semibold leading-tight">
-    <span className="text-white">Proteggi la Tua </span>
-    <span className="text-sky-400">Idea</span>
-    <br />
-    <span className="text-white">nella </span>
-    <span className="text-sky-400">Blockchain</span>
-    <span className="text-white text-2xl align-middle"> • </span>
-    <span className="text-sky-400">Bitcoin</span>
-  </h1>
-
+        <h1 className="text-4xl md:text-5xl font-semibold leading-tight">
+          <span className="text-white">Proteggi la Tua </span>
+          <span className="text-sky-400">Idea</span>
+          <br />
+          <span className="text-white">nella </span>
+          <span className="text-sky-400">Blockchain</span>
+          <span className="text-white text-2xl align-middle"> • </span>
+          <span className="text-sky-400">Bitcoin</span>
+        </h1>
         <p className="text-lg opacity-90 max-w-3xl mx-auto">
           Il modo più sicuro al mondo per registrare e proteggere i tuoi diritti intellettuali.
           <br />
           Niente burocrazia, niente attese, niente costi esorbitanti.
-          <br />
+        </p>
+      </section>
 
       {/* STAMP and VERIFY */}
       <section id="upload" className="bg-white/5 border border-white/10 rounded-2xl p-6">
         <h2 className="text-xl font-bold tracking-wide mb-4 text-center">STAMP and VERIFY</h2>
-
         <div className="grid md:grid-cols-2 gap-6 items-start">
-          {/* Selezione file */}
           <div className="space-y-3">
             <label className="block text-sm opacity-80">Seleziona file</label>
             <input
@@ -99,7 +97,6 @@ export default function Page() {
             )}
           </div>
 
-          {/* Impronta + azioni */}
           <div className="space-y-3">
             <label className="block text-sm opacity-80">Impronta del file</label>
             <textarea
@@ -131,7 +128,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* PROCEDURA (semplice) */}
+      {/* PROCEDURA */}
       <section id="procedura" className="space-y-5">
         <h2 className="text-3xl font-semibold">Procedura</h2>
         <div className="grid md:grid-cols-3 gap-6">
@@ -159,7 +156,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* GUIDA (sezione, non pagina) */}
+      {/* GUIDA */}
       <section id="guida" className="space-y-6">
         <h2 className="text-3xl font-semibold">Guida: proteggi al meglio la tua idea</h2>
         <div className="grid md:grid-cols-3 gap-6">
@@ -203,7 +200,6 @@ export default function Page() {
           <li><b>Nessuna intermediazione:</b> prova indipendente, senza fiducia cieca in terzi.</li>
           <li><b>Validità globale:</b> una registrazione unica, riconoscibile ovunque.</li>
         </ul>
-
         <div className="text-xs opacity-70 bg-white/5 border border-white/10 rounded-2xl p-4">
           <b>Nota legale:</b> questa soluzione fornisce una <i>prova tecnica di esistenza e integrità</i>.
           Non sostituisce tutti gli atti o le funzioni del notaio. Valuta il contesto d’uso con il tuo consulente.
@@ -273,4 +269,3 @@ export default function Page() {
     </div>
   );
 }
-
