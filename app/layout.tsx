@@ -19,15 +19,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <header className="border-b border-white/10">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-            {/* LOGO (150% più grande, cliccabile verso Home) */}
-            <a href="/" className="flex items-center gap-3">
+            {/* LOGO molto più grande e cliccabile verso Home */}
+            <a href="/" className="flex items-center gap-3" aria-label="Vai alla Home">
               <Image
                 src="/logo.png"
                 alt="BLOCKSTAMP logo"
-                width={240}   // aumentato
-                height={240}  // aumentato
+                width={400}
+                height={400}
                 priority
-                className="h-12 w-auto rounded"  // 150% circa rispetto a h-8
+                className="h-18 w-auto rounded"
               />
             </a>
 
