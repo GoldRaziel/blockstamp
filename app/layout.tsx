@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <header className="border-b border-white/10">
           <div className="container mx-auto px-4 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-            {/* Logo */}
+            {/* Logo (sx) */}
             <div className="flex justify-start">
               <a href="/" className="flex items-center gap-3" aria-label="Vai alla Home">
                 <Image
@@ -29,20 +29,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   height={500}
                   priority
                   sizes="(max-width: 768px) 200px, 400px"
-                  className="h-auto max-h-14 md:max-h-20 w-auto"  
-                  // Mobile = 56px (+15%), Desktop = 80px invariato
+                  className="h-auto max-h-14 md:max-h-20 w-auto"
                 />
               </a>
             </div>
 
-            {/* Nav */}
-            <nav className="text-sm flex flex-col items-start gap-2 md:flex-row md:items-center md:gap-4">
-              <a className="hover:underline whitespace-nowrap" href="/">Home</a>
-              <span className="opacity-50 hidden md:inline">•</span>
+            {/* Nav: orizzontale anche su mobile, con puntini separatori, no 'Home' */}
+            <nav className="text-sm flex items-center flex-wrap gap-x-3 gap-y-1">
               <a className="hover:underline whitespace-nowrap" href="#how-it-works">Procedura</a>
-              <span className="opacity-50 hidden md:inline">•</span>
+              <span className="opacity-50">•</span>
               <a className="hover:underline whitespace-nowrap" href="#pricing">Prezzo</a>
-              <span className="opacity-50 hidden md:inline">•</span>
+              <span className="opacity-50">•</span>
               <a className="hover:underline whitespace-nowrap" href="#faq">FAQ</a>
             </nav>
           </div>
