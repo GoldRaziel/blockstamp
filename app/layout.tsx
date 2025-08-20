@@ -11,18 +11,20 @@ export const metadata: Metadata = {
     description: "Hash locale e timestamp pubblico su blockchain.",
     type: "website",
   },
-  icons: { icon: "/logo.png", shortcut: "/logo.png", apple: "/logo.png" },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-32x32.png",
+    apple: "/favicon-180x180.png",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const year = new Date().getFullYear();
-
   return (
     <html lang="it">
       <body>
         <header className="border-b border-white/10">
           <div className="container mx-auto px-4 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-            {/* Logo (sx) - +15% solo su mobile, allineato a sinistra */}
             <div className="flex justify-start">
               <a href="/" className="flex items-center gap-3" aria-label="Vai alla Home">
                 <Image
@@ -36,8 +38,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 />
               </a>
             </div>
-
-            {/* Nav: orizzontale anche su mobile, con puntini separatori, no 'Home' */}
             <nav className="text-sm flex items-center flex-wrap gap-x-3 gap-y-1">
               <a className="hover:underline whitespace-nowrap" href="/#procedura">PROCEDURA</a>
               <span className="opacity-50">•</span>
@@ -51,9 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </nav>
           </div>
         </header>
-
         <main className="container mx-auto px-4 py-10">{children}</main>
-
         <footer className="border-t border-white/10 mt-16">
           <div className="container mx-auto px-4 py-6 text-sm opacity-80">
             © {year} BLOCKSTAMP — Proof of Existence
