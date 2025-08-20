@@ -16,11 +16,13 @@ export default function Page() {
   const [hash, setHash] = useState<string>("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string>("");
+  const [serverHash, setServerHash] = useState<string>("");
 
   async function handleFile(f?: File | null) {
     if (!f) return;
     setBusy(true);
     setError("");
+    setServerHash("");
     try {
       const buf = await f.arrayBuffer();
       const digest = await crypto.subtle.digest("SHA-256", buf);
@@ -68,19 +70,41 @@ export default function Page() {
     }
   }
 
+  async function submitToServer() {
+    if (!file) return;
+    setBusy(true);
+    setError("");
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/submit", {
+        method: "POST",
+        body: formData
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "Errore durante l'invio.");
+      setServerHash(json.hash);
+    } catch (e: any) {
+      console.error(e);
+      setError(e?.message || "Errore durante l'invio al server.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
     <div className="space-y-16">
       {/* HERO */}
       <section className="hero text-center space-y-6">
         <h1 className="text-4xl md:text-5xl font-semibold leading-tight">
-  <span className="text-white">Proteggi la Tua </span>
-  <span className="text-sky-400">Idea</span>
-  <br />
-  <span className="text-white">nella </span>
-  <span className="text-sky-400">Blockchain</span>
-  <span className="text-sky-400 text-2xl align-middle"> • </span>
-  <span className="text-white">Bitcoin</span>
-</h1>
+          <span className="text-white">Proteggi la Tua </span>
+          <span className="text-sky-400">Idea</span>
+          <br />
+          <span className="text-white">nella </span>
+          <span className="text-sky-400">Blockchain</span>
+          <span className="text-sky-400 text-2xl align-middle"> • </span>
+          <span className="text-white">Bitcoin</span>
+        </h1>
         <p className="text-lg opacity-90 max-w-3xl mx-auto">
           Il modo più sicuro e veloce al mondo per registrare e proteggere i tuoi diritti intellettuali.
         </p>
@@ -116,7 +140,7 @@ export default function Page() {
               value={hash}
               placeholder="L'impronta verrà mostrata qui…"
             />
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3">
               <button
                 onClick={copyHash}
                 disabled={!hash}
@@ -131,7 +155,19 @@ export default function Page() {
               >
                 Scarica request.json
               </button>
+              <button
+                onClick={submitToServer}
+                disabled={!hash || !file}
+                className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40"
+              >
+                ✅ Timbra ora
+              </button>
             </div>
+            {serverHash && (
+              <p className="text-xs mt-3 text-green-400">
+                ✅ Hash ricevuto dal server: <code className="break-all">{serverHash}</code>
+              </p>
+            )}
             <p className="text-xs opacity-70">
               Il calcolo avviene nel tuo browser. Il file non lascia mai il tuo dispositivo.
             </p>
@@ -280,4 +316,3 @@ export default function Page() {
     </div>
   );
 }
-
