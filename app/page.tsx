@@ -36,31 +36,11 @@ export default function Page() {
     }
   }
 
-  function downloadRequestJson() {
-    if (!hash || !file) return;
-    const payload = {
-      hash,
-      algo: "sha256",
-      filename: file.name,
-      size: file.size,
-      timestamp_request: new Date().toISOString(),
-      note: "MVP: invia questo file via email per la marcatura su blockchain."
-    };
-    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `blockstamp-request-${file.name}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-
   async function copyHash() {
     if (!hash) return;
     try {
       await navigator.clipboard.writeText(hash);
     } catch {
-      // fallback minimale
       const ta = document.createElement("textarea");
       ta.value = hash;
       document.body.appendChild(ta);
@@ -147,13 +127,6 @@ export default function Page() {
                 className="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 disabled:opacity-40"
               >
                 Copia impronta
-              </button>
-              <button
-                onClick={downloadRequestJson}
-                disabled={!hash || !file}
-                className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 disabled:opacity-40"
-              >
-                Scarica request.json
               </button>
               <button
                 onClick={submitToServer}
