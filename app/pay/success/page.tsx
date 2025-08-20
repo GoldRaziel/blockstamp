@@ -1,23 +1,19 @@
-"use client";
-import { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+import PaySuccessClient from "./success-client";
 
-export default function PaySuccess() {
-  const sp = useSearchParams();
-  useEffect(() => {
-    const sid = sp.get("session_id");
-    if (sid) {
-      fetch(`/api/stripe/confirm?session_id=${encodeURIComponent(sid)}`)
-        .then(() => { window.location.href = "/#upload"; })
-        .catch(() => { window.location.href = "/#pricing"; });
-    } else {
-      window.location.href = "/#pricing";
-    }
-  }, []);
+export const dynamic = "force-dynamic"; // evita prerender statico
+
+export default function PaySuccessPage() {
   return (
     <main className="container mx-auto px-4 py-10">
-      <h1 className="text-2xl font-semibold">Conferma pagamento…</h1>
-      <p className="opacity-80">Attendere qualche secondo…</p>
+      <Suspense fallback={
+        <div>
+          <h1 className="text-2xl font-semibold">Conferma pagamento…</h1>
+          <p className="opacity-80">Attendere qualche secondo…</p>
+        </div>
+      }>
+        <PaySuccessClient />
+      </Suspense>
     </main>
   );
 }
