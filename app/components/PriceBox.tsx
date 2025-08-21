@@ -3,7 +3,7 @@
 export default function PriceBox() {
   return (
     <div className="bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4">
-      <div className="text-xs font-semibold uppercase tracking-wide text-sky-100">
+      <div className="text-xs font-semibold uppercase tracking-wide text-sky-300">
         Prezzo
       </div>
 
