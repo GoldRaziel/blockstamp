@@ -7,29 +7,18 @@
   --fg: #e2f1ff;
 }
 
-html,
-body {
-  height: 100%;
-}
+html, body { height: 100%; }
 
-/* Scroll fluido per gli anchor link (es. #procedura, #guida, ecc.) */
-html {
-  scroll-behavior: smooth;
-}
+/* Scroll fluido per anchor (es. #procedura, #guida) */
+html { scroll-behavior: smooth; }
 
+/* Niente glow di sfondo: rimuove il radial-gradient */
 body {
-  background: radial-gradient(
-      1200px 800px at 80% -10%,
-      rgba(14, 165, 233, 0.15),
-      transparent 60%
-    ),
-    var(--bg);
+  background: var(--bg) !important;
   color: var(--fg);
 }
 
-a {
-  color: #7dd3fc;
-}
+a { color: #7dd3fc; }
 
 code {
   background: #0b1220;
@@ -37,18 +26,14 @@ code {
   border-radius: 6px;
 }
 
-.container {
-  max-width: 1100px;
-}
+.container { max-width: 1100px; }
 
-/* Mobile: rimuovi la sfumatura dal body */
+/* (Mobile già piatto: opzionale, teniamo per sicurezza) */
 @media (max-width: 991px) {
-  body {
-    background: var(--bg) !important; /* colore piatto */
-  }
+  body { background: var(--bg) !important; }
 }
 
-/* --- Hide "Prezzo" nav item (qualsiasi link a #pricing, /pricing, /#pricing) --- */
+/* Nascondi voce navbar "Prezzo" ovunque punti alla sezione pricing */
 nav a[href="#pricing"],
 nav a[href="/#pricing"],
 nav a[href="/pricing"],
@@ -58,18 +43,17 @@ a[href="/pricing"] {
   display: none !important;
 }
 
-/* === GLOW CONTROL (Blockstamp) === */
-* { text-shadow: none !important; }
-[class*="shadow"], [class*="drop-shadow"], [class*="glow"] { box-shadow: none !important; filter: none !important; }
+/* --- HARD OVERRIDE ANTI-GLOW ---
+   Mettiamo gli override dentro @layer utilities così vengono emessi
+   dopo le utility Tailwind e prevalgono realmente. */
+@layer utilities {
+  /* stoppa text-shadow ovunque */
+  * { text-shadow: none !important; }
 
-/* Bande luminose solo in testa e in coda pagina */
-.glow-band { position: relative; isolation: isolate; }
-.glow-band::before {
-  content:""; position:absolute; z-index:-1; left:50%; transform:translateX(-50%);
-  width:min(1200px,90vw); height:160px; pointer-events:none;
-  background: radial-gradient(60% 120px at 50% 0%, rgba(56,189,248,.35), rgba(56,189,248,.15) 40%, transparent 70%);
-  filter: blur(12px);
+  /* stoppa box/drop shadow generati da utility o classi personalizzate */
+  .shadow, .drop-shadow,
+  [class*="shadow"], [class*="drop-shadow"] {
+    box-shadow: none !important;
+    filter: none !important; /* per drop-shadow CSS */
+  }
 }
-.glow-top { padding-top:24px; }          /* luce dall’alto */
-.glow-bottom { padding-bottom:24px; }    /* luce dal basso */
-.glow-bottom::before { bottom:0; top:auto; transform:translateX(-50%) rotate(180deg); }
