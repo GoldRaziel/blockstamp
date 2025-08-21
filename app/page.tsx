@@ -195,7 +195,7 @@ export default function Page() {
                 <button
                   onClick={submitToServer}
                   disabled={!hash || !file}
-                  className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40"
+                  className={`px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 ${!paid ? " hidden" : ""}`}
                 >
                   ✅ Timbra ora
                 </button>
