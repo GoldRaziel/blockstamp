@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import PriceBox from "./components/PriceBox";
 function toHex(buffer: ArrayBuffer) {
   const bytes = new Uint8Array(buffer);
   let out = "";
@@ -100,7 +101,9 @@ export default function Page() {
               type="file"
               className="block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0
                          file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100"
-              onChange={(e) => handleFile(e.target.files?.[0] || null)}
+              onChange={(e) =>
+
+        <PriceBox /> handleFile(e.target.files?.[0] || null)}
             />
             {busy && <div className="text-sm opacity-80">Calcolo in corso…</div>}
             {error && <div className="text-sm text-red-400">{error}</div>}
