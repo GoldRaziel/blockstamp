@@ -57,3 +57,19 @@ a[href="/#pricing"],
 a[href="/pricing"] {
   display: none !important;
 }
+
+/* === GLOW CONTROL (Blockstamp) === */
+* { text-shadow: none !important; }
+[class*="shadow"], [class*="drop-shadow"], [class*="glow"] { box-shadow: none !important; filter: none !important; }
+
+/* Bande luminose solo in testa e in coda pagina */
+.glow-band { position: relative; isolation: isolate; }
+.glow-band::before {
+  content:""; position:absolute; z-index:-1; left:50%; transform:translateX(-50%);
+  width:min(1200px,90vw); height:160px; pointer-events:none;
+  background: radial-gradient(60% 120px at 50% 0%, rgba(56,189,248,.35), rgba(56,189,248,.15) 40%, transparent 70%);
+  filter: blur(12px);
+}
+.glow-top { padding-top:24px; }          /* luce dall’alto */
+.glow-bottom { padding-bottom:24px; }    /* luce dal basso */
+.glow-bottom::before { bottom:0; top:auto; transform:translateX(-50%) rotate(180deg); }
