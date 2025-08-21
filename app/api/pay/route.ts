@@ -1,62 +1,42 @@
-import { NextResponse } from 'next/server';
-import { requireStripe } from '../../../lib/stripe';
-
-export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
+import { NextResponse } from "next/server";
+import Stripe from "stripe";
 
 export async function POST(req: Request) {
-  let payload: any;
   try {
-    // Se manca il body JSON, req.json() lancia: gestiamolo esplicitamente
-    payload = await req.json();
-  } catch {
-    return NextResponse.json(
-      { error: 'Body JSON required. Example: {"amount": 500, "currency":"usd"}' },
-      { status: 400 }
-    );
-  }
+    const { amount = 500, currency = "eur", description = "Blockstamp Protection" } = await req.json().catch(() => ({}));
 
-  try {
-    const {
-      amount,
-      currency = 'usd',
-      description,
-      metadata,
-      successPath = '/pay/success',
-      cancelPath = '/pay/cancel',
-    } = payload;
+    const sk = process.env.STRIPE_SECRET_KEY;
+    if (!sk) return NextResponse.json({ error: "STRIPE_SECRET_KEY not set" }, { status: 500 });
 
-    if (typeof amount !== 'number' || !Number.isFinite(amount) || amount <= 0) {
-      return NextResponse.json({ error: 'amount (number > 0) required — minor units' }, { status: 400 });
-    }
+    const stripe = new Stripe(sk, { apiVersion: "2024-06-20" } as any);
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.SITE_URL;
-    if (!baseUrl) {
-      return NextResponse.json({ error: 'Base URL not set (NEXT_PUBLIC_BASE_URL or SITE_URL)' }, { status: 500 });
-    }
+    const headers = new Headers(req.headers);
+    const envBase =
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      process.env.SITE_URL ||
+      "https://melodious-starburst-f335b3.netlify.app"; // fallback
+    const origin = headers.get("origin") || envBase;
+    const base = origin.replace(/\/+$/, ""); // rimuove slash finali
 
-    const stripe = requireStripe();
     const session = await stripe.checkout.sessions.create({
-      mode: 'payment',
-      payment_method_types: ['card'],
+      mode: "payment",
+      payment_method_types: ["card"],
       line_items: [
         {
           price_data: {
             currency,
-            product_data: { name: description || 'Blockstamp order' },
+            product_data: { name: description },
             unit_amount: amount,
           },
           quantity: 1,
         },
       ],
-      allow_promotion_codes: true,
-      metadata,
-      success_url: `${baseUrl}${successPath}?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${baseUrl}${cancelPath}`,
+      success_url: `${base}/pay/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${base}/pay/cancel`,
     });
 
-    return NextResponse.json({ id: session.id, url: session.url });
-  } catch (err: any) {
-    return NextResponse.json({ error: err?.message ?? 'Internal error' }, { status: 500 });
+    return NextResponse.json({ url: session.url });
+  } catch (e: any) {
+    return NextResponse.json({ error: e?.message || "pay error" }, { status: 500 });
   }
 }
