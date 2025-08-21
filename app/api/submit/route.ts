@@ -2,40 +2,51 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createHash } from "node:crypto";
 
+export const runtime = "nodejs";       // evita Edge runtime
+export const dynamic = "force-dynamic"; // niente cache
+
 export async function POST(req: Request) {
-  // 1) Controllo pagamento via cookie httpOnly
-  const isPaid = cookies().get("paid")?.value === "1";
+  // Lettura robusta del cookie "paid"
+  const paidCookie = cookies().get("paid")?.value ?? null;
+  const headerCookie = req.headers.get("cookie") || "";
+  const paidFromHeader = (() => {
+    const m = headerCookie.match(/(?:^|;\s*)paid=([^;]+)/);
+    return m ? decodeURIComponent(m[1]) : null;
+  })();
+
+  const isPaid = paidCookie === "1" || paidFromHeader === "1";
+
   if (!isPaid) {
     return NextResponse.json(
-      { error: "Pagamento richiesto", code: "PAYMENT_REQUIRED" },
-      { status: 402 }
+      {
+        error: "Pagamento richiesto",
+        code: "PAYMENT_REQUIRED",
+        debug: { cookiePaid: paidCookie, headerPaid: paidFromHeader }
+      },
+      { status: 402, headers: { "Cache-Control": "no-store" } }
     );
   }
 
   try {
-    // 2) Leggi il file dal multipart/form-data
     const form = await req.formData();
     const file = form.get("file") as File | null;
-
     if (!file) {
-      return NextResponse.json(
-        { error: "File mancante" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "File mancante" }, { status: 400, headers: { "Cache-Control": "no-store" } });
     }
 
-    // 3) Calcola hash SHA-256 lato server
     const buf = Buffer.from(await file.arrayBuffer());
     const hashHex = createHash("sha256").update(buf).digest("hex");
 
-    // TODO: qui inserisci la tua logica di invio all'anchoring service/OpenTimestamps se necessario
+    // TODO: integrazione anchoring (OTS) qui, se necessario
 
-    // 4) Rispondi con l'hash (come facevi già lato client)
-    return NextResponse.json({ ok: true, hash: hashHex });
+    return NextResponse.json(
+      { ok: true, hash: hashHex },
+      { headers: { "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0" } }
+    );
   } catch (e: any) {
     return NextResponse.json(
       { error: e?.message || "Errore durante l'invio" },
-      { status: 500 }
+      { status: 500, headers: { "Cache-Control": "no-store" } }
     );
   }
 }

@@ -103,7 +103,7 @@ export default function Page() {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const res = await fetch("/api/submit", { method: "POST",
+      const res = await fetch("/api/submit", { method: "POST", credentials: "include", cache: "no-store",
         cache: "no-store",
         credentials: "include",
         body: formData,
