@@ -2,17 +2,16 @@
 
 export default function PriceBox() {
   return (
-    <div className="bg-sky-950/40 border border-sky-800/40 rounded-xl p-6 text-white space-y-4 shadow-md">
-      <div className="text-xs font-semibold uppercase tracking-wide text-sky-200">
+    <div className="bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4">
+      <div className="text-xs font-semibold uppercase tracking-wide text-sky-100">
         Prezzo
       </div>
-      <div className="text-3xl font-bold text-sky-50">
+
+      <div className="text-3xl font-bold text-white">
         200 AED <span className="text-lg font-medium">/ file</span>
       </div>
 
-      <div className="text-base font-semibold text-sky-100">
-        Protezione Blockchain
-      </div>
+      <div className="text-base font-semibold">Protezione Blockchain</div>
       <p className="text-sm opacity-90">
         Ancoraggio dell’impronta del tuo file su Bitcoin con guida alla verifica.
       </p>
