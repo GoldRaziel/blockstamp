@@ -5,5 +5,6 @@ export function requireStripe() {
   if (!key) {
     throw new Error('STRIPE_SECRET_KEY is not set');
   }
-  return new Stripe(key, { apiVersion: '2024-06-20' });
+  // Niente apiVersion esplicita per evitare mismatch di tipi in CI (Netlify)
+  return new Stripe(key);
 }

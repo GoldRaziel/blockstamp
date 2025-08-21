@@ -18,13 +18,16 @@ export async function POST(req: Request) {
       source = 'checkout.session';
     } else if (body?.paymentIntentId) {
       const pi = await stripe.paymentIntents.retrieve(body.paymentIntentId);
-      paid = pi.status === 'succeeded' || pi.status === 'requires_capture' || pi.status === 'processing';
+      paid =
+        pi.status === 'succeeded' ||
+        pi.status === 'requires_capture' ||
+        pi.status === 'processing';
       source = 'payment_intent';
     } else {
       return NextResponse.json({ error: 'Provide sessionId or paymentIntentId' }, { status: 400 });
     }
 
-    // TODO: aggiorna qui il tuo DB se necessario
+    // TODO: qui puoi aggiornare il tuo DB se necessario
     return NextResponse.json({ ok: true, paid, source });
   } catch (err: any) {
     return NextResponse.json({ error: err?.message ?? 'Internal error' }, { status: 500 });

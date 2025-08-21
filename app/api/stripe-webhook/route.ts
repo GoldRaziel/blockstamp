@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session;
-        // TODO: segna pagato nel DB usando session.id / session.client_reference_id / session.metadata
+        // TODO: segna pagato nel DB (session.id / session.client_reference_id / session.metadata)
         break;
       }
       case 'payment_intent.succeeded':

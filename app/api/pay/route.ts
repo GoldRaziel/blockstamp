@@ -5,14 +5,14 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 /**
- * Body JSON accettato:
+ * Body JSON:
  * {
- *   amount: number,            // in minor units (es. 1000 = 10.00)
+ *   amount: number,            // minor units (es. 1000 = 10.00)
  *   currency?: string,         // default 'usd'
  *   description?: string,
  *   metadata?: Record<string,string>,
- *   successPath?: string,      // opzionale, default '/pay/success'
- *   cancelPath?: string        // opzionale, default '/pay/cancel'
+ *   successPath?: string,      // default '/pay/success'
+ *   cancelPath?: string        // default '/pay/cancel'
  * }
  */
 export async function POST(req: Request) {
@@ -27,12 +27,15 @@ export async function POST(req: Request) {
     } = await req.json();
 
     if (typeof amount !== 'number' || !Number.isFinite(amount) || amount <= 0) {
-      return NextResponse.json({ error: 'amount (number > 0) required — in minor units' }, { status: 400 });
+      return NextResponse.json({ error: 'amount (number > 0) required — minor units' }, { status: 400 });
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL ||
+      process.env.SITE_URL; // fallback utile su Netlify
+
     if (!baseUrl) {
-      return NextResponse.json({ error: 'NEXT_PUBLIC_BASE_URL is not set' }, { status: 500 });
+      return NextResponse.json({ error: 'Base URL not set (NEXT_PUBLIC_BASE_URL or SITE_URL)' }, { status: 500 });
     }
 
     const stripe = requireStripe();
@@ -45,7 +48,7 @@ export async function POST(req: Request) {
           price_data: {
             currency,
             product_data: { name: description || 'Blockstamp order' },
-            unit_amount: amount, // minor units
+            unit_amount: amount,
           },
           quantity: 1,
         },
@@ -56,7 +59,6 @@ export async function POST(req: Request) {
       cancel_url: `${baseUrl}${cancelPath}`,
     });
 
-    // Restituisco sia l'url (redirect lato client) sia l'id (per verifiche server)
     return NextResponse.json({ id: session.id, url: session.url });
   } catch (err: any) {
     return NextResponse.json({ error: err?.message ?? 'Internal error' }, { status: 500 });
