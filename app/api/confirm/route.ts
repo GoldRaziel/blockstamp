@@ -5,7 +5,6 @@ export async function GET(req: Request) {
   try {
     const url = new URL(req.url);
     const session_id = url.searchParams.get("session_id");
-
     if (!session_id) {
       return NextResponse.json({ error: "missing session_id" }, { status: 400 });
     }
