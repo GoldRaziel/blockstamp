@@ -136,15 +136,16 @@ export default function Page() {
           <div className="space-y-3">
             <PriceBox />
 
-            {!paid ? (
-              <p className="text-sm text-amber-300/90">
-                💳 Paga ora per sbloccare <b>TIMBRA</b>
-              </p>
-            ) : (
-              <p className="text-sm text-green-400 font-medium">
-                ✅ Pagamento effettuato, TIMBRA attivo
-              </p>
-            )}
+           {!paid ? (
+  <p className="text-sm text-amber-300/90">
+    Effettua il pagamento per attivare <b>TIMBRA</b>
+  </p>
+) : (
+  <p className="text-sm text-green-400 font-medium">
+    ✅ Pagamento effettuato, TIMBRA attivo
+  </p>
+)}
+
           </div>
 
           {/* Colonna DESTRA: INPUT SOPRA, IMPRONTA SOTTO */}
