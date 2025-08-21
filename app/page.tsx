@@ -98,11 +98,6 @@ export default function Page() {
     if (!hash || !file) return;
 
     // Se non hai pagato, mostra SOLO ora l’avviso e non inviare
-    if (!paid) {
-      setShowPayNotice(true);
-      return;
-    }
-
     setBusy(true);
     setError("");
     try {
