@@ -74,8 +74,7 @@ export default function Page() {
   }
 
   return (
-    <div className="space-y-16">
-  <div className="glow-band glow-top"></div>{/* HERO */}
+    <div className="space-y-16">{/* HERO */}
       <section className="hero text-center space-y-6">
         <h1 className="text-4xl md:text-5xl font-semibold leading-tight">
           <span className="text-white">Proteggi la Tua </span>
@@ -265,7 +264,6 @@ export default function Page() {
             esistenza e integrità, non recupera il contenuto.
           </p>
         </details>
-      </section>  <div className="glow-band glow-bottom"></div>
-</div>
+      </section></div>
   );
 }

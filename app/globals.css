@@ -58,12 +58,6 @@ a[href="/pricing"] {
   }
 }
 
-/* === Glow angolare solo inizio/fine sito === */
-.glow-band {
-  position: relative;
-  isolation: isolate;
-}
-
 .glow-band::before {
   content: "";
   position: absolute;
