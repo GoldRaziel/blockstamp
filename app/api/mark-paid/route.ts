@@ -1,34 +1,32 @@
-import Stripe from "stripe";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
+import { requireStripe } from '../../../lib/stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2024-06-20" });
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
   try {
-    const { session_id } = await req.json();
-    if (!session_id) {
-      return NextResponse.json({ error: "session_id mancante" }, { status: 400 });
+    const body = await req.json();
+    const stripe = requireStripe();
+
+    let paid = false;
+    let source: 'checkout.session' | 'payment_intent' | 'unknown' = 'unknown';
+
+    if (body?.sessionId) {
+      const session = await stripe.checkout.sessions.retrieve(body.sessionId);
+      paid = session.payment_status === 'paid' || session.status === 'complete';
+      source = 'checkout.session';
+    } else if (body?.paymentIntentId) {
+      const pi = await stripe.paymentIntents.retrieve(body.paymentIntentId);
+      paid = pi.status === 'succeeded' || pi.status === 'requires_capture' || pi.status === 'processing';
+      source = 'payment_intent';
+    } else {
+      return NextResponse.json({ error: 'Provide sessionId or paymentIntentId' }, { status: 400 });
     }
 
-    const session = await stripe.checkout.sessions.retrieve(session_id);
-    if (session.payment_status !== "paid") {
-      return NextResponse.json({ error: "Pagamento non confermato" }, { status: 402 });
-    }
-
-    // Imposta cookie httpOnly valido 24h
-    const res = NextResponse.json({ ok: true });
-    res.cookies.set({
-      name: "paid",
-      value: "1",
-      httpOnly: true,
-      secure: true,
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24,
-    });
-    return res;
+    // TODO: aggiorna qui il tuo DB se necessario
+    return NextResponse.json({ ok: true, paid, source });
   } catch (err: any) {
-    console.error("MARK-PAID ERR", err);
-    return NextResponse.json({ error: err?.message || "Errore mark-paid" }, { status: 500 });
+    return NextResponse.json({ error: err?.message ?? 'Internal error' }, { status: 500 });
   }
 }

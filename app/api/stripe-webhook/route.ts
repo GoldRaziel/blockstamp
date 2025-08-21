@@ -1,30 +1,45 @@
-import Stripe from "stripe";
-import { NextRequest, NextResponse } from "next/server";
+import Stripe from 'stripe';
+import { NextResponse } from 'next/server';
+import { headers } from 'next/headers';
 
-export const config = { api: { bodyParser: false } } as const;
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2024-06-20" });
-const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+export async function POST(req: Request) {
+  const sig = headers().get('stripe-signature');
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-export async function POST(req: NextRequest) {
-  const sig = req.headers.get("stripe-signature");
-  if (!sig) return NextResponse.json({ error: "Missing signature" }, { status: 400 });
+  if (!sig || !webhookSecret) {
+    return new NextResponse('Missing stripe-signature or STRIPE_WEBHOOK_SECRET', { status: 400 });
+  }
 
-  const raw = await req.arrayBuffer();
+  const rawBody = await req.text();
   let event: Stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(Buffer.from(raw), sig, endpointSecret);
+    event = Stripe.webhooks.constructEvent(rawBody, sig, webhookSecret);
   } catch (err: any) {
-    console.error("Webhook signature verification failed.", err.message);
-    return NextResponse.json({ error: "Bad signature" }, { status: 400 });
+    return new NextResponse(`Webhook Error: ${err.message}`, { status: 400 });
   }
 
-  // Esempio: gestisci checkout.session.completed
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object as Stripe.Checkout.Session;
-    // Qui potresti salvare su DB che l'utente X ha pagato (se hai auth).
+  try {
+    switch (event.type) {
+      case 'checkout.session.completed': {
+        const session = event.data.object as Stripe.Checkout.Session;
+        // TODO: segna pagato nel DB usando session.id / session.client_reference_id / session.metadata
+        break;
+      }
+      case 'payment_intent.succeeded':
+        // opzionale
+        break;
+      case 'payment_intent.payment_failed':
+        // opzionale
+        break;
+      default:
+        break;
+    }
+    return NextResponse.json({ received: true });
+  } catch (err: any) {
+    return NextResponse.json({ error: err?.message ?? 'Handler error' }, { status: 500 });
   }
-
-  return NextResponse.json({ received: true });
 }
