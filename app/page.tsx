@@ -25,7 +25,7 @@ export default function Page() {
   useEffect(() => {
     (async () => {
       try {
-        const r = await fetch("/api/session", { cache: "no-store" });
+        const r = await fetch("/api/session", { cache: "no-store", credentials: "include" });
         const j = await r.json();
         setPaid(!!j.paid);
       } catch {
@@ -76,6 +76,7 @@ export default function Page() {
     try {
       const res = await fetch("/api/pay", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           amount: 500, // es. 5.00 (minor units)
@@ -109,6 +110,7 @@ export default function Page() {
       formData.append("file", file);
       const res = await fetch("/api/submit", {
         method: "POST",
+        credentials: "include",
         body: formData,
       });
       const json = await res.json();
