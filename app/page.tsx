@@ -1,116 +1,93 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 type SessionResp = { paid: boolean };
 
-function PriceTag() {
-  const label = process.env.NEXT_PUBLIC_PRICE_LABEL || "€4.99 / file";
+function PriceBox() {
   return (
-    <div className="mt-3 rounded-lg border border-sky-300/50 bg-sky-950/20 p-3 text-sky-200">
+    <div className="mt-3 rounded-lg border border-sky-300/50 bg-sky-900/20 p-3 text-sky-100">
       <div className="text-xs uppercase tracking-widest text-sky-300">Prezzo</div>
-      <div className="mt-1 text-lg font-semibold">{label}</div>
+      <div className="mt-1 text-lg font-semibold">200 AED / file</div>
       <div className="mt-1 text-xs opacity-80">
-        Paghi una sola volta per attivare la timbratura su blockchain.
+        Paghi una sola volta per attivare la timbratura su blockchain (valida 24h su questo browser).
       </div>
     </div>
   );
 }
 
-export default function Page() {
+export default function Page(): JSX.Element {
   const [file, setFile] = useState<File | null>(null);
   const [paid, setPaid] = useState<boolean>(false);
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusy] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  const [okMsg, setOkMsg] = useState<string>("");
+  const [ok, setOk] = useState<string>("");
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  // 1) Controllo sessione: no-store + credenziali
+  // Session check (no-store + credentials)
   useEffect(() => {
-    let stop = false;
+    let cancelled = false;
     (async () => {
       try {
         const res = await fetch("/api/session", { cache: "no-store", credentials: "include" });
-        if (!res.ok) throw new Error("Session check failed");
         const data = (await res.json()) as SessionResp;
-        if (!stop) setPaid(!!data.paid);
+        if (!cancelled) setPaid(!!data.paid);
       } catch {
-        if (!stop) setPaid(false);
+        if (!cancelled) setPaid(false);
       }
     })();
-    return () => {
-      stop = true;
-    };
+    return () => { cancelled = true; };
   }, []);
 
   const onSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFile(e.target.files?.[0] ?? null);
     setError("");
-    setOkMsg("");
-    setFile(e.target.files?.[0] || null);
+    setOk("");
   };
 
-  // 2) Avvio Stripe Checkout
-  const handlePay = async () => {
+  async function handlePay() {
     try {
       setBusy(true);
       setError("");
-      setOkMsg("");
+      setOk("");
 
-      // opzionale: passa info utili al server (nome file, size)
-      const body = file
-        ? { filename: file.name, size: file.size }
-        : { filename: null, size: null };
-
+      const payload = file ? { filename: file.name, size: file.size } : {};
       const res = await fetch("/api/stripe/session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         cache: "no-store",
-        body: JSON.stringify(body),
+        body: JSON.stringify(payload),
       });
-
-      if (!res.ok) {
-        const txt = await res.text().catch(() => "");
-        throw new Error(`Stripe error: ${txt || res.status}`);
-      }
+      if (!res.ok) throw new Error(await res.text().catch(() => `Stripe ${res.status}`));
       const data = await res.json();
-      const url = data?.url;
-      if (!url || typeof url !== "string") {
-        throw new Error("Stripe session: url mancante");
-      }
-      window.location.href = url; // redirect a Checkout
+      if (!data?.url) throw new Error("Stripe session URL assente");
+      window.location.href = data.url as string;
     } catch (e: any) {
       setError(e?.message || "Errore pagamento");
     } finally {
       setBusy(false);
     }
-  };
+  }
 
-  // 3) Timbra (richiede cookie pagato)
-  const handleStamp = async () => {
+  async function handleStamp() {
     try {
       setBusy(true);
       setError("");
-      setOkMsg("");
+      setOk("");
 
       if (!file) {
         setError("Seleziona un file prima di timbrare.");
         return;
       }
-
       const fd = new FormData();
       fd.append("file", file);
       const res = await fetch("/api/stamp", { method: "POST", body: fd, credentials: "include" });
 
-      if (res.status === 402) {
-        throw new Error('Pagamento richiesto: clicca su “Paga e attiva”.');
-      }
-      if (!res.ok) {
-        const txt = await res.text().catch(() => "");
-        throw new Error(txt || `Errore ${res.status}`);
-      }
+      if (res.status === 402) throw new Error('Pagamento richiesto: clicca su “Paga e attiva”.');
+      if (!res.ok) throw new Error(await res.text().catch(() => `Errore ${res.status}`));
 
-      // se il backend restituisce un blob .ots:
+      // Blob .ots
       const ct = res.headers.get("content-type") || "";
       if (ct.includes("application/octet-stream") || ct.includes("application/ots")) {
         const blob = await res.blob();
@@ -120,19 +97,19 @@ export default function Page() {
         document.body.appendChild(a);
         a.click();
         a.remove();
-        setOkMsg("Timbro creato e scaricato correttamente.");
+        setOk("Timbro creato e scaricato.");
         return;
       }
 
-      // altrimenti JSON/OK
-      const data = await res.json().catch(() => ({}));
-      setOkMsg(data?.message || "Timbro creato.");
+      // JSON fallback
+      await res.json().catch(() => ({}));
+      setOk("Timbro creato.");
     } catch (e: any) {
       setError(e?.message || "Errore timbratura");
     } finally {
       setBusy(false);
     }
-  };
+  }
 
   const disabled = busy;
 
@@ -149,9 +126,7 @@ export default function Page() {
           className="mt-2 w-full rounded border border-white/10 bg-black/20 p-2"
         />
 
-        {/* PREZZO dentro il riquadro upload */}
-        <const label = "200 AED / file";
-/>
+        <PriceBox />
 
         <div className="mt-4 flex items-center gap-2">
           {!paid ? (
@@ -161,7 +136,7 @@ export default function Page() {
               className="inline-flex items-center gap-2 rounded-lg border border-amber-400/50 bg-amber-500/10 px-4 py-2 text-amber-200 hover:bg-amber-500/20 disabled:opacity-50"
               aria-label="Paga e attiva"
             >
-              <span role="img" aria-hidden>🔒</span> Paga e attiva
+              <span aria-hidden>🔒</span> Paga e attiva
             </button>
           ) : (
             <button
@@ -170,7 +145,7 @@ export default function Page() {
               className="inline-flex items-center gap-2 rounded-lg border border-emerald-400/50 bg-emerald-500/10 px-4 py-2 text-emerald-200 hover:bg-emerald-500/20 disabled:opacity-50"
               aria-label="Timbra ora"
             >
-              <span role="img" aria-hidden>✅</span> Timbra ora
+              <span aria-hidden>✅</span> Timbra ora
             </button>
           )}
 
@@ -179,7 +154,7 @@ export default function Page() {
               if (inputRef.current) inputRef.current.value = "";
               setFile(null);
               setError("");
-              setOkMsg("");
+              setOk("");
             }}
             disabled={disabled}
             className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm hover:bg-white/10 disabled:opacity-50"
@@ -199,16 +174,15 @@ export default function Page() {
             {error}
           </div>
         )}
-        {okMsg && (
+        {ok && (
           <div className="mt-3 rounded-lg border border-emerald-500/40 bg-emerald-500/10 p-3 text-emerald-200">
-            {okMsg}
+            {ok}
           </div>
         )}
       </div>
 
       <p className="mt-6 text-xs opacity-70">
-        Dopo il pagamento verrai reindirizzato automaticamente alla pagina di ritorno e il servizio sarà attivo
-        su questo browser per 24 ore.
+        Dopo il pagamento verrai reindirizzato e il servizio sarà attivo su questo browser per 24 ore.
       </p>
     </main>
   );
