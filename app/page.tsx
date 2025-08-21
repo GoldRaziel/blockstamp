@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-
 import PriceBox from "./components/PriceBox";
+
 function toHex(buffer: ArrayBuffer) {
   const bytes = new Uint8Array(buffer);
   let out = "";
@@ -60,7 +60,7 @@ export default function Page() {
       formData.append("file", file);
       const res = await fetch("/api/submit", {
         method: "POST",
-        body: formData
+        body: formData,
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Errore durante l'invio.");
@@ -101,16 +101,22 @@ export default function Page() {
               type="file"
               className="block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0
                          file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100"
-              onChange={(e) =>
-
-        <PriceBox /> handleFile(e.target.files?.[0] || null)}
+              onChange={(e) => handleFile(e.target.files?.[0] || null)}
             />
+
+            {/* PREZZO subito sotto all’upload */}
+            <PriceBox />
+
             {busy && <div className="text-sm opacity-80">Calcolo in corso…</div>}
             {error && <div className="text-sm text-red-400">{error}</div>}
             {file && !busy && (
               <div className="text-sm opacity-80">
-                <div><b>Nome:</b> {file.name}</div>
-                <div><b>Dimensione:</b> {file.size.toLocaleString()} byte</div>
+                <div>
+                  <b>Nome:</b> {file.name}
+                </div>
+                <div>
+                  <b>Dimensione:</b> {file.size.toLocaleString()} byte
+                </div>
               </div>
             )}
           </div>
