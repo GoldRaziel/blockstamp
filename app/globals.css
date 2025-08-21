@@ -167,3 +167,43 @@ a[href="/pricing"] {
     transparent 120deg
   );
 }
+
+/* === Beam 90° visibile solo top navbar e bottom footer ===================== */
+.beam { position: relative; z-index: 0; isolation: isolate; }
+.beam::before{
+  content:""; position:absolute; z-index:-1; pointer-events:none;
+  width: 140vw;                 /* molto largo per coprire bene */
+  height: 40vh;                 /* fascio ampio (regolabile) */
+  filter: blur(36px);           /* morbidezza */
+  opacity: 1;
+}
+
+/* TOP (navbar): angolo ALTO-DESTRO, fascio 90° */
+.beam-hero::before{
+  top: -8rem;                   /* sale sopra la navbar */
+  right: -8rem;                 /* spinge nell'angolo */
+  background:
+    conic-gradient(
+      from 315deg at 100% 0%,   /* origine alto-destro */
+      rgba(56,189,248,0.40) 0deg,
+      rgba(56,189,248,0.18) 90deg,
+      transparent 120deg
+    ),
+    radial-gradient(1200px 600px at 100% 0%,
+      rgba(56,189,248,0.20), transparent 70%);
+}
+
+/* BOTTOM (footer): angolo BASSO-SINISTRO, fascio 90° invertito */
+.beam-footer::before{
+  bottom: -8rem;
+  left: -8rem;
+  background:
+    conic-gradient(
+      from 135deg at 0% 100%,   /* origine basso-sinistra */
+      rgba(56,189,248,0.40) 0deg,
+      rgba(56,189,248,0.18) 90deg,
+      transparent 120deg
+    ),
+    radial-gradient(1200px 600px at 0% 100%,
+      rgba(56,189,248,0.20), transparent 70%);
+}
