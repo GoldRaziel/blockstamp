@@ -58,24 +58,6 @@ a[href="/pricing"] {
   }
 }
 
-.glow-band::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  left: 50%;
-  transform: translateX(-50%) rotate(25deg); /* glow angolato */
-  width: min(1200px, 90vw);
-  height: 180px;
-  pointer-events: none;
-  background: radial-gradient(
-    60% 140px at 50% 0%,
-    rgba(56, 189, 248, 0.25),   /* azzurro sky-400 */
-    rgba(56, 189, 248, 0.1) 40%,
-    transparent 70%
-  );
-  filter: blur(18px);
-}
-
 .glow-top { padding-top: 24px; }   /* luce dall’alto */
 
 .glow-bottom { padding-bottom: 24px; }
@@ -110,11 +92,7 @@ a[href="/pricing"] {
   bottom: 0;
   transform: translateX(-50%) rotate(-25deg);
 }
-/* === Corner Glow (solo inizio/fine) ================================ */
 /* Contenitore per generare il bagliore come pseudo-elemento */
-.corner-glow { position: relative; isolation: isolate; }
-
-/* Base: dimensioni morbide e blur elegante */
 .corner-glow::before {
   content: "";
   position: absolute;
@@ -146,5 +124,46 @@ a[href="/pricing"] {
     rgba(56,189,248,0.35),
     rgba(56,189,248,0.12) 45%,
     transparent 70%
+  );
+}
+
+/* === Beam 90°: solo navbar (top-right) e footer (bottom-left) ================= */
+/* Wrapper neutro; il fascio è nel ::before */
+.beam { position: relative; isolation: isolate; }
+
+/* Base visiva del fascio: conic-gradient (90°), morbido e leggero */
+.beam::before {
+  content: "";
+  position: absolute;
+  z-index: 0;                /* sotto ai contenuti del wrapper, sopra lo sfondo */
+  pointer-events: none;
+  width: min(1200px, 95vw);
+  height: 260px;             /* regola intensità/estensione verticale */
+  filter: blur(24px);
+}
+
+/* Navbar/top: fascio 90° dall'angolo alto-destro (come l'effetto iniziale) */
+.beam-hero::before {
+  top: 0;
+  right: 0;
+  transform: translate(10%, -35%); /* spinge l'origine sul bordo in alto a destra */
+  background: conic-gradient(
+    from 315deg at 100% 0%,  /* origine in alto-destro, apertura 90° */
+    rgba(56,189,248,0.35) 0deg,
+    rgba(56,189,248,0.12) 90deg,
+    transparent 120deg
+  );
+}
+
+/* Footer/bottom: fascio invertito 90° dall'angolo basso-sinistro */
+.beam-footer::before {
+  bottom: 0;
+  left: 0;
+  transform: translate(-10%, 35%);
+  background: conic-gradient(
+    from 135deg at 0% 100%,  /* origine in basso-sinistra, apertura 90° */
+    rgba(56,189,248,0.35) 0deg,
+    rgba(56,189,248,0.12) 90deg,
+    transparent 120deg
   );
 }
