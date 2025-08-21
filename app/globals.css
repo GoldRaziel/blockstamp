@@ -90,3 +90,29 @@ a[href="/pricing"] {
   bottom: 0;
   transform: translateX(-50%) rotate(-25deg); /* invertito e angolato dal basso */
 }
+
+/* --- Glow angolare: fix visibilità e intensità leggerissima --- */
+.glow-band { position: relative; isolation: isolate; }
+.glow-band::before {
+  content: "";
+  position: absolute;
+  top: 0;                 /* <— fondamentale: senza, può finire fuori vista */
+  left: 50%;
+  transform: translateX(-50%) rotate(25deg);
+  width: min(1200px, 95vw);
+  height: 220px;
+  pointer-events: none;
+  z-index: 0;             /* sopra il background, sotto i contenuti */
+  background: radial-gradient(
+    60% 160px at 50% 0%,
+    rgba(56, 189, 248, 0.30),
+    rgba(56, 189, 248, 0.12) 45%,
+    transparent 70%
+  );
+  filter: blur(22px);
+}
+.glow-bottom::before {
+  top: auto;
+  bottom: 0;
+  transform: translateX(-50%) rotate(-25deg);
+}
