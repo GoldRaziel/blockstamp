@@ -47,3 +47,13 @@ code {
     background: var(--bg) !important; /* colore piatto */
   }
 }
+
+/* --- Hide "Prezzo" nav item (qualsiasi link a #pricing, /pricing, /#pricing) --- */
+nav a[href="#pricing"],
+nav a[href="/#pricing"],
+nav a[href="/pricing"],
+a[href="#pricing"],
+a[href="/#pricing"],
+a[href="/pricing"] {
+  display: none !important;
+}
