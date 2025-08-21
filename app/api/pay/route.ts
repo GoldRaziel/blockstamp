@@ -4,18 +4,18 @@ import { requireStripe } from '../../../lib/stripe';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-/**
- * Body JSON:
- * {
- *   amount: number,            // minor units (es. 1000 = 10.00)
- *   currency?: string,         // default 'usd'
- *   description?: string,
- *   metadata?: Record<string,string>,
- *   successPath?: string,      // default '/pay/success'
- *   cancelPath?: string        // default '/pay/cancel'
- * }
- */
 export async function POST(req: Request) {
+  let payload: any;
+  try {
+    // Se manca il body JSON, req.json() lancia: gestiamolo esplicitamente
+    payload = await req.json();
+  } catch {
+    return NextResponse.json(
+      { error: 'Body JSON required. Example: {"amount": 500, "currency":"usd"}' },
+      { status: 400 }
+    );
+  }
+
   try {
     const {
       amount,
@@ -24,22 +24,18 @@ export async function POST(req: Request) {
       metadata,
       successPath = '/pay/success',
       cancelPath = '/pay/cancel',
-    } = await req.json();
+    } = payload;
 
     if (typeof amount !== 'number' || !Number.isFinite(amount) || amount <= 0) {
       return NextResponse.json({ error: 'amount (number > 0) required — minor units' }, { status: 400 });
     }
 
-    const baseUrl =
-      process.env.NEXT_PUBLIC_BASE_URL ||
-      process.env.SITE_URL; // fallback utile su Netlify
-
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.SITE_URL;
     if (!baseUrl) {
       return NextResponse.json({ error: 'Base URL not set (NEXT_PUBLIC_BASE_URL or SITE_URL)' }, { status: 500 });
     }
 
     const stripe = requireStripe();
-
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
