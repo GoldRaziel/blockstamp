@@ -19,6 +19,7 @@ export default function Page() {
   const [error, setError] = useState<string>("");
   const [serverHash, setServerHash] = useState<string>("");
   const [paid, setPaid] = useState(false); // ⬅️ sblocco TIMBRA dopo pagamento
+  const [showPayNotice, setShowPayNotice] = useState(false); // ⬅️ avviso SOLO su click TIMBRA senza pagamento
 
   // 👉 verifica stato pagamento (cookie httpOnly lato server)
   useEffect(() => {
@@ -32,6 +33,11 @@ export default function Page() {
       }
     })();
   }, []);
+
+  // Se risulta pagato, nascondi l’avviso
+  useEffect(() => {
+    if (paid) setShowPayNotice(false);
+  }, [paid]);
 
   async function handleFile(f?: File | null) {
     if (!f) return;
@@ -87,7 +93,15 @@ export default function Page() {
   }
 
   async function submitToServer() {
-    if (!file || !paid) return; // ⬅️ blocco duro se non hai pagato
+    // Blocco: serve hash e file
+    if (!hash || !file) return;
+
+    // Se non hai pagato, mostra SOLO ora l’avviso e non inviare
+    if (!paid) {
+      setShowPayNotice(true);
+      return;
+    }
+
     setBusy(true);
     setError("");
     try {
@@ -136,16 +150,13 @@ export default function Page() {
           <div className="space-y-3">
             <PriceBox />
 
-           {!paid ? (
-  <p className="text-sm text-amber-300/90">
-    Effettua il pagamento per attivare <b>TIMBRA</b>
-  </p>
-) : (
-  <p className="text-sm text-green-400 font-medium">
-    ✅ Pagamento effettuato, TIMBRA attivo
-  </p>
-)}
-
+            {/* ⛔️ RIMOSSO l’avviso fisso "Paga ora..." qui.
+                L’avviso appare solo quando cliccano TIMBRA senza aver pagato (vedi sotto). */}
+            {paid && (
+              <p className="text-sm text-green-400 font-medium">
+                ✅ Pagamento effettuato, TIMBRA attivo
+              </p>
+            )}
           </div>
 
           {/* Colonna DESTRA: INPUT SOPRA, IMPRONTA SOTTO */}
@@ -190,7 +201,7 @@ export default function Page() {
                 </button>
                 <button
                   onClick={submitToServer}
-                  disabled={!hash || !file || !paid}
+                  disabled={!hash || !file}
                   className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40"
                 >
                   ✅ Timbra ora
@@ -198,13 +209,18 @@ export default function Page() {
               </div>
               {serverHash && (
                 <p className="text-xs mt-1 text-green-400">
-                  ✅ Hash ricevuto dal server:{" "}
-                  <code className="break-all">{serverHash}</code>
+                  ✅ Hash ricevuto dal server: <code className="break-all">{serverHash}</code>
                 </p>
               )}
               <p className="text-xs opacity-70">
                 Il calcolo avviene nel tuo browser. Il file non lascia mai il tuo dispositivo.
               </p>
+              {/* ⬇️ Avviso mostrato SOLO dopo click TIMBRA senza pagamento */}
+              {showPayNotice && !paid && (
+                <p className="text-sm mt-2 text-amber-300">
+                  💳 <b>Effettua il pagamento</b> per attivare <b>TIMBRA</b>.
+                </p>
+              )}
             </div>
           </div>
         </div>
