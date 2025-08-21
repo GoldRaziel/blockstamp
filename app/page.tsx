@@ -65,11 +65,19 @@ export default function Page() {
     }
   }
 
-  // 👉 crea sessione Stripe Checkout e reindirizza
+  // 👉 crea sessione Stripe Checkout e reindirizza (se vuoi usarlo altrove)
   async function startPayment() {
     try {
-      const res = await fetch("/api/pay", { method: "POST" });
-      const json = await res.json();
+      const res = await fetch("/api/pay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: 500, // es. 5.00 (minor units)
+          currency: "eur",
+          description: "Blockstamp Protection",
+        }),
+      });
+      const json = await res.json().catch(() => ({} as any));
       if (!res.ok) throw new Error(json.error || "Errore pagamento");
       if (json.url) window.location.href = json.url;
     } catch (err: any) {
@@ -102,7 +110,8 @@ export default function Page() {
 
   return (
     <div className="space-y-16">
-      <div className="beam beam-hero"></div>{/* HERO */}
+      <div className="beam beam-hero"></div>
+      {/* HERO */}
       <section className="hero text-center space-y-6">
         <h1 className="text-4xl md:text-5xl font-semibold leading-tight">
           <span className="text-white">Proteggi la Tua </span>
@@ -114,7 +123,8 @@ export default function Page() {
           <span className="text-white">Bitcoin</span>
         </h1>
         <p className="text-lg opacity-90 max-w-3xl mx-auto">
-          Il modo più sicuro e veloce al mondo per registrare e proteggere i tuoi diritti intellettuali.
+          Il modo più sicuro e veloce al mondo per registrare e proteggere i tuoi diritti
+          intellettuali.
         </p>
       </section>
 
@@ -127,9 +137,9 @@ export default function Page() {
             <PriceBox />
 
             {!paid ? (
-            
-                💳 Paga ora per sbloccare TIMBRA
-              
+              <p className="text-sm text-amber-300/90">
+                💳 Paga ora per sbloccare <b>TIMBRA</b>
+              </p>
             ) : (
               <p className="text-sm text-green-400 font-medium">
                 ✅ Pagamento effettuato, TIMBRA attivo
@@ -151,8 +161,12 @@ export default function Page() {
               {error && <div className="text-sm text-red-400">{error}</div>}
               {file && !busy && (
                 <div className="text-sm opacity-80">
-                  <div><b>Nome:</b> {file.name}</div>
-                  <div><b>Dimensione:</b> {file.size.toLocaleString()} byte</div>
+                  <div>
+                    <b>Nome:</b> {file.name}
+                  </div>
+                  <div>
+                    <b>Dimensione:</b> {file.size.toLocaleString()} byte
+                  </div>
                 </div>
               )}
             </div>
@@ -183,7 +197,8 @@ export default function Page() {
               </div>
               {serverHash && (
                 <p className="text-xs mt-1 text-green-400">
-                  ✅ Hash ricevuto dal server: <code className="break-all">{serverHash}</code>
+                  ✅ Hash ricevuto dal server:{" "}
+                  <code className="break-all">{serverHash}</code>
                 </p>
               )}
               <p className="text-xs opacity-70">
@@ -201,22 +216,22 @@ export default function Page() {
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
             <div className="text-sm opacity-70 mb-2">1 · Carica il tuo file</div>
             <p className="text-sm opacity-90">
-              Scegli il documento, l’idea o il progetto che vuoi proteggere.
-              Nessun contenuto viene reso pubblico: resta solo tuo.
+              Scegli il documento, l’idea o il progetto che vuoi proteggere. Nessun contenuto viene
+              reso pubblico: resta solo tuo.
             </p>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
             <div className="text-sm opacity-70 mb-2">2 · Registrazione su Blockchain</div>
             <p className="text-sm opacity-90">
-              Creiamo una traccia indelebile che dimostra l’esistenza della tua idea in una data certa.
-              Questa prova viene incisa sulla blockchain di Bitcoin, la più sicura al mondo.
+              Creiamo una traccia indelebile che dimostra l’esistenza della tua idea in una data
+              certa. Questa prova viene incisa sulla blockchain di Bitcoin, la più sicura al mondo.
             </p>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
             <div className="text-sm opacity-70 mb-2">3 · Prova e Verifica</div>
             <p className="text-sm opacity-90">
-              Ricevi una ricevuta digitale che potrai esibire in ogni momento per dimostrare i tuoi diritti.
-              In futuro ti basterà confrontarla con il tuo file per provarne l’autenticità.
+              Ricevi una ricevuta digitale che potrai esibire in ogni momento per dimostrare i tuoi
+              diritti. In futuro ti basterà confrontarla con il tuo file per provarne l’autenticità.
             </p>
           </div>
         </div>
@@ -237,21 +252,23 @@ export default function Page() {
             <h3 className="text-lg font-semibold mb-2">2 · Carica in HOME</h3>
             <p className="text-sm opacity-90">
               Vai alla sezione <a href="#upload" className="underline">Upload</a> e carica il tuo ZIP.
-              Riceverai un <b>codice .ots</b> a conferma della richiesta: salvalo <b>dentro la stessa cartella ZIP</b>.
+              Riceverai un <b>codice .ots</b> a conferma della richiesta: salvalo <b>dentro la stessa
+              cartella ZIP</b>.
             </p>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
             <h3 className="text-lg font-semibold mb-2">3 · Registrazione entro 72 ore</h3>
             <p className="text-sm opacity-90">
-              Entro <b>72 ore</b> riceverai il codice di registrazione su blockchain Bitcoin che certifica
-              l’esistenza del tuo file a livello globale, rendendo la tua idea <b>protetta e immodificabile</b>.
+              Entro <b>72 ore</b> riceverai il codice di registrazione su blockchain Bitcoin che
+              certifica l’esistenza del tuo file a livello globale, rendendo la tua idea <b>protetta e
+              immodificabile</b>.
             </p>
           </div>
         </div>
         <div className="bg-white/5 border border-white/10 rounded-2xl p-5 text-center">
           <p className="text-sm opacity-90 max-w-3xl mx-auto">
-            Risultato: una <b>prova tecnica e legale</b> incisa sulla blockchain di Bitcoin —
-            valida in tutto il mondo e non manipolabile da nessuno.
+            Risultato: una <b>prova tecnica e legale</b> incisa sulla blockchain di Bitcoin — valida in
+            tutto il mondo e non manipolabile da nessuno.
           </p>
         </div>
       </section>
@@ -268,7 +285,8 @@ export default function Page() {
         </ul>
         <div className="text-xs opacity-70 bg-white/5 border border-white/10 rounded-2xl p-4">
           <b>Nota legale:</b> questa soluzione fornisce una <i>prova tecnica di esistenza e integrità</i>.
-          Non sostituisce tutti gli atti o le funzioni del notaio. Valuta il contesto d’uso con il tuo consulente.
+          Non sostituisce tutti gli atti o le funzioni del notaio. Valuta il contesto d’uso con il tuo
+          consulente.
         </div>
       </section>
 
@@ -276,7 +294,6 @@ export default function Page() {
       <section id="faq" className="space-y-4">
         <h2 className="text-3xl font-semibold">FAQ</h2>
 
-        {/* Cosa è una blockchain? */}
         <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
           <summary className="cursor-pointer font-medium">Cosa è una blockchain?</summary>
           <div className="mt-2 text-sm opacity-90 space-y-2">
