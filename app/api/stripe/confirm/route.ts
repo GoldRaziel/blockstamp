@@ -2,11 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { SignJWT } from "jose";
 
-export const runtime = "nodejs"; // <<< importante
+export const runtime = "nodejs";
+
+function getOrigin(req: NextRequest) {
+  const proto = req.headers.get("x-forwarded-proto") || "https";
+  const host  = req.headers.get("x-forwarded-host") || req.headers.get("host") || "";
+  return `${proto}://${host}`;
+}
 
 export async function GET(req: NextRequest) {
   try {
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string); // niente apiVersion
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
     const { searchParams } = new URL(req.url);
     const sessionId = searchParams.get("session_id");
     if (!sessionId) return NextResponse.json({ error: "Missing session_id" }, { status: 400 });
@@ -16,7 +22,6 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Pagamento non completato" }, { status: 402 });
     }
 
-    // genera token firmato (valido 24h)
     const secret = new TextEncoder().encode(process.env.JWT_SECRET as string);
     const token = await new SignJWT({ scope: "stamp", sid: sessionId })
       .setProtectedHeader({ alg: "HS256" })
@@ -24,8 +29,8 @@ export async function GET(req: NextRequest) {
       .setExpirationTime("24h")
       .sign(secret);
 
-    const siteUrl = process.env.SITE_URL as string;
-    const res = NextResponse.redirect(new URL("/#upload", siteUrl));
+    const origin = getOrigin(req);
+    const res = NextResponse.redirect(new URL("/#upload", origin));
     res.cookies.set("stamp_auth", token, {
       httpOnly: true,
       secure: true,
