@@ -236,29 +236,6 @@ export default function Page() {
       </section>
 
       {/* PREZZO */}
-      <section id="pricing" className="space-y-4">
-        <h2 className="text-3xl font-semibold">Prezzo</h2>
-        <div className="grid md:grid-cols-1 gap-6">
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-            <div className="flex items-baseline justify-between">
-              <div className="text-lg font-medium">Protezione Blockchain</div>
-              <div className="text-2xl font-semibold">200 AED (55 USD)</div>
-            </div>
-            <p className="text-sm opacity-80 mt-2">
-              Ancoraggio dell’impronta del tuo file su Bitcoin con guida alla verifica.
-            </p>
-            <ul className="mt-4 space-y-1 text-sm opacity-90 list-disc pl-5">
-              <li>Impronta calcolata in locale (privacy by design)</li>
-              <li>Ancoraggio on-chain con riferimento pubblico</li>
-              <li>Documento di prova e istruzioni</li>
-              <li>Assistenza base via email</li>
-            </ul>
-            <a href="#" className="mt-4 inline-block px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500">
-              Acquista protezione
-            </a>
-          </div>
-        </div>
-      </section>
 
       {/* FAQ */}
       <section id="faq" className="space-y-4">
