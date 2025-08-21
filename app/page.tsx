@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PriceBox from "./components/PriceBox";
 
 function toHex(buffer: ArrayBuffer) {
@@ -18,6 +18,20 @@ export default function Page() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string>("");
   const [serverHash, setServerHash] = useState<string>("");
+  const [paid, setPaid] = useState(false); // ⬅️ sblocco TIMBRA dopo pagamento
+
+  // 👉 verifica stato pagamento (cookie httpOnly lato server)
+  useEffect(() => {
+    (async () => {
+      try {
+        const r = await fetch("/api/session", { cache: "no-store" });
+        const j = await r.json();
+        setPaid(!!j.paid);
+      } catch {
+        /* ignore */
+      }
+    })();
+  }, []);
 
   async function handleFile(f?: File | null) {
     if (!f) return;
@@ -51,8 +65,21 @@ export default function Page() {
     }
   }
 
+  // 👉 crea sessione Stripe Checkout e reindirizza
+  async function startPayment() {
+    try {
+      const res = await fetch("/api/pay", { method: "POST" });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "Errore pagamento");
+      if (json.url) window.location.href = json.url;
+    } catch (err: any) {
+      console.error(err);
+      setError(err?.message || "Errore durante il pagamento.");
+    }
+  }
+
   async function submitToServer() {
-    if (!file) return;
+    if (!file || !paid) return; // ⬅️ blocco duro se non hai pagato
     setBusy(true);
     setError("");
     try {
@@ -95,9 +122,22 @@ export default function Page() {
       <section id="upload" className="bg-white/5 border border-white/10 rounded-2xl p-6">
         <h2 className="text-xl font-bold tracking-wide mb-4 text-center">STAMP and VERIFY</h2>
         <div className="grid md:grid-cols-2 gap-6 items-start">
-          {/* Colonna SINISTRA: PREZZO */}
+          {/* Colonna SINISTRA: PREZZO + PAGAMENTO */}
           <div className="space-y-3">
             <PriceBox />
+
+            {!paid ? (
+              <button
+                onClick={startPayment}
+                className="w-full px-4 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-400 font-semibold"
+              >
+                💳 Paga ora per sbloccare TIMBRA
+              </button>
+            ) : (
+              <p className="text-sm text-green-400 font-medium">
+                ✅ Pagamento effettuato, TIMBRA attivo
+              </p>
+            )}
           </div>
 
           {/* Colonna DESTRA: INPUT SOPRA, IMPRONTA SOTTO */}
@@ -107,7 +147,7 @@ export default function Page() {
               <input
                 type="file"
                 className="block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0
-                       file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100"
+                           file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100"
                 onChange={(e) => handleFile(e.target.files?.[0] || null)}
               />
               {busy && <div className="text-sm opacity-80">Calcolo in corso…</div>}
@@ -129,12 +169,18 @@ export default function Page() {
                 placeholder="L'impronta verrà mostrata qui…"
               />
               <div className="flex flex-wrap gap-3">
-                <button onClick={copyHash} disabled={!hash}
-                        className="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 disabled:opacity-40">
+                <button
+                  onClick={copyHash}
+                  disabled={!hash}
+                  className="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 disabled:opacity-40"
+                >
                   Copia impronta
                 </button>
-                <button onClick={submitToServer} disabled={!hash || !file}
-                        className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40">
+                <button
+                  onClick={submitToServer}
+                  disabled={!hash || !file || !paid}
+                  className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40"
+                >
                   ✅ Timbra ora
                 </button>
               </div>
@@ -229,13 +275,11 @@ export default function Page() {
         </div>
       </section>
 
-      {/* PREZZO */}
-
       {/* FAQ */}
       <section id="faq" className="space-y-4">
         <h2 className="text-3xl font-semibold">FAQ</h2>
 
-        {/* NUOVA FAQ: Cosa è una blockchain? */}
+        {/* Cosa è una blockchain? */}
         <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
           <summary className="cursor-pointer font-medium">Cosa è una blockchain?</summary>
           <div className="mt-2 text-sm opacity-90 space-y-2">
