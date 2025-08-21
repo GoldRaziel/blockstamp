@@ -208,13 +208,7 @@ export default function Page() {
               <p className="text-xs opacity-70">
                 Il calcolo avviene nel tuo browser. Il file non lascia mai il tuo dispositivo.
               </p>
-              {/* ⬇️ Avviso mostrato SOLO dopo click TIMBRA senza pagamento */}
-              {showPayNotice && !paid && (
-                <p className="text-sm mt-2 text-amber-300">
-                  💳 <b>Effettua il pagamento</b> per attivare <b>TIMBRA</b>.
-                </p>
-              )}
-            </div>
+              {/* ⬇️ Avviso mostrato SOLO dopo click TIMBRA senza pagamento */}</div>
           </div>
         </div>
       </section>
