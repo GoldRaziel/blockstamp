@@ -1,22 +1,26 @@
-import { NextRequest } from "next/server";
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
-export async function POST(req: NextRequest) {
+export async function POST(req: Request): Promise<Response> {
   const form = await req.formData();
-  const apiBase = process.env.OTS_API_BASE!;
-  const upstream = await fetch(\`\${apiBase}/upgrade\`, { method: "POST", body: form, headers: { Accept: "application/octet-stream" } });
-
-  if (!upstream.ok) {
-    const text = await upstream.text();
-    return Response.json({ ok: false, vpsStatus: upstream.status, error: text }, { status: 502 });
+  const apiBase = process.env.OTS_API_BASE;
+  if (!apiBase) {
+    return new Response("OTS_API_BASE not configured", { status: 500 });
   }
 
-  const buf = Buffer.from(await upstream.arrayBuffer());
+  const upstream = await fetch(`${apiBase}/upgrade`, {
+    method: "POST",
+    body: form,
+    headers: { Accept: "application/octet-stream" },
+  });
+
+  const buf = await upstream.arrayBuffer();
   return new Response(buf, {
-    status: 200,
+    status: upstream.status,
     headers: {
-      "Content-Type": "application/octet-stream",
-      "Content-Disposition": 'attachment; filename="receipt-upgraded.ots"',
-      "Cache-Control": "no-store",
+      "content-type": upstream.headers.get("content-type") || "application/octet-stream",
+      "content-disposition": upstream.headers.get("content-disposition") || "",
+      "cache-control": "no-store",
     },
   });
 }
