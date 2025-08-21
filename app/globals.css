@@ -110,3 +110,41 @@ a[href="/pricing"] {
   bottom: 0;
   transform: translateX(-50%) rotate(-25deg);
 }
+/* === Corner Glow (solo inizio/fine) ================================ */
+/* Contenitore per generare il bagliore come pseudo-elemento */
+.corner-glow { position: relative; isolation: isolate; }
+
+/* Base: dimensioni morbide e blur elegante */
+.corner-glow::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  width: clamp(600px, 70vw, 1200px);
+  height: clamp(280px, 35vh, 520px);
+  filter: blur(32px);
+}
+
+/* Inizio pagina: glow ampio dall'angolo ALTO-DESTRA */
+.corner-glow-top::before {
+  top: 0;
+  right: 0;
+  background: radial-gradient(
+    75% 60% at 100% 0%,
+    rgba(56,189,248,0.35),
+    rgba(56,189,248,0.12) 45%,
+    transparent 70%
+  );
+}
+
+/* Fine pagina: glow invertito dall'angolo BASSO-SINISTRA */
+.corner-glow-bottom::before {
+  bottom: 0;
+  left: 0;
+  background: radial-gradient(
+    75% 60% at 0% 100%,
+    rgba(56,189,248,0.35),
+    rgba(56,189,248,0.12) 45%,
+    transparent 70%
+  );
+}
