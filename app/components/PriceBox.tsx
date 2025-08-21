@@ -7,8 +7,8 @@ export default function PriceBox() {
         Prezzo
       </div>
 
-      <div className="text-3xl font-bold text-white">
-        200 AED <span className="text-lg font-medium">/ file</span>
+      <div className="text-2xl font-semibold text-white">
+        200 AED <span className="text-base font-medium">/ file</span>
       </div>
 
       <div className="text-base font-semibold">Protezione Blockchain</div>
@@ -23,7 +23,7 @@ export default function PriceBox() {
         <li>Assistenza base via email</li>
       </ul>
 
-      {/* Bottone lasciato invariato */}
+      {/* Bottone invariato */}
       <button
         onClick={() => window.location.href="/api/pay"}
         className="w-full px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 font-semibold"
