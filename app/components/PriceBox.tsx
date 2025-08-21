@@ -31,12 +31,30 @@ export default function PriceBox() {
   };
 
   return (
-    <button
-      onClick={handleClick}
-      disabled={loading}
-      className="w-full px-4 py-2 rounded-lg bg-black text-white font-semibold shadow-md hover:opacity-90 disabled:opacity-50 transition"
-    >
-      {loading ? 'Reindirizzamento…' : 'ACQUISTA PROTEZIONE'}
-    </button>
-  );
-}
+  <button
+  onClick={async () => {
+    try {
+      const res = await fetch('/api/pay', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: 500,          // € 5,00 in centesimi (aggiorna se serve)
+          currency: 'eur',
+          description: 'Blockstamp Protection',
+        }),
+      });
+      const data = await res.json().catch(() => ({} as any));
+      if (res.ok && data?.url) {
+        window.location.assign(data.url);
+      } else {
+        alert(data?.error ?? 'Errore pagamento');
+      }
+    } catch (e: any) {
+      alert(e?.message ?? 'Errore di rete');
+    }
+  }}
+  className="w-full px-4 py-2 rounded-lg bg-black text-white font-semibold shadow-md hover:opacity-90 disabled:opacity-50 transition"
+  title="Acquista protezione"
+>
+  ACQUISTA PROTEZIONE
+</button>

@@ -127,10 +127,7 @@ export default function Page() {
             <PriceBox />
 
             {!paid ? (
-              <button
-                onClick={startPayment}
-                className="w-full px-4 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-400 font-semibold"
-              >
+            
                 💳 Paga ora per sbloccare TIMBRA
               
             ) : (
