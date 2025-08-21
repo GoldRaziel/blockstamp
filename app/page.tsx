@@ -94,69 +94,63 @@ export default function Page() {
 
       {/* STAMP and VERIFY */}
       <section id="upload" className="bg-white/5 border border-white/10 rounded-2xl p-6">
-        <h2 className="text-xl font-bold tracking-wide mb-4 text-center">STAMP and VERIFY</h2>
-        <div className="grid md:grid-cols-2 gap-6 items-start">
-          <div className="space-y-3">
-            <label className="block text-sm opacity-80">Seleziona file</label>
-            <input
-              type="file"
-              className="block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0
-                         file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100"
-              onChange={(e) => handleFile(e.target.files?.[0] || null)}
-            />
+  <h2 className="text-xl font-bold tracking-wide mb-4 text-center">STAMP and VERIFY</h2>
+  <div className="grid md:grid-cols-2 gap-6 items-start">
+    {/* Colonna SINISTRA: PREZZO */}
+    <div className="space-y-3">
+      <PriceBox />
+    </div>
 
-            {/* PREZZO subito sotto all’upload */}
-            <PriceBox />
-
-            {busy && <div className="text-sm opacity-80">Calcolo in corso…</div>}
-            {error && <div className="text-sm text-red-400">{error}</div>}
-            {file && !busy && (
-              <div className="text-sm opacity-80">
-                <div>
-                  <b>Nome:</b> {file.name}
-                </div>
-                <div>
-                  <b>Dimensione:</b> {file.size.toLocaleString()} byte
-                </div>
-              </div>
-            )}
+    {/* Colonna DESTRA: INPUT SOPRA, IMPRONTA SOTTO */}
+    <div className="space-y-4">
+      <div className="space-y-2">
+        <label className="block text-sm opacity-80">Seleziona file</label>
+        <input
+          type="file"
+          className="block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0
+                     file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100"
+          onChange={(e) => handleFile(e.target.files?.[0] || null)}
+        />
+        {busy && <div className="text-sm opacity-80">Calcolo in corso…</div>}
+        {error && <div className="text-sm text-red-400">{error}</div>}
+        {file && !busy && (
+          <div className="text-sm opacity-80">
+            <div><b>Nome:</b> {file.name}</div>
+            <div><b>Dimensione:</b> {file.size.toLocaleString()} byte</div>
           </div>
+        )}
+      </div>
 
-          <div className="space-y-3">
-            <label className="block text-sm opacity-80">Impronta del file</label>
-            <textarea
-              className="w-full h-32 rounded-lg bg-black/40 border border-white/10 p-3 text-sm font-mono"
-              readOnly
-              value={hash}
-              placeholder="L'impronta verrà mostrata qui…"
-            />
-            <div className="flex flex-wrap gap-3">
-              <button
-                onClick={copyHash}
-                disabled={!hash}
-                className="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 disabled:opacity-40"
-              >
-                Copia impronta
-              </button>
-              <button
-                onClick={submitToServer}
-                disabled={!hash || !file}
-                className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40"
-              >
-                ✅ Timbra ora
-              </button>
-            </div>
-            {serverHash && (
-              <p className="text-xs mt-3 text-green-400">
-                ✅ Hash ricevuto dal server: <code className="break-all">{serverHash}</code>
-              </p>
-            )}
-            <p className="text-xs opacity-70">
-              Il calcolo avviene nel tuo browser. Il file non lascia mai il tuo dispositivo.
-            </p>
-          </div>
+      <div className="space-y-2">
+        <label className="block text-sm opacity-80">Impronta del file</label>
+        <textarea
+          className="w-full h-32 rounded-lg bg-black/40 border border-white/10 p-3 text-sm font-mono"
+          readOnly
+          value={hash}
+          placeholder="L'impronta verrà mostrata qui…"
+        />
+        <div className="flex flex-wrap gap-3">
+          <button onClick={copyHash} disabled={!hash}
+            className="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 disabled:opacity-40">
+            Copia impronta
+          </button>
+          <button onClick={submitToServer} disabled={!hash || !file}
+            className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40">
+            ✅ Timbra ora
+          </button>
         </div>
-      </section>
+        {serverHash && (
+          <p className="text-xs mt-1 text-green-400">
+            ✅ Hash ricevuto dal server: <code className="break-all">{serverHash}</code>
+          </p>
+        )}
+        <p className="text-xs opacity-70">
+          Il calcolo avviene nel tuo browser. Il file non lascia mai il tuo dispositivo.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* PROCEDURA */}
       <section id="procedura" className="space-y-5">
