@@ -57,3 +57,36 @@ a[href="/pricing"] {
     filter: none !important; /* per drop-shadow CSS */
   }
 }
+
+/* === Glow angolare solo inizio/fine sito === */
+.glow-band {
+  position: relative;
+  isolation: isolate;
+}
+
+.glow-band::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  transform: translateX(-50%) rotate(25deg); /* glow angolato */
+  width: min(1200px, 90vw);
+  height: 180px;
+  pointer-events: none;
+  background: radial-gradient(
+    60% 140px at 50% 0%,
+    rgba(56, 189, 248, 0.25),   /* azzurro sky-400 */
+    rgba(56, 189, 248, 0.1) 40%,
+    transparent 70%
+  );
+  filter: blur(18px);
+}
+
+.glow-top { padding-top: 24px; }   /* luce dall’alto */
+
+.glow-bottom { padding-bottom: 24px; }
+.glow-bottom::before {
+  top: auto;
+  bottom: 0;
+  transform: translateX(-50%) rotate(-25deg); /* invertito e angolato dal basso */
+}
