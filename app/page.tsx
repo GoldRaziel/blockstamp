@@ -148,7 +148,7 @@ export default function Page() {
         <div className="grid md:grid-cols-2 gap-6 items-start">
           {/* Colonna SINISTRA: PREZZO + PAGAMENTO */}
           <div className="space-y-3">
-            <PriceBox />
+            <PriceBox onPay={startPayment} />
 
             {/* ⛔️ RIMOSSO l’avviso fisso "Paga ora..." qui.
                 L’avviso appare solo quando cliccano TIMBRA senza aver pagato (vedi sotto). */}

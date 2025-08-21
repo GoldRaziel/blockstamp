@@ -1,14 +1,38 @@
 "use client";
 
-export default function PriceBox() {
+type Props = {
+  onPay?: () => void;
+};
+
+export default function PriceBox({ onPay }: Props) {
+  async function defaultStartPayment() {
+    try {
+      const res = await fetch("/api/pay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: 500,           // minor units (es. 5.00 EUR)
+          currency: "eur",
+          description: "Blockstamp Protection",
+        }),
+      });
+      const json = await res.json().catch(() => ({} as any));
+      if (!res.ok) throw new Error(json.error || "Errore pagamento");
+      if (json.url) window.location.href = json.url;
+    } catch (e) {
+      console.error(e);
+      // opzionale: potresti mostrare un toast qui
+    }
+  }
+
   return (
     <div className="bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4">
       <div className="text-xs font-semibold uppercase tracking-wide text-sky-300">
-        Prezzo
+        PREZZO
       </div>
 
-      <div className="text-2xl font-semibold text-white">
-        200 AED <span className="text-base font-medium">/ file</span>
+      <div className="text-3xl font-bold text-white">
+        200 AED <span className="text-lg text-sky-100 font-medium">/ file</span>
       </div>
 
       <div className="text-base font-semibold">Protezione Blockchain</div>
@@ -23,9 +47,9 @@ export default function PriceBox() {
         <li>Assistenza base via email</li>
       </ul>
 
-      {/* Bottone invariato */}
+      {/* Bottone invariato per stile; onClick torna a fare la POST corretta */}
       <button
-        onClick={() => window.location.href="/api/pay"}
+        onClick={() => (onPay ? onPay() : defaultStartPayment())}
         className="w-full px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 font-semibold"
       >
         Acquista protezione
