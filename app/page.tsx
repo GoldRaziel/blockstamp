@@ -103,11 +103,7 @@ export default function Page() {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const res = await fetch("/api/submit", { method: "POST", credentials: "include", cache: "no-store",
-        cache: "no-store",
-        credentials: "include",
-        body: formData,
-      });
+      const res = await fetch("/api/submit", { method: "POST", credentials: "include", cache: "no-store", body: formData });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Errore durante l'invio.");
       setServerHash(json.hash);
