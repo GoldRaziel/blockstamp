@@ -132,7 +132,7 @@ export default function Page() {
                 className="w-full px-4 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-400 font-semibold"
               >
                 💳 Paga ora per sbloccare TIMBRA
-              </button>
+              
             ) : (
               <p className="text-sm text-green-400 font-medium">
                 ✅ Pagamento effettuato, TIMBRA attivo

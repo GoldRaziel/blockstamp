@@ -1,30 +1,42 @@
-"use client";
-import React from "react";
+'use client';
+
+import { useState } from 'react';
 
 export default function PriceBox() {
+  const [loading, setLoading] = useState(false);
+
+  const handleClick = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/pay', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: 500, // esempio: 5.00 EUR in centesimi
+          currency: 'eur',
+          description: 'Blockstamp Protection',
+        }),
+      });
+      const data = await res.json().catch(() => ({} as any));
+      if (res.ok && data?.url) {
+        window.location.assign(data.url);
+      } else {
+        alert(data?.error ?? 'Errore pagamento');
+      }
+    } catch (e: any) {
+      alert(e?.message ?? 'Errore di rete');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="mt-3 rounded-lg border border-sky-300/50 bg-sky-900/20 p-4 text-sky-100">
-      <div className="text-xs uppercase tracking-widest text-sky-300">Prezzo</div>
-      <div className="mt-1 text-2xl font-semibold">200 AED / file</div>
-
-      <div className="mt-3 text-base font-semibold text-white">Protezione Blockchain</div>
-      <p className="mt-1 text-sm opacity-90">
-        Ancoraggio dell’impronta del tuo file su Bitcoin con guida alla verifica.
-      </p>
-
-      <ul className="mt-3 list-disc pl-5 space-y-1 text-sm opacity-90">
-        <li>Impronta calcolata in locale (privacy by design)</li>
-        <li>Ancoraggio on-chain con riferimento pubblico</li>
-        <li>Documento di prova e istruzioni</li>
-        <li>Assistenza base via email</li>
-      </ul>
-
-      <a
-        href="#upload"
-        className="mt-4 inline-block px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500"
-      >
-        Acquista protezione
-      </a>
-    </div>
+    <button
+      onClick={handleClick}
+      disabled={loading}
+      className="w-full px-4 py-2 rounded-lg bg-black text-white font-semibold shadow-md hover:opacity-90 disabled:opacity-50 transition"
+    >
+      {loading ? 'Reindirizzamento…' : 'ACQUISTA PROTEZIONE'}
+    </button>
   );
 }
