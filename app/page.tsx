@@ -18,7 +18,8 @@ export default function Page() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string>("");
   const [serverHash, setServerHash] = useState<string>("");
-  const [paid, setPaid] = useState(false); // ⬅️ sblocco TIMBRA dopo pagamento
+  const [paid, setPaid] = useState(false);
+  const [sessionReady, setSessionReady] = useState(false); // ⬅️ sblocco TIMBRA dopo pagamento
   const [showPayNotice, setShowPayNotice] = useState(false); // ⬅️ avviso SOLO su click TIMBRA senza pagamento
 
   // 👉 verifica stato pagamento (cookie httpOnly lato server)
@@ -186,7 +187,7 @@ export default function Page() {
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={copyHash}
-                  disabled={!hash}
+                  disabled={!sessionReady || !paid || !hash || !file}
                   className="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 disabled:opacity-40"
                 >
                   Copia impronta
@@ -194,11 +195,7 @@ export default function Page() {
                 <button
   onClick={submitToServer}
   disabled={!paid || !hash || !file}
-  className={`px-4 py-2 rounded-lg ${
-    paid
-      ? "bg-emerald-600 hover:bg-emerald-500"
-      : "bg-gray-400 cursor-not-allowed"
-  } disabled:opacity-40`}
+  className={`px-4 py-2 rounded-lg  disabled:opacity-40`}
 >
   ✅ Timbra ora
 </button>
