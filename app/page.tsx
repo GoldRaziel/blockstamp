@@ -117,7 +117,7 @@ export default function Page() {
   }
 
   return (
-    }
+    
               {error && <div className="text-sm text-red-400">{error}</div>}
               {file && !busy && (
                 <div className="text-sm opacity-80">
