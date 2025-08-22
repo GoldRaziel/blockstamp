@@ -2,12 +2,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
-// API protette da paywall (incluso /api/submit)
 const PROTECTED = [
   /^\/api\/stamp/,
   /^\/api\/upgrade/,
   /^\/api\/verify/,
-  /^\/api\/submit/
+
 ];
 
 export async function middleware(req: NextRequest) {
