@@ -192,13 +192,7 @@ export default function Page() {
                 >
                   Copia impronta
                 </button>
-                <button
-  onClick={submitToServer}
-  disabled={!paid || !hash || !file}
-  className={`px-4 py-2 rounded-lg  disabled:opacity-40`}
->
-  ✅ Timbra ora
-</button>
+                <a href="/pay" className="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400">💳 Attiva TIMBRA</a>
 
               </div>
               {serverHash && (
