@@ -20,16 +20,6 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const year = new Date().getFullYear();
-
-  // Modifica qui l’elenco delle voci; puoi commentare/rimuovere PREZZO senza creare doppi separatori
-  const navLinks: Array<{ href: string; label: string }> = [
-    { href: "/#procedura", label: "PROCEDURA" },
-    { href: "/#guida", label: "GUIDA" },
-    // { href: "/#pricing", label: "PREZZO" }, // <- se la pagina/ancora non esiste più, lasciala commentata
-    { href: "/#faq", label: "FAQ" },
-    { href: "/contatti", label: "CONTATTI" },
-  ];
-
   return (
     <html lang="it">
       <body>
@@ -48,24 +38,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 />
               </a>
             </div>
-
-            <nav className="text-sm flex items-center flex-wrap gap-y-1">
-              <ul className="flex items-center flex-wrap">
-                {navLinks.map((link, i) => (
-                  <li key={link.href} className="flex items-center">
-                    {i > 0 && <span className="opacity-50 mx-3">•</span>}
-                    <a className="hover:underline whitespace-nowrap" href={link.href}>
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+            <nav className="text-sm flex items-center flex-wrap gap-x-3 gap-y-1">
+              <a className="hover:underline whitespace-nowrap" href="/#procedura">PROCEDURA</a>
+              <span className="opacity-50">•</span>
+              <a className="hover:underline whitespace-nowrap" href="/#guida">GUIDA</a>
+              <span className="opacity-50">•</span>
+              <a className="hover:underline whitespace-nowrap" href="/#pricing">PREZZO</a>
+              <span className="opacity-50">•</span>
+              <a className="hover:underline whitespace-nowrap" href="/#faq">FAQ</a>
+              <span className="opacity-50">•</span>
+              <a className="hover:underline whitespace-nowrap" href="/contatti">CONTATTI</a>
             </nav>
           </div>
         </header>
-
         <main className="container mx-auto px-4 py-10">{children}</main>
-
         <footer className="border-t border-white/10 mt-16">
           <div className="container mx-auto px-4 py-6 text-sm opacity-80">
             © {year} BLOCKSTAMP — Proof of Existence

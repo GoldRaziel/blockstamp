@@ -1,27 +1,32 @@
+import { NextRequest, NextResponse } from "next/server";
 export const runtime = "nodejs";
-// opzionale: evita caching di Netlify/Next su route
-export const dynamic = "force-dynamic";
+const OTS_BASE = process.env.OTS_BASE_URL!;
 
-export async function POST(req: Request): Promise<Response> {
-  const form = await req.formData();
-  const apiBase = process.env.OTS_API_BASE;
-  if (!apiBase) {
-    return new Response("OTS_API_BASE not configured", { status: 500 });
+export async function POST(req: NextRequest) {
+  try {
+    const ct = req.headers.get("content-type") || "";
+    if (!ct.includes("multipart/form-data")) {
+      return NextResponse.json({ error: "Usa multipart/form-data con campo 'file'." }, { status: 415 });
+    }
+    const form = await req.formData();
+    const file = form.get("file");
+    if (!file || !(file instanceof Blob)) return NextResponse.json({ error: "Nessun file ricevuto." }, { status: 400 });
+
+    const forward = new FormData();
+    forward.append("file", file, (file as any).name || "upload.zip");
+
+    const res = await fetch(`${OTS_BASE}/stamp`, { method: "POST", body: forward });
+    if (!res.ok) return NextResponse.json({ error: await res.text() || "Errore OTS /stamp" }, { status: res.status });
+
+    const buf = Buffer.from(await res.arrayBuffer());
+    return new NextResponse(buf, {
+      status: 200,
+      headers: {
+        "Content-Type": "application/octet-stream",
+        "Content-Disposition": `attachment; filename="timestamp.ots"`
+      }
+    });
+  } catch (e:any) {
+    return NextResponse.json({ error: e.message || "Errore interno" }, { status: 500 });
   }
-
-  const upstream = await fetch(`${apiBase}/stamp`, {
-    method: "POST",
-    body: form,
-  });
-
-  // Pass-through binario (es. .ots)
-  const buf = await upstream.arrayBuffer();
-  return new Response(buf, {
-    status: upstream.status,
-    headers: {
-      "content-type": upstream.headers.get("content-type") || "application/octet-stream",
-      "content-disposition": upstream.headers.get("content-disposition") || "",
-      "cache-control": "no-store",
-    },
-  });
 }
