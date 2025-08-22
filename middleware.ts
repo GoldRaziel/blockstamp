@@ -1,34 +1,22 @@
-// middleware.ts
-import { NextRequest, NextResponse } from "next/server";
-import { jwtVerify } from "jose";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-const PROTECTED = [
-  /^\/api\/stamp/,
-  /^\/api\/upgrade/,
-  /^\/api\/verify/,
+const PROTECTED_PATHS = ["/timbra", "/api/stamp", "/api/verify", "/api/upgrade"];
 
-];
-
-export async function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
-  const isProtected = PROTECTED.some((rx) => rx.test(pathname));
-  if (!isProtected) return NextResponse.next();
-
-  const token = req.cookies.get("stamp_auth")?.value;
-  if (!token) {
-    return NextResponse.json({ error: "Pagamento richiesto" }, { status: 402 });
+export function middleware(req: NextRequest) {
+  const { pathname, searchParams } = req.nextUrl;
+  if (PROTECTED_PATHS.some(p => pathname.startsWith(p))) {
+    const paid = req.cookies.get("paid")?.value === "1";
+    if (!paid) {
+      const url = req.nextUrl.clone();
+      url.pathname = "/";
+      url.searchParams.set("need_payment", "1");
+      return NextResponse.redirect(url);
+    }
   }
-
-  try {
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET || "");
-    await jwtVerify(token, secret); // Edge-safe
-    return NextResponse.next();
-  } catch {
-    return NextResponse.json({ error: "Sessione non valida" }, { status: 401 });
-  }
+  return NextResponse.next();
 }
 
-// Applica il middleware solo alle API
 export const config = {
-  matcher: ["/api/:path*"],
+  matcher: ["/timbra/:path*", "/api/:path*"],
 };
