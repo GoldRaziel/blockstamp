@@ -117,7 +117,52 @@ export default function Page() {
   }
 
   return (
-    }
+    <div className="space-y-16">
+      <div className="beam beam-hero"></div>
+      {/* HERO */}
+      <section className="hero text-center space-y-6">
+        <h1 className="text-4xl md:text-5xl font-semibold leading-tight">
+          <span className="text-white">Proteggi la Tua </span>
+          <span className="text-sky-400">Idea</span>
+          <br />
+          <span className="text-white">nella </span>
+          <span className="text-sky-400">Blockchain</span>
+          <span className="text-sky-400 text-2xl align-middle"> • </span>
+          <span className="text-white">Bitcoin</span>
+        </h1>
+        <p className="text-lg opacity-90 max-w-3xl mx-auto">
+          Il modo più sicuro e veloce al mondo per registrare e proteggere i tuoi diritti
+          intellettuali.
+        </p>
+      </section>
+
+      {/* STAMP and VERIFY */}
+      <section id="upload" className="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <h2 className="text-xl font-bold tracking-wide mb-4 text-center">STAMP and VERIFY</h2>
+        <div className="grid md:grid-cols-2 gap-6 items-start">
+          {/* Colonna SINISTRA: PREZZO + PAGAMENTO */}
+          <div className="space-y-3">
+            <PriceBox onPay={startPayment} />
+
+            {/* ⛔️ RIMOSSO l’avviso fisso "Paga ora..." qui.
+                L’avviso appare solo quando cliccano TIMBRA senza aver pagato (vedi sotto). */}
+            {paid && (
+              <p className="text-sm text-green-400 font-medium">
+              </p>
+            )}
+          </div>
+
+          {/* Colonna DESTRA: INPUT SOPRA, IMPRONTA SOTTO */}
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <label className="block text-sm opacity-80">Seleziona file</label>
+              <input
+                type="file"
+                className="block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0
+                           file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100"
+                onChange={(e) => handleFile(e.target.files?.[0] || null)}
+              />
+              {busy && <div className="text-sm opacity-80">Calcolo in corso…</div>}
               {error && <div className="text-sm text-red-400">{error}</div>}
               {file && !busy && (
                 <div className="text-sm opacity-80">
