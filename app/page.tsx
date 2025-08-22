@@ -229,22 +229,7 @@ export default function Page() {
       </section>
 
       {/* PERCHÉ BLOCKCHAIN */}
-      <section id="why" className="space-y-5">
-        <h2 className="text-3xl font-semibold">Perché Blockchain</h2>
-        <ul className="list-disc pl-6 space-y-2 text-sm opacity-90">
-          <li><b>Immutabilità:</b> una volta registrata, la prova non può essere alterata.</li>
-          <li><b>Prova pubblica:</b> riferimento verificabile da chiunque, ovunque.</li>
-          <li><b>Privacy:</b> registriamo solo l’impronta; il file resta tuo.</li>
-          <li><b>Nessuna intermediazione:</b> prova indipendente, senza fiducia cieca in terzi.</li>
-          <li><b>Validità globale:</b> una registrazione unica, riconoscibile ovunque.</li>
-        </ul>
-        <div className="text-xs opacity-70 bg-white/5 border border-white/10 rounded-2xl p-4">
-          <b>Nota legale:</b> questa soluzione fornisce una <i>prova tecnica di esistenza e integrità</i>.
-          Non sostituisce tutti gli atti o le funzioni del notaio. Valuta il contesto d’uso con il tuo
-          consulente.
-        </div>
-      </section>
-
+      
       {/* FAQ */}
       <section id="faq" className="space-y-4">
         <h2 className="text-3xl font-semibold">FAQ</h2>
