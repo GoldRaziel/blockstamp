@@ -48,12 +48,7 @@ export default function PriceBox({ onPay }: Props) {
       </ul>
 
       {/* Bottone invariato per stile; onClick torna a fare la POST corretta */}
-      <button
-        onClick={() => (onPay ? onPay() : defaultStartPayment())}
-        className="w-full px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 font-semibold"
-      >
-        Acquista protezione
-      </button>
+      
     </div>
   );
 }
