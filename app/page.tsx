@@ -152,16 +152,61 @@ export default function Page() {
             )}
           </div>
 
-<div className="space-y-3">
-  <h2 className="text-xl font-semibold">Perché Blockchain</h2>
-  <ul className="list-disc pl-5 space-y-2">
-    <li><b>Immutabilità</b>: una volta registrata, la prova non può essere alterata.</li>
-    <li><b>Prova pubblica</b>: riferimento verificabile da chiunque, ovunque.</li>
-    <li><b>Privacy</b>: registriamo solo l’impronta; il file resta tuo.</li>
-    <li><b>Nessuna intermediazione</b>: prova indipendente, senza fiducia cieca in terzi.</li>
-    <li><b>Validità globale</b>: una registrazione unica, riconoscibile ovunque.</li>
-  </ul>
-</div>
+          {/* Colonna DESTRA: INPUT SOPRA, IMPRONTA SOTTO */}
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <label className="block text-sm opacity-80">Seleziona file</label>
+              <input
+                type="file"
+                className="block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0
+                           file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100"
+                onChange={(e) => handleFile(e.target.files?.[0] || null)}
+              />
+              {busy && <div className="text-sm opacity-80">Calcolo in corso…</div>}
+              {error && <div className="text-sm text-red-400">{error}</div>}
+              {file && !busy && (
+                <div className="text-sm opacity-80">
+                  <div>
+                    <b>Nome:</b> {file.name}
+                  </div>
+                  <div>
+                    <b>Dimensione:</b> {file.size.toLocaleString()} byte
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm opacity-80">Impronta del file</label>
+              <textarea
+                className="w-full h-32 rounded-lg bg-black/40 border border-white/10 p-3 text-sm font-mono"
+                readOnly
+                value={hash}
+                placeholder="L'impronta verrà mostrata qui…"
+              />
+              <div className="flex flex-wrap gap-3">
+                <button
+                  onClick={copyHash}
+                  disabled={!sessionReady || !paid || !hash || !file}
+                  className="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 disabled:opacity-40"
+                >
+                  Copia impronta
+                </button>
+                <a href="/pay" className="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400">💳 Attiva TIMBRA</a>
+
+              </div>
+              {serverHash && (
+                <p className="text-xs mt-1 text-green-400">
+                  ✅ Hash ricevuto dal server: <code className="break-all">{serverHash}</code>
+                </p>
+              )}
+              <p className="text-xs opacity-70">
+                Il calcolo avviene nel tuo browser. Il file non lascia mai il tuo dispositivo.
+              </p>
+              {/* ⬇️ Avviso mostrato SOLO dopo click TIMBRA senza pagamento */}</div>
+          </div>
+        </div>
+      </section>
 
       {/* PROCEDURA */}
       <section id="procedura" className="space-y-5">
