@@ -141,11 +141,28 @@ export default function Page() {
       </section>
 
       {/* UPLOAD (ridotto: solo PriceBox) */}
-      <section id="upload" className="bg-white/5 border border-white/10 rounded-2xl p-6">
-        <div className="space-y-3">
-          <PriceBox onPay={startPayment} />
-        </div>
-      </section>
+      
+<section id="upload" className="bg-white/5 border border-white/10 rounded-2xl p-6">
+  <div className="grid md:grid-cols-2 gap-6 items-start">
+    {/* Colonna sinistra: pagamento */}
+    <div className="space-y-3">
+      <PriceBox onPay={startPayment} />
+    </div>
+
+    {/* Colonna destra: Perché Blockchain */}
+    <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+      <h3 className="text-xl font-semibold mb-3">Perché Blockchain</h3>
+      <ul className="list-disc pl-6 space-y-2 text-sm opacity-90">
+        <li><b>Immutabilità:</b> una volta registrata, la prova non può essere alterata.</li>
+        <li><b>Prova pubblica:</b> riferimento verificabile da chiunque, ovunque.</li>
+        <li><b>Privacy:</b> registriamo solo l’impronta; il file resta tuo.</li>
+        <li><b>Nessuna intermediazione:</b> prova indipendente, senza fiducia cieca in terzi.</li>
+        <li><b>Validità globale:</b> una registrazione unica, riconoscibile ovunque.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 
       {/* PROCEDURA */}
       <section id="procedura" className="space-y-5">
