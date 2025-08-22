@@ -192,12 +192,17 @@ export default function Page() {
                   Copia impronta
                 </button>
                 <button
-                  onClick={submitToServer}
-                  disabled={!hash || !file}
-                  className={`px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 ${!paid ? " hidden" : ""}`}
-                >
-                  ✅ Timbra ora
-                </button>
+  onClick={submitToServer}
+  disabled={!paid || !hash || !file}
+  className={`px-4 py-2 rounded-lg ${
+    paid
+      ? "bg-emerald-600 hover:bg-emerald-500"
+      : "bg-gray-400 cursor-not-allowed"
+  } disabled:opacity-40`}
+>
+  ✅ Timbra ora
+</button>
+
               </div>
               {serverHash && (
                 <p className="text-xs mt-1 text-green-400">
