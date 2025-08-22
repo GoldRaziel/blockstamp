@@ -16,22 +16,74 @@ export default function Page() {
   const [file, setFile] = useState<File | null>(null);
   const [hash, setHash] = useState<string>("");
   const [busy, setBusy] = useState(false);
-const [checked, setChecked] = useState(false);
-const [showPayNotice, setShowPayNotice] = useState(false);
   const [error, setError] = useState<string>("");
   const [serverHash, setServerHash] = useState<string>("");
   const [paid, setPaid] = useState(false); // ⬅️ sblocco TIMBRA dopo pagamento
-  const [showPayNotice, setShowPayNotice] = useState(false);
+  const [showPayNotice, setShowPayNotice] = useState(false); // ⬅️ avviso SOLO su click TIMBRA senza pagamento
 
   // 👉 verifica stato pagamento (cookie httpOnly lato server)
   useEffect(() => {
     (async () => {
       try {
-        const r = await fetch("/api/session",{cache:"no-store"})
-      .then(r=>r.ok?r.json():({paid:false}))
-      .then(d=>setPaid(!!d.paid))
-      .catch(()=>setPaid(false))
-      .finally(()=>setChecked(true));
+        const r = await fetch("/api/session", { cache: "no-store", credentials: "include" });
+        const j = await r.json();
+        setPaid(!!j.paid);
+      } catch {
+        /* ignore */
+      }
+    })();
+  }, []);
+
+  // Se risulta pagato, nascondi l’avviso
+  useEffect(() => {
+    if (paid) setShowPayNotice(false);
+  }, [paid]);
+
+  async function handleFile(f?: File | null) {
+    if (!f) return;
+    setBusy(true);
+    setError("");
+    setServerHash("");
+    try {
+      const buf = await f.arrayBuffer();
+      const digest = await crypto.subtle.digest("SHA-256", buf);
+      setHash(toHex(digest));
+      setFile(f);
+    } catch (e: any) {
+      console.error(e);
+      setError(e?.message || "Errore durante il calcolo dell'impronta.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function copyHash() {
+    if (!hash) return;
+    try {
+      await navigator.clipboard.writeText(hash);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = hash;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    }
+  }
+
+  // 👉 crea sessione Stripe Checkout e reindirizza (se vuoi usarlo altrove)
+  async function startPayment() {
+    try {
+      const res = await fetch("/api/pay", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: 500, // es. 5.00 (minor units)
+          currency: "eur",
+          description: "Blockstamp Protection",
+        }),
+      });
       const json = await res.json().catch(() => ({} as any));
       if (!res.ok) throw new Error(json.error || "Errore pagamento");
       if (json.url) window.location.href = json.url;
@@ -95,9 +147,8 @@ const [showPayNotice, setShowPayNotice] = useState(false);
                 L’avviso appare solo quando cliccano TIMBRA senza aver pagato (vedi sotto). */}
             {paid && (
               <p className="text-sm text-green-400 font-medium">
-{checked && paid && (
                 ✅ Pagamento effettuato, TIMBRA attivo
-)}              </p>
+              </p>
             )}
           </div>
 
@@ -156,7 +207,6 @@ const [showPayNotice, setShowPayNotice] = useState(false);
               )}
               <p className="text-xs opacity-70">
                 Il calcolo avviene nel tuo browser. Il file non lascia mai il tuo dispositivo.
-{!paid Il calcolo avviene nel tuo browser. Il file non lascia mai il tuo dispositivo.Il calcolo avviene nel tuo browser. Il file non lascia mai il tuo dispositivo. showPayNotice Il calcolo avviene nel tuo browser. Il file non lascia mai il tuo dispositivo.Il calcolo avviene nel tuo browser. Il file non lascia mai il tuo dispositivo. (<p className="mt-2 text-sm text-yellow-500">Effettua il pagamento per attivare TIMBRA.</p>)}
               </p>
               {/* ⬇️ Avviso mostrato SOLO dopo click TIMBRA senza pagamento */}</div>
           </div>
