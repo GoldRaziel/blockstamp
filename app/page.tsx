@@ -147,7 +147,6 @@ export default function Page() {
                 L’avviso appare solo quando cliccano TIMBRA senza aver pagato (vedi sotto). */}
             {paid && (
               <p className="text-sm text-green-400 font-medium">
-                ✅ Pagamento effettuato, TIMBRA attivo
               </p>
             )}
           </div>
