@@ -163,7 +163,6 @@ export default function Page() {
   </ul>
 </div>
 
-
       {/* PROCEDURA */}
       <section id="procedura" className="space-y-5">
         <h2 className="text-3xl font-semibold">Procedura</h2>
