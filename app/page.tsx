@@ -141,10 +141,6 @@ export default function Page() {
 <section id="upload" className="bg-white/5 border border-white/10 rounded-2xl p-6">
   <div className="space-y-3">
     <PriceBox onPay={startPayment} />
-    {paid && (
-      <p className="text-sm text-green-400 font-medium">✅ Pagamento attivo</p>
-    )}
-  </div>
 </section>
 
 
