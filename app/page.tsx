@@ -155,7 +155,9 @@ export default function Page() {
     
 <div className="space-y-6">
   
-<h3 className="mt-8 text-xl font-semibold">Perché Blockchain</h3>
+
+<h3 className="mt-6 text-xl font-semibold">Perché Blockchain</h3>
+
 
   <ul className="list-disc pl-6 space-y-2 text-sm opacity-90">
     <li><b>Immutabilità:</b> una volta registrata, la prova non può essere alterata.</li>
