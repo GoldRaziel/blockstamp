@@ -19,10 +19,10 @@ export default function Page() {
   const [error, setError] = useState<string>("");
   const [serverHash, setServerHash] = useState<string>("");
   const [paid, setPaid] = useState(false);
-  const [sessionReady, setSessionReady] = useState(false); // ⬅️ sblocco TIMBRA dopo pagamento
-  const [showPayNotice, setShowPayNotice] = useState(false); // ⬅️ avviso SOLO su click TIMBRA senza pagamento
+  const [sessionReady, setSessionReady] = useState(false);
+  const [showPayNotice, setShowPayNotice] = useState(false);
 
-  // 👉 verifica stato pagamento (cookie httpOnly lato server)
+  // verifica stato pagamento
   useEffect(() => {
     (async () => {
       try {
@@ -31,11 +31,12 @@ export default function Page() {
         setPaid(!!j.paid);
       } catch {
         /* ignore */
+      } finally {
+        setSessionReady(true);
       }
     })();
   }, []);
 
-  // Se risulta pagato, nascondi l’avviso
   useEffect(() => {
     if (paid) setShowPayNotice(false);
   }, [paid]);
@@ -72,7 +73,6 @@ export default function Page() {
     }
   }
 
-  // 👉 crea sessione Stripe Checkout e reindirizza (se vuoi usarlo altrove)
   async function startPayment() {
     try {
       const res = await fetch("/api/pay", {
@@ -80,7 +80,7 @@ export default function Page() {
         credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          amount: 500, // es. 5.00 (minor units)
+          amount: 500,
           currency: "eur",
           description: "Blockstamp Protection",
         }),
@@ -95,16 +95,19 @@ export default function Page() {
   }
 
   async function submitToServer() {
-    // Blocco: serve hash e file
     if (!hash || !file) return;
-
-    // Se non hai pagato, mostra SOLO ora l’avviso e non inviare
     setBusy(true);
     setError("");
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const res = await fetch("/api/submit",{ method:"POST", credentials:"include", cache:"no-store", headers:{ "X-Paid": paid ? "1" : "0" }, body: formData });
+      const res = await fetch("/api/submit", {
+        method: "POST",
+        credentials: "include",
+        cache: "no-store",
+        headers: { "X-Paid": paid ? "1" : "0" },
+        body: formData,
+      });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Errore durante l'invio.");
       setServerHash(json.hash);
@@ -119,6 +122,7 @@ export default function Page() {
   return (
     <div className="space-y-16">
       <div className="beam beam-hero"></div>
+
       {/* HERO */}
       <section className="hero text-center space-y-6">
         <h1 className="text-4xl md:text-5xl font-semibold leading-tight">
@@ -136,13 +140,12 @@ export default function Page() {
         </p>
       </section>
 
-      {/* STAMP and VERIFY */}
-      
-<section id="upload" className="bg-white/5 border border-white/10 rounded-2xl p-6">
-  <div className="space-y-3">
-    <PriceBox onPay={startPayment} />
-</section>
-
+      {/* UPLOAD (ridotto: solo PriceBox) */}
+      <section id="upload" className="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <div className="space-y-3">
+          <PriceBox onPay={startPayment} />
+        </div>
+      </section>
 
       {/* PROCEDURA */}
       <section id="procedura" className="space-y-5">
@@ -295,4 +298,3 @@ export default function Page() {
     </div>
   );
 }
-
