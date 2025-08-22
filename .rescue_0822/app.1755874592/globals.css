@@ -1,0 +1,209 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0b0f14;
+  --fg: #e2f1ff;
+}
+
+html, body { height: 100%; }
+
+/* Scroll fluido per anchor (es. #procedura, #guida) */
+html { scroll-behavior: smooth; }
+
+/* Niente glow di sfondo: rimuove il radial-gradient */
+body {
+  background: var(--bg) !important;
+  color: var(--fg);
+}
+
+a { color: #7dd3fc; }
+
+code {
+  background: #0b1220;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+.container { max-width: 1100px; }
+
+/* (Mobile già piatto: opzionale, teniamo per sicurezza) */
+@media (max-width: 991px) {
+  body { background: var(--bg) !important; }
+}
+
+/* Nascondi voce navbar "Prezzo" ovunque punti alla sezione pricing */
+nav a[href="#pricing"],
+nav a[href="/#pricing"],
+nav a[href="/pricing"],
+a[href="#pricing"],
+a[href="/#pricing"],
+a[href="/pricing"] {
+  display: none !important;
+}
+
+/* --- HARD OVERRIDE ANTI-GLOW ---
+   Mettiamo gli override dentro @layer utilities così vengono emessi
+   dopo le utility Tailwind e prevalgono realmente. */
+@layer utilities {
+  /* stoppa text-shadow ovunque */
+  * { text-shadow: none !important; }
+
+  /* stoppa box/drop shadow generati da utility o classi personalizzate */
+  .shadow, .drop-shadow,
+  [class*="shadow"], [class*="drop-shadow"] {
+    box-shadow: none !important;
+    filter: none !important; /* per drop-shadow CSS */
+  }
+}
+
+.glow-top { padding-top: 24px; }   /* luce dall’alto */
+
+.glow-bottom { padding-bottom: 24px; }
+.glow-bottom::before {
+  top: auto;
+  bottom: 0;
+  transform: translateX(-50%) rotate(-25deg); /* invertito e angolato dal basso */
+}
+
+/* --- Glow angolare: fix visibilità e intensità leggerissima --- */
+.glow-band { position: relative; isolation: isolate; }
+.glow-band::before {
+  content: "";
+  position: absolute;
+  top: 0;                 /* <— fondamentale: senza, può finire fuori vista */
+  left: 50%;
+  transform: translateX(-50%) rotate(25deg);
+  width: min(1200px, 95vw);
+  height: 220px;
+  pointer-events: none;
+  z-index: 0;             /* sopra il background, sotto i contenuti */
+  background: radial-gradient(
+    60% 160px at 50% 0%,
+    rgba(56, 189, 248, 0.30),
+    rgba(56, 189, 248, 0.12) 45%,
+    transparent 70%
+  );
+  filter: blur(22px);
+}
+.glow-bottom::before {
+  top: auto;
+  bottom: 0;
+  transform: translateX(-50%) rotate(-25deg);
+}
+/* Contenitore per generare il bagliore come pseudo-elemento */
+.corner-glow::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  width: clamp(600px, 70vw, 1200px);
+  height: clamp(280px, 35vh, 520px);
+  filter: blur(32px);
+}
+
+/* Inizio pagina: glow ampio dall'angolo ALTO-DESTRA */
+.corner-glow-top::before {
+  top: 0;
+  right: 0;
+  background: radial-gradient(
+    75% 60% at 100% 0%,
+    rgba(56,189,248,0.35),
+    rgba(56,189,248,0.12) 45%,
+    transparent 70%
+  );
+}
+
+/* Fine pagina: glow invertito dall'angolo BASSO-SINISTRA */
+.corner-glow-bottom::before {
+  bottom: 0;
+  left: 0;
+  background: radial-gradient(
+    75% 60% at 0% 100%,
+    rgba(56,189,248,0.35),
+    rgba(56,189,248,0.12) 45%,
+    transparent 70%
+  );
+}
+
+/* === Beam 90°: solo navbar (top-right) e footer (bottom-left) ================= */
+/* Wrapper neutro; il fascio è nel ::before */
+.beam { position: relative; isolation: isolate; }
+
+/* Base visiva del fascio: conic-gradient (90°), morbido e leggero */
+.beam::before {
+  content: "";
+  position: absolute;
+  z-index: 0;                /* sotto ai contenuti del wrapper, sopra lo sfondo */
+  pointer-events: none;
+  width: min(1200px, 95vw);
+  height: 260px;             /* regola intensità/estensione verticale */
+  filter: blur(24px);
+}
+
+/* Navbar/top: fascio 90° dall'angolo alto-destro (come l'effetto iniziale) */
+.beam-hero::before {
+  top: 0;
+  right: 0;
+  transform: translate(10%, -35%); /* spinge l'origine sul bordo in alto a destra */
+  background: conic-gradient(
+    from 315deg at 100% 0%,  /* origine in alto-destro, apertura 90° */
+    rgba(56,189,248,0.35) 0deg,
+    rgba(56,189,248,0.12) 90deg,
+    transparent 120deg
+  );
+}
+
+/* Footer/bottom: fascio invertito 90° dall'angolo basso-sinistro */
+.beam-footer::before {
+  bottom: 0;
+  left: 0;
+  transform: translate(-10%, 35%);
+  background: conic-gradient(
+    from 135deg at 0% 100%,  /* origine in basso-sinistra, apertura 90° */
+    rgba(56,189,248,0.35) 0deg,
+    rgba(56,189,248,0.12) 90deg,
+    transparent 120deg
+  );
+}
+
+/* === Beam 90° visibile solo top navbar e bottom footer ===================== */
+.beam { position: relative; z-index: 0; isolation: isolate; }
+.beam::before{
+  content:""; position:absolute; z-index:-1; pointer-events:none;
+  width: 140vw;                 /* molto largo per coprire bene */
+  height: 40vh;                 /* fascio ampio (regolabile) */
+  filter: blur(36px);           /* morbidezza */
+  opacity: 1;
+}
+
+/* TOP (navbar): angolo ALTO-DESTRO, fascio 90° */
+.beam-hero::before{
+  top: -8rem;                   /* sale sopra la navbar */
+  right: -8rem;                 /* spinge nell'angolo */
+  background:
+    conic-gradient(
+      from 315deg at 100% 0%,   /* origine alto-destro */
+      rgba(56,189,248,0.40) 0deg,
+      rgba(56,189,248,0.18) 90deg,
+      transparent 120deg
+    ),
+    radial-gradient(1200px 600px at 100% 0%,
+      rgba(56,189,248,0.20), transparent 70%);
+}
+
+/* BOTTOM (footer): angolo BASSO-SINISTRO, fascio 90° invertito */
+.beam-footer::before{
+  bottom: -8rem;
+  left: -8rem;
+  background:
+    conic-gradient(
+      from 135deg at 0% 100%,   /* origine basso-sinistra */
+      rgba(56,189,248,0.40) 0deg,
+      rgba(56,189,248,0.18) 90deg,
+      transparent 120deg
+    ),
+    radial-gradient(1200px 600px at 0% 100%,
+      rgba(56,189,248,0.20), transparent 70%);
+}
