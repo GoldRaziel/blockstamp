@@ -142,15 +142,13 @@ export default function Page() {
 
       {/* UPLOAD (ridotto: solo PriceBox) */}
       
-<section id="upload" className="bg-white/5 border border-white/10 rounded-2xl p-6">
+
+<section id="upload">
   <div className="grid md:grid-cols-2 gap-6 items-start">
-    {/* Colonna sinistra: pagamento */}
     <div className="space-y-3">
       <PriceBox onPay={startPayment} />
     </div>
-
-    {/* Colonna destra: Perché Blockchain */}
-    <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+    <div>
       <h3 className="text-xl font-semibold mb-3">Perché Blockchain</h3>
       <ul className="list-disc pl-6 space-y-2 text-sm opacity-90">
         <li><b>Immutabilità:</b> una volta registrata, la prova non può essere alterata.</li>
@@ -162,6 +160,7 @@ export default function Page() {
     </div>
   </div>
 </section>
+
 
 
       {/* PROCEDURA */}
