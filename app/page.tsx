@@ -163,7 +163,7 @@ export default function Page() {
   <div className="grid md:grid-cols-2 gap-6 items-start">
     {/* Colonna sinistra: pagamento */}
     <div className="space-y-3">
-      <PriceBox onPay={startPayment} />
+      <PriceBox />
     </div>
 
     {/* Colonna destra: Perché Blockchain + CTA */}
@@ -182,13 +182,7 @@ export default function Page() {
     <li><b>Validità globale:</b> una registrazione unica, riconoscibile ovunque.</li>
   </ul>
 
-  <button
-    type="button"
-    onClick={startPayment}
-    className="mt-6 w-fit px-6 py-3 rounded-lg bg-amber-400 text-black font-semibold shadow hover:bg-amber-300"
-  >
-    PAGA ORA
-  </button>
+  <PayNow />
 </div>
 
   </div>

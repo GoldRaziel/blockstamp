@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 
 export default function PayNow() {
@@ -10,7 +9,7 @@ export default function PayNow() {
     try {
       setBusy(true);
       setErr("");
-      // anti-cache: querystring + no-store
+      // anti-cache: crea sempre una sessione nuova
       const res = await fetch(`/api/create-checkout-session?ts=${Date.now()}`, {
         method: "POST",
         cache: "no-store",
