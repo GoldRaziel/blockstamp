@@ -10,7 +10,7 @@ export default function PayButton({ label = "PAGA ORA" }: { label?: string }) {
     try {
       setBusy(true);
       setErr("");
-      const res = await fetch("/api/create-checkout-session", { method: "POST" });
+      const res = await fetch(`/api/create-checkout-session?ts=${Date.now()}`, { method: "POST", cache: "no-store" });
       if (!res.ok) throw new Error(await res.text());
       const data = await res.json();
       if (!data?.url) throw new Error("URL checkout non ricevuto");

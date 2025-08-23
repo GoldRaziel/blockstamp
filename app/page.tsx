@@ -17,7 +17,7 @@ function toHex(buffer: ArrayBuffer) {
 
 async function startPayment() {
   try {
-    const res = await fetch("/api/create-checkout-session", { method: "POST" });
+    const res = await fetch(`/api/create-checkout-session?ts=${Date.now()}`, { method: "POST", cache: "no-store" });
     if (!res.ok) throw new Error(await res.text());
     const data = await res.json();
     if (!data?.url) throw new Error("URL checkout non ricevuto");
