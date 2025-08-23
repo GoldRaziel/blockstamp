@@ -7,6 +7,7 @@ export default function PortalPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string>("");
   const [receiptCode, setReceiptCode] = useState<string>("");
+  const [locked, setLocked] = useState(false);
   const [copied, setCopied] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -39,6 +40,7 @@ export default function PortalPage() {
       const blob = await res.blob();
       const code = res.headers.get("x-receipt-code") || "";
       setReceiptCode(code);
+        setLocked(true);
 
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -94,7 +96,7 @@ export default function PortalPage() {
           />
           <button
             onClick={handleStamp}
-            disabled={busy}
+            disabled={busy || locked}
             className="px-5 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold disabled:opacity-50"
           >
             {busy ? "In corso..." : "TIMBRA in Blockchain"}
