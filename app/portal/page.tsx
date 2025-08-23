@@ -7,6 +7,7 @@ export default function PortalPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string>("");
   const [receiptCode, setReceiptCode] = useState<string>("");
+  const [copied, setCopied] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   // Stabilizzatore: se arrivo con ?session_id, setto il cookie e ripulisco l'URL
@@ -51,6 +52,16 @@ export default function PortalPage() {
     }
   }
 
+  async function handleCopy() {
+    try {
+      if (!receiptCode) return;
+      await navigator.clipboard.writeText(receiptCode);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch (_) {
+      setCopied(false);
+    }
+  }
   return (
     <div className="max-w-3xl mx-auto pt-6 pb-24">
       {/* Logo alto a sinistra, NON cliccabile */}
