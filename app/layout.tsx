@@ -44,16 +44,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <a className="hover:underline whitespace-nowrap" href="/#guida">GUIDA</a>
               <span className="opacity-50">•</span>
               <a className="hover:underline whitespace-nowrap" href="/#pricing">PREZZO</a>
+              <span className="opacity-50">•</span>
               <a className="hover:underline whitespace-nowrap" href="/#faq">FAQ</a>
               <span className="opacity-50">•</span>
-              <a className="hover:underline whitespace-nowrap" href="/contatti">CONTATTI</a>
+              <a className="hover:underline whitespace-nowrap" href="/#contatti">CONTATTI</a>
             </nav>
           </div>
         </header>
+
         <main className="container mx-auto px-4 py-10">{children}</main>
-        <footer className="border-t border-white/10 mt-16">
-          <div className="container mx-auto px-4 py-6 text-sm opacity-80">
-            © {year} BLOCKSTAMP — Proof of Existence
+
+        <footer id="contatti" className="border-t border-white/10 mt-16">
+          <div className="container mx-auto px-4 py-6 text-sm opacity-80 flex items-center justify-center gap-3 flex-wrap text-center">
+            <span>© {year} BLOCKSTAMP — Proof of Existence</span>
+            <span className="hidden sm:inline">•</span>
+            <a
+              href="mailto:blockstamp.protection@gmail.com"
+              className="hover:text-sky-400 transition"
+            >
+              blockstamp.protection@gmail.com
+            </a>
           </div>
         </footer>
       </body>
