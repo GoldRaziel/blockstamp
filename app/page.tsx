@@ -291,10 +291,10 @@ export default function Page() {
             </p>
           </div>
         </div>
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-5 text-center">
+        <div className="bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4">
           <p className="text-sm opacity-90 max-w-3xl mx-auto">
-            Risultato: una <b>prova tecnica e legale</b> incisa sulla blockchain di Bitcoin — valida in
-            tutto il mondo e non manipolabile da nessuno.
+            Risultato: una <b>prova tecnica e legale</b> incisa sulla blockchain di Bitcoin — <b>immodificabile</b> e valida in
+            tutto il mondo.
           </p>
         </div>
       </section>
