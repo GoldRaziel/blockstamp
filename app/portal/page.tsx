@@ -105,15 +105,14 @@ export default function PortalPage() {
       </div>
 
       <div className="mt-8 bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-3">
-        <h2 className="font-semibold text-sky-200">Importante — Conserva la ricevuta</h2>
-        <p>Scaricherai un file <strong>.ots</strong>. Conservalo assieme al tuo <strong>.zip</strong>.</p>
-        {receiptCode ? (
-          <p><strong>Codice ricevuta:</strong> <span className="text-sky-300 break-all">{receiptCode}</span></p>
-        ) : null}
-        <p className="text-sm opacity-90">
-          La conferma on-chain richiede <strong>48–72 ore</strong>. Per conoscere il <strong>Block Height</strong>,
-          usa la sezione <strong>VERIFICA</strong> (sotto <strong>PROCEDURA</strong>) inserendo lo <strong>SHA-256</strong> generato in Home.
-        </p>
+        <h2 className="font-semibold text-sky-200">Il tuo timbro verrà generato qui:</h2>
+        <div className="flex items-center gap-3">
+          <div className="flex-1">
+            <div className="text-sky-300 break-all text-sm bg-black/20 rounded-md px-3 py-2 min-h-[2.5rem]">{receiptCode ? receiptCode : "\u2014 in attesa di generazione \u2014"}</div>
+          </div>
+          <button onClick={handleCopy} disabled={!receiptCode} className="px-4 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-black font-semibold disabled:opacity-50">COPIA</button>
+        </div>
+        {copied && <div className="text-xs text-sky-400">Copiato negli appunti \u2705</div>}
       </div>
 
       {/* Nascondi navbar/header ereditati */}
