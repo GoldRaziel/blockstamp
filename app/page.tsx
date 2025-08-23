@@ -1,3 +1,4 @@
+import PayNow from "./components/PayNow";
 import PayButton from "./components/PayButton";
 import { ArrowDownCircleIcon } from "@heroicons/react/24/outline";
 "use client";
