@@ -61,13 +61,11 @@ export default function PortalPage() {
       <h1 className="text-2xl md:text-3xl font-bold text-sky-100 mb-6">Area riservata: Carica .zip e TIMBRA</h1>
 
       <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
-        <p className="text-sky-100">
-          <strong>Procedura:</strong> nella Home hai generato il <span className="text-sky-300">codice SHA-256</span>.
-          Crea un <strong>.zip</strong> con:
-        </p>
+        <p className="text-sky-100"><strong>ISTRUZIONI:</strong> Crea un file <strong>.zip</strong> con :</p>
         <ul className="list-disc list-inside text-sky-100">
-          <li>Il tuo <strong>file originale</strong> (o pacchetto)</li>
-          <li>Un <strong>file di testo</strong> con il <span className="text-sky-300">codice SHA-256</span></li>
+          <li>Il tuo <strong>file originale</strong> (o cartella) da proteggere</li>
+          <li>Il <strong>file di testo (.txt)</strong> con il <span className="text-sky-300">codice SHA-256</span> che hai generato sul nostro sito</li>
+          <li>Carica qui sotto il file <strong>.zip</strong> creato</li>
         </ul>
 
         <div className="flex items-center gap-3">
