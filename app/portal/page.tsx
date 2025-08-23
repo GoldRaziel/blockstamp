@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 export default function PortalPage() {
   const [zipFile, setZipFile] = useState<File | null>(null);
