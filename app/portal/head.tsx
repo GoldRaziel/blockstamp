@@ -1,7 +1,3 @@
 export default function Head() {
-  return (
-    <>
-      <meta name="robots" content="noindex,nofollow,noarchive" />
-    </>
-  );
+  return <meta name="robots" content="noindex,nofollow,noarchive" />;
 }
