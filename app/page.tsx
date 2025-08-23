@@ -194,13 +194,25 @@ export default function Page() {
     <div className="space-y-3">
       <div>
         <label className="block text-sm opacity-80 mb-1">File</label>
-        <input
-          type="file"
-          className="block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full
-                     file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700
-                     hover:file:bg-sky-100"
-          onChange={(e) => handleFile(e.target.files?.[0] || null)}
-        />
+       {/* INPUT FILE nascosto */}
+<input
+  id="file-upload"
+  type="file"
+  onChange={(e) => handleFile(e.target.files?.[0] || null)}
+  className="hidden"
+/>
+
+{/* SOLO IL TASTO è cliccabile per aprire il file */}
+<label
+  htmlFor="file-upload"
+  className="inline-flex items-center justify-center gap-2 px-4 py-2
+             bg-neutral-900 hover:bg-neutral-800 text-white
+             border border-white/10 rounded-none
+             cursor-pointer select-none"
+>
+  Scegli file
+</label>
+
         {file && (
           <div className="text-xs opacity-70 mt-1">{file.name}</div>
         )}
