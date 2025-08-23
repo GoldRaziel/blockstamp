@@ -70,13 +70,12 @@ export default function VerifyBox() {
     >
       <h2 className="text-xl font-semibold text-white">VERIFICA</h2>
 
-      {/* nuova descrizione piccola sotto al titolo */}
       <p className="text-sky-100 text-sm">
         Inserisci qui sotto il tuo file <code>.ots</code> e clicca <strong>VERIFICA</strong>. 
         Otterrai il tuo <strong>numero di blocco</strong> registrato nella blockchain Bitcoin.
       </p>
 
-      <p className="text-sky-100 text-base">
+      <p className="text-sky-100 text-sm">
         <strong>Cosa significa:</strong> la timbratura memorizza l&apos;impronta (SHA-256) del tuo file
         in Bitcoin tramite un percorso di aggiunzione (Merkle). Il <em>Block Height</em> indica il blocco
         che ancora (ancoraggio) la tua prova. Questo fornisce una <strong>prova di esistenza e priorità temporale</strong>:
@@ -117,8 +116,8 @@ export default function VerifyBox() {
         </span>
       </div>
 
-      {/* NOTA ingrandita */}
-      <div className="text-sky-200 text-base leading-relaxed">
+      {/* NOTA con stessa dimensione */}
+      <div className="text-sky-200 text-sm leading-relaxed">
         <strong>Nota:</strong> per una prova completa conserva insieme
         <span className="whitespace-nowrap"> (1) il file originale,</span>
         <span className="whitespace-nowrap"> (2) il suo hash SHA-256</span> e
