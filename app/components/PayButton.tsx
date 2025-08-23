@@ -1,30 +1,37 @@
 "use client";
+
 import { useState } from "react";
 
-export default function PayButton({ label = "💳 Paga ora" }: { label?: string }) {
+export default function PayButton({ label = "PAGA ORA" }: { label?: string }) {
   const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string>("");
+
+  async function startCheckout() {
+    try {
+      setBusy(true);
+      setErr("");
+      const res = await fetch("/api/create-checkout-session", { method: "POST" });
+      if (!res.ok) throw new Error(await res.text());
+      const data = await res.json();
+      if (!data?.url) throw new Error("URL checkout non ricevuto");
+      window.location.href = data.url;
+    } catch (e: any) {
+      setErr(e.message || "Errore avvio checkout");
+      setBusy(false);
+    }
+  }
+
   return (
-    <button
-      type="button"
-      onClick={async () => {
-        if (busy) return;
-        setBusy(true);
-        try {
-          const r = await fetch("/api/checkout", { method: "POST" });
-          if (!r.ok) throw new Error("Checkout error");
-          const data = await r.json();
-          if (!data?.url) throw new Error("Missing checkout URL");
-          window.location.assign(data.url);
-        } catch (e) {
-          console.error(e);
-          alert("Errore: impossibile avviare il pagamento.");
-          setBusy(false);
-        }
-      }}
-      disabled={busy}
-      className={`px-4 py-2 rounded-lg ${busy ? "bg-gray-400 cursor-wait" : "bg-amber-500 hover:bg-amber-400"} disabled:opacity-60`}
-    >
-      {busy ? "Reindirizzamento..." : label}
-    </button>
+    <div className="flex flex-col items-start gap-2">
+      <button
+        onClick={startCheckout}
+        disabled={busy}
+        className="px-5 py-2 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-black font-semibold disabled:opacity-50"
+        aria-disabled={busy}
+      >
+        {busy ? "Reindirizzamento..." : label}
+      </button>
+      {err && <span className="text-red-300 text-sm">{err}</span>}
+    </div>
   );
 }

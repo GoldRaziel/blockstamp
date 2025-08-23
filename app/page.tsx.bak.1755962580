@@ -14,18 +14,6 @@ function toHex(buffer: ArrayBuffer) {
   return out;
 }
 
-async function startPayment() {
-  try {
-    const res = await fetch("/api/create-checkout-session", { method: "POST" });
-    if (!res.ok) throw new Error(await res.text());
-    const data = await res.json();
-    if (!data?.url) throw new Error("URL checkout non ricevuto");
-    window.location.href = data.url;
-  } catch (e) {
-    console.error(e);
-    alert("Errore avvio checkout");
-  }
-}
 export default function Page() {
   const [file, setFile] = useState<File | null>(null);
   const [hash, setHash] = useState<string>("");
