@@ -55,7 +55,7 @@ export default function PortalPage() {
     <div className="max-w-3xl mx-auto pt-6 pb-24">
       {/* Logo alto a sinistra, NON cliccabile */}
       <div className="mb-6">
-        <img src="/logo.png" alt="Blockstamp" className="h-8 w-auto opacity-90 select-none pointer-events-none" />
+        <img src="/logo.png" alt="Blockstamp" className="h-[2.4rem] w-auto opacity-90 select-none pointer-events-none" />
       </div>
 
       <h1 className="text-2xl md:text-3xl font-bold text-sky-100 mb-6">Area riservata: Carica .zip e TIMBRA</h1>
