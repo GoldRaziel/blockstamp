@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
-  const all = cookies().getAll().map(c => ({ name: c.name, value: c.value }));
-  const paid = cookies().get("paid")?.value === "1";
-  return NextResponse.json({ cookies: all, paid });
+export async function GET(req: NextRequest) {
+  const paid = req.cookies.get("paid");
+  return NextResponse.json({
+    paid: paid?.value === "1"
+  });
 }
