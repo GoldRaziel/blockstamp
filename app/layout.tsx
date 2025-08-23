@@ -44,7 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <a className="hover:underline whitespace-nowrap" href="/#guida">GUIDA</a>
               <span className="opacity-50">•</span>
               <a className="hover:underline whitespace-nowrap" href="/#pricing">PREZZO</a>
-              <span className="opacity-50">•</span>
+            
               <a className="hover:underline whitespace-nowrap" href="/#faq">FAQ</a>
               <span className="opacity-50">•</span>
               <a className="hover:underline whitespace-nowrap" href="/#contatti">CONTATTI</a>
