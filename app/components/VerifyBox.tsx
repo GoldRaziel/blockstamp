@@ -30,24 +30,20 @@ export default function VerifyBox() {
       let data: any = {};
       try { data = JSON.parse(txt); } catch { data = { raw: txt }; }
 
-      // CASI DI ERRORE “UMANI”
       if (!res.ok) {
         const raw = (data?.error || data?.raw || "").toString().toLowerCase();
 
-        // 404 o “not found” => codice inesistente
         if (res.status === 404 || raw.includes("not found")) {
           setMsg("codice inesistente");
           setMsgType("warn");
           return;
         }
 
-        // fallback: rete/servizio non raggiungibile => attendi 48–72 ore
         setMsg("attendi 48-72 ore prima di verificare");
         setMsgType("warn");
         return;
       }
 
-      // OK ma senza block height => trattiamo come “non trovato”
       const h = Number(
         data?.block_height ?? data?.blockHeight ?? data?.result?.block_height
       );
@@ -60,7 +56,6 @@ export default function VerifyBox() {
         setMsgType("warn");
       }
     } catch {
-      // errori di fetch generici => messaggio umano richiesto
       setMsg("attendi 48-72 ore prima di verificare");
       setMsgType("warn");
     } finally {
@@ -69,22 +64,18 @@ export default function VerifyBox() {
   }
 
   return (
-    <section id="verifica" className="mt-10 bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
+    <section
+      id="verifica"
+      className="mt-10 bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4"
+    >
       <h2 className="text-xl font-semibold text-white">VERIFICA</h2>
 
-      <p className="text-sky-100">
-        Inserisci qui sotto il tuo file <code>.ots</code> e clicca <strong>VERIFICA</strong>.
-        Otterrai il tuo <strong>numero di blocco</strong> registrato nella blockchain Bitcoin.
+      <p className="text-sky-100 text-base">
+        <strong>Cosa significa:</strong> la timbratura memorizza l&apos;impronta (SHA-256) del tuo file
+        in Bitcoin tramite un percorso di aggiunzione (Merkle). Il <em>Block Height</em> indica il blocco
+        che ancora (ancoraggio) la tua prova. Questo fornisce una <strong>prova di esistenza e priorità temporale</strong>:
+        dimostra che il tuo contenuto esisteva almeno alla data/ora di quel blocco. <strong>Conservalo: è la tua evidenza tecnica che ti tutela dal punto di vista legale.</strong>
       </p>
-
-      <div className="text-sky-100 text-sm space-y-2">
-        <p className="opacity-90">
-          <strong>Cosa significa:</strong> la timbratura memorizza l&apos;impronta (SHA‑256) del tuo file
-          in Bitcoin tramite un percorso di aggiunzione (Merkle). Il <em>Block Height</em> indica il blocco
-          che ancora la tua prova. Questo fornisce una <strong>prova di esistenza e priorità temporale</strong>:
-          dimostra che il tuo contenuto esisteva almeno alla data/ora di quel blocco.
-        </p>
-      </div>
 
       <div className="flex items-center gap-3">
         <input
@@ -95,7 +86,7 @@ export default function VerifyBox() {
           onChange={(e) => setOtsFile(e.target.files?.[0] ?? null)}
         />
 
-        {/* CARICA FILE = BIANCO */}
+        {/* CARICA FILE = bianco */}
         <button
           type="button"
           onClick={pickFile}
@@ -105,7 +96,7 @@ export default function VerifyBox() {
           CARICA FILE
         </button>
 
-        {/* VERIFICA = AMBER (coerenza brand) */}
+        {/* VERIFICA = amber */}
         <button
           type="button"
           onClick={handleVerify}
@@ -120,11 +111,11 @@ export default function VerifyBox() {
         </span>
       </div>
 
-      {/* NOTA sotto i tasti */}
-      <div className="text-sky-200 text-xs leading-relaxed">
+      {/* NOTA ingrandita */}
+      <div className="text-sky-200 text-base leading-relaxed">
         <strong>Nota:</strong> per una prova completa conserva insieme
         <span className="whitespace-nowrap"> (1) il file originale,</span>
-        <span className="whitespace-nowrap"> (2) il suo hash SHA‑256</span> e
+        <span className="whitespace-nowrap"> (2) il suo hash SHA-256</span> e
         <span className="whitespace-nowrap"> (3) il file <code>.ots</code>.</span>
         L’hash collega in modo univoco il file alla timbratura registrata su Bitcoin.
       </div>
