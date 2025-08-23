@@ -31,9 +31,10 @@ export default function PriceBox({ onPay }: Props) {
         PREZZO
       </div>
 
-      <div className="text-3xl font-bold text-white">
-        200 AED <span className="text-lg text-sky-100 font-medium">/ file</span>
-      </div>
+      <div className="text-3xl font-bold text-yellow-500">
+  200 AED <span className="text-lg text-sky-100 font-medium">/ file</span>
+</div>
+
 
       <div className="text-base font-semibold">Protezione Blockchain</div>
       <p className="text-sm opacity-90">
