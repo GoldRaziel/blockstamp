@@ -1,7 +1,7 @@
+"use client";
 import PayNow from "./components/PayNow";
 import PayButton from "./components/PayButton";
 import { ArrowDownCircleIcon } from "@heroicons/react/24/outline";
-"use client";
 
 import { useEffect, useState } from "react";
 import PriceBox from "./components/PriceBox";
