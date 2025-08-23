@@ -1,3 +1,4 @@
+import { ArrowDownCircleIcon } from "@heroicons/react/24/outline";
 "use client";
 
 import { useEffect, useState } from "react";
@@ -180,10 +181,10 @@ export default function Page() {
 
   {/* Riquadro istruzioni */}
   <div className="mt-10 bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4">
-    <h3 className="text-lg font-semibold flex items-center gap-2">SEGUI LE ISTRUZIONI ↓</h3>
+    <h3 className="text-lg font-semibold flex items-center gap-2">SEGUI LE ISTRUZIONI</h3>
     <ol className="list-decimal pl-6 space-y-1 text-sm opacity-90">
       <li>Seleziona il file da proteggere.</li>
-      <li>Clicca <b>Calcola hash (SHA-256)</b>: otterrai la tua impronta digitale univoca.</li>
+      <li>Otterrai la tua impronta digitale univoca SHA-256.</li>
       <li><b>Copia</b> l’impronta e incollala in un file di testo <code>.txt</code>.</li>
       <li>Comprimi il file originale <i>insieme</i> al file <code>.txt</code> in un archivio <code>.zip</code>.</li>
       <li>Torna qui e clicca <b>PAGA ORA</b>.</li>
