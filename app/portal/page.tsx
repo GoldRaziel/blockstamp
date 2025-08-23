@@ -66,6 +66,11 @@ export default function PortalPage() {
           <li>Il tuo <strong>file originale</strong> (o cartella) da proteggere</li>
           <li>Il <strong>file di testo (.txt)</strong> con il <span className="text-sky-300">codice SHA-256</span> che hai generato sul nostro sito</li>
           <li>Carica qui sotto il file <strong>.zip</strong> creato</li>
+                  <li>Otterrai un <strong>codice .ots</strong>: è la prova di avvenuta registrazione;</li>
+          <li>Conserva il <strong>codice .ots</strong> assieme al tuo <strong>file .zip</strong>;</li>
+          <li>Tra <strong>48–72 ore</strong> inserisci il tuo <strong>codice .ots</strong> sulla nostra Home, sezione <strong>VERIFICA</strong>;</li>
+          <li>Riceverai il tuo <strong>numero di blocco</strong> nella blockchain Bitcoin;</li>
+          <li>Conservalo: è la tua prova inconfutabile di proprietà intellettuale a quella data.</li>
         </ul>
 
         <div className="flex items-center gap-3">
