@@ -4,8 +4,37 @@ import crypto from "crypto";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+// Controllo "light" del contenuto ZIP: cerchiamo almeno un filename .txt
+// Legge le entry della "central directory" (firma 0x02014b50) e verifica i nomi file.
+function zipHasTxtFile(buf: Buffer): boolean {
+  const SIG = 0x02014b50; // "PK\x01\x02"
+  let i = 0;
+  const n = buf.length;
+
+  while (i + 46 <= n) {
+    if (buf.readUInt32LE(i) === SIG) {
+      const nameLen = buf.readUInt16LE(i + 28);
+      const extraLen = buf.readUInt16LE(i + 30);
+      const commentLen = buf.readUInt16LE(i + 32);
+
+      const nameStart = i + 46;
+      const nameEnd = nameStart + nameLen;
+      if (nameEnd > n) break;
+
+      const filename = buf.slice(nameStart, nameEnd).toString("utf8");
+      if (filename.toLowerCase().endsWith(".txt")) return true;
+
+      // salta all'header successivo
+      i = nameEnd + extraLen + commentLen;
+      continue;
+    }
+    i += 1;
+  }
+  return false;
+}
+
 export async function POST(req: NextRequest) {
-  // Difesa aggiuntiva: richiede cookie "paid=1"
+  // Difesa ulteriore
   const paid = req.cookies.get("paid");
   if (!paid || paid.value !== "1") {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -20,8 +49,17 @@ export async function POST(req: NextRequest) {
     return new NextResponse("Sono ammessi solo file .zip", { status: 400 });
   }
 
-  // Calcola "receipt code" = SHA-256 del contenuto .zip
   const buf = Buffer.from(await file.arrayBuffer());
+
+  // ✅ Nuovo controllo: obbligo del .txt dentro lo ZIP
+  if (!zipHasTxtFile(buf)) {
+    return new NextResponse(
+      "Nel file .zip deve essere presente un file di testo (.txt) con il codice SHA-256 generato in Home.",
+      { status: 400 }
+    );
+  }
+
+  // Receipt code = hash dello ZIP
   const receiptCode = crypto.createHash("sha256").update(buf).digest("hex");
 
   const otsUrl = process.env.OTS_SERVICE_URL;
@@ -29,7 +67,6 @@ export async function POST(req: NextRequest) {
     return new NextResponse("OTS_SERVICE_URL non configurato", { status: 500 });
   }
 
-  // Inoltra al servizio OTS (/stamp) come multipart
   const fd = new FormData();
   fd.append("file", new Blob([buf], { type: "application/zip" }), file.name);
 
