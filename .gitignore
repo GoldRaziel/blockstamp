@@ -161,3 +161,7 @@ Thumbs.db
 
 # pnpm store (only if you use pnpm)
 pnpm-store/
+# local backups
+app/*/page.tsx.bak.*
+lib/*.bak.*
+backups/
