@@ -1,62 +1,398 @@
+"use client";
 import Hero from "../components/Hero";
-import LanguageSwitcher from "../components/LanguageSwitcher";
+import PayNow from "../components/PayNow";
+import PayButton from "../components/PayButton";
+import { ArrowDownCircleIcon } from "@heroicons/react/24/outline";
+import VerifyBox from "../components/VerifyBox";
+import { useEffect, useState } from "react";
+import PriceBox from "../components/PriceBox";
 
+function toHex(buffer: ArrayBuffer) {
+  const bytes = new Uint8Array(buffer);
+  let out = "";
+  for (let i = 0; i < bytes.length; i++) {
+    out += bytes[i].toString(16).padStart(2, "0");
+  }
+  return out;
+}
+
+async function startPayment() {
+  try {
+    const res = await fetch(`/api/create-checkout-session?ts=${Date.now()}`, { method: "POST", cache: "no-store" });
+    if (!res.ok) throw new Error(await res.text());
+    const data = await res.json();
+    if (!data?.url) throw new Error("URL checkout non ricevuto");
+    window.location.href = data.url;
+  } catch (e) {
+    console.error(e);
+    alert("Errore avvio checkout");
+  }
+}
 export default function Page() {
+  const [file, setFile] = useState<File | null>(null);
+  const [hash, setHash] = useState<string>("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string>("");
+  const [serverHash, setServerHash] = useState<string>("");
+  const [paid, setPaid] = useState(false);
+  const [sessionReady, setSessionReady] = useState(false);
+  const [showPayNotice, setShowPayNotice] = useState(false);
+
+  // verifica stato pagamento
+  useEffect(() => {
+    (async () => {
+      try {
+        const r = await fetch("/api/session", { cache: "no-store", credentials: "include" });
+        const j = await r.json();
+        setPaid(!!j.paid);
+      } catch {
+        /* ignore */
+      } finally {
+        setSessionReady(true);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (paid) setShowPayNotice(false);
+  }, [paid]);
+
+  async function handleFile(f?: File | null) {
+    if (!f) return;
+    setBusy(true);
+    setError("");
+    setServerHash("");
+    try {
+      const buf = await f.arrayBuffer();
+      const digest = await crypto.subtle.digest("SHA-256", buf);
+      setHash(toHex(digest));
+      setFile(f);
+    } catch (e: any) {
+      console.error(e);
+      setError(e?.message || "Errore durante il calcolo dell'impronta.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function copyHash() {
+    if (!hash) return;
+    try {
+      await navigator.clipboard.writeText(hash);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = hash;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    }
+  }
+
+  async function startPayment() {
+    try {
+      const res = await fetch("/api/pay", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: 500,
+          currency: "eur",
+          description: "Blockstamp Protection",
+        }),
+      });
+      const json = await res.json().catch(() => ({} as any));
+      if (!res.ok) throw new Error(json.error || "Errore pagamento");
+      if (json.url) window.location.href = json.url;
+    } catch (err: any) {
+      console.error(err);
+      setError(err?.message || "Errore durante il pagamento.");
+    }
+  }
+
+  async function submitToServer() {
+    if (!hash || !file) return;
+    setBusy(true);
+    setError("");
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/submit", {
+        method: "POST",
+        credentials: "include",
+        cache: "no-store",
+        headers: { "X-Paid": paid ? "1" : "0" },
+        body: formData,
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "Errore durante l'invio.");
+      setServerHash(json.hash);
+    } catch (e: any) {
+      console.error(e);
+      setError(e?.message || "Errore durante l'invio al server.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
-    <>
-      <LanguageSwitcher />
-      <main className="container mx-auto px-4 py-10 space-y-6">
-    <Hero />
-        {/* HERO */}
-        <section className="space-y-2">
-          <h1 className="text-3xl md:text-4xl font-semibold">Protection on Bitcoin</h1>
-          <p className="opacity-80">Immutable timestamp of your file.</p>
-          <p className="text-sm opacity-70">
-            Hashing happens in your browser. Your file never leaves your device.
+    <div className="space-y-16">
+      <div className="beam beam-hero"></div>
+
+      {/* HERO */}
+      <section className="hero text-center space-y-6">
+        <h1 className="text-4xl md:text-5xl font-semibold leading-tight">
+          <span className="text-white">Proteggi la Tua </span>
+          <span className="text-sky-400">Idea</span>
+          <br />
+          <span className="text-white">nella </span>
+          <span className="text-sky-400">Blockchain</span>
+          <span className="text-sky-400 text-2xl align-middle"> • </span>
+          <span className="text-white">Bitcoin</span>
+        </h1>
+        <p className="text-lg opacity-90 max-w-3xl mx-auto">
+          Il modo più sicuro e veloce al mondo per registrare e proteggere i tuoi diritti
+          intellettuali.
+        </p>
+      </section>
+
+      {/* UPLOAD (ridotto: solo PriceBox) */}
+      
+
+
+<section id="upload" className="my-10">
+  <div className="grid md:grid-cols-2 gap-6 items-start">
+    {/* Colonna sinistra: pagamento */}
+    <div className="space-y-3">
+      <PriceBox />
+    </div>
+
+    {/* Colonna destra: Perché Blockchain + CTA */}
+    
+<div className="space-y-6">
+  
+
+<h3 className="mt-6 text-xl font-semibold">Perché Blockchain</h3>
+
+
+  <ul className="list-disc pl-6 space-y-2 text-sm opacity-90">
+    <li><b>Immutabilità:</b> una volta registrata, la prova non può essere alterata.</li>
+    <li><b>Prova pubblica:</b> riferimento verificabile da chiunque, ovunque.</li>
+    <li><b>Privacy:</b> registriamo solo l’impronta; il file resta tuo.</li>
+    <li><b>Nessuna intermediazione:</b> prova indipendente, senza fiducia cieca in terzi.</li>
+    <li><b>Validità globale:</b> una registrazione unica, riconoscibile ovunque.</li>
+  </ul>
+
+  <PayNow />
+</div>
+
+  </div>
+
+  {/* Riquadro istruzioni */}
+  <div className="mt-10 bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4">
+    <h3 className="text-lg font-semibold flex items-center gap-2">SEGUI LE ISTRUZIONI</h3>
+    <ol className="list-decimal pl-6 space-y-1 text-sm opacity-90">
+      <li>Seleziona il file da proteggere.</li>
+      <li>Otterrai la tua impronta digitale univoca SHA-256.</li>
+      <li><b>Copia</b> l’impronta e incollala in un file di testo <code>.txt</code>.</li>
+      <li>Comprimi il file originale <i>insieme</i> al file <code>.txt</code> in un archivio <code>.zip</code>.</li>
+      <li>Torna qui e clicca <b>PAGA ORA</b>.</li>
+      <li>Dopo il pagamento, carica il file <code>.zip</code> nella pagina successiva.</li>
+    </ol>
+
+    <div className="space-y-3">
+      <div>
+        <label className="block text-sm opacity-80 mb-1">File</label>
+       {/* INPUT FILE nascosto */}
+<input
+  id="file-upload"
+  type="file"
+  onChange={(e) => handleFile(e.target.files?.[0] || null)}
+  className="hidden"
+/>
+
+{/* SOLO IL TASTO è cliccabile per aprire il file */}
+<label
+  htmlFor="file-upload"
+  className="inline-flex items-center justify-center gap-2 px-4 py-2
+             bg-neutral-900 hover:bg-neutral-800 text-white
+             border border-white/10 rounded-none
+             cursor-pointer select-none"
+>
+  Scegli file
+</label>
+
+        {file && (
+          <div className="text-xs opacity-70 mt-1">{file.name}</div>
+        )}
+      </div>
+
+      <div>
+        <label className="block text-sm opacity-80 mb-1">Impronta SHA-256</label>
+        <div className="flex gap-2">
+          <textarea
+            className="flex-1 h-16 rounded-lg bg-black/40 border border-white/10 p-2 text-xs font-mono"
+            readOnly
+            value={hash}
+            placeholder="L'impronta verrà mostrata qui…"
+          />
+          <button
+            onClick={copyHash}
+            disabled={!hash}
+            className="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 disabled:opacity-40"
+          >
+            Copia
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <p className="text-xs opacity-70 mt-2">
+      Suggerimento: rinomina il file di testo con qualcosa come <code>hash.txt</code> e mantienilo dentro lo <code>.zip</code> accanto al file originale.
+    </p>
+  </div>
+
+</section>
+
+
+
+
+      {/* PROCEDURA */}
+      <section id="procedura" className="space-y-5">
+        <h2 className="text-3xl font-semibold">Procedura</h2>
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+            <div className="text-sm opacity-70 mb-2">1 · Carica il tuo file</div>
+            <p className="text-sm opacity-90">
+              Scegli il documento, l’idea o il progetto che vuoi proteggere. Nessun contenuto viene
+              reso pubblico: resta solo tuo.
+            </p>
+          </div>
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+            <div className="text-sm opacity-70 mb-2">2 · Registrazione su Blockchain</div>
+            <p className="text-sm opacity-90">
+              Creiamo una traccia indelebile che dimostra l’esistenza della tua idea in una data
+              certa. Questa prova viene incisa sulla blockchain di Bitcoin, la più sicura al mondo.
+            </p>
+          </div>
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+            <div className="text-sm opacity-70 mb-2">3 · Prova e Verifica</div>
+            <p className="text-sm opacity-90">
+              Ricevi una ricevuta digitale che potrai esibire in ogni momento per dimostrare i tuoi
+              diritti. In futuro ti basterà confrontarla con il tuo file per provarne l’autenticità.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <VerifyBox />
+
+
+      {/* GUIDA */}
+      <section id="guida" className="space-y-6">
+        <h2 className="text-3xl font-semibold">Guida: proteggi al meglio la tua idea</h2>
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+            <h3 className="text-lg font-semibold mb-2">1 · Crea un file ZIP</h3>
+            <p className="text-sm opacity-90">
+              Inserisci <b>più materiale possibile</b>: documenti, testi, immagini, bozze, progetti,
+              struttura del sito, contratti — tutto ciò che dimostra la paternità dell’idea.
+            </p>
+          </div>
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+            <h3 className="text-lg font-semibold mb-2">2 · Carica in HOME</h3>
+            <p className="text-sm opacity-90">
+              Vai alla sezione <a href="#upload" className="underline">Upload</a> e carica il tuo ZIP.
+              Riceverai un <b>codice .ots</b> a conferma della richiesta: salvalo <b>dentro la stessa
+              cartella ZIP</b>.
+            </p>
+          </div>
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+            <h3 className="text-lg font-semibold mb-2">3 · Registrazione entro 72 ore</h3>
+            <p className="text-sm opacity-90">
+              Entro <b>72 ore</b> riceverai il codice di registrazione su blockchain Bitcoin che
+              certifica l’esistenza del tuo file a livello globale, rendendo la tua idea <b>protetta e
+              immodificabile</b>.
+            </p>
+          </div>
+        </div>
+        <div className="bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4">
+          <p className="text-sm opacity-90 max-w-3xl mx-auto">
+            Risultato: una <b>prova tecnica e legale</b> incisa sulla blockchain di Bitcoin — <b>immodificabile</b> e valida in
+            tutto il mondo.
           </p>
-        </section>
+        </div>
+      </section>
 
-        {/* CTA / SHORTCUTS */}
-        <section className="flex flex-wrap gap-3">
-          <a href="/it#procedura" className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-semibold">
-            Go to full procedure (IT)
-          </a>
-          <a href="#pricing" className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10">
-            Price list
-          </a>
-          <a href="#faq" className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10">
-            FAQ
-          </a>
-        </section>
+      {/* PERCHÉ BLOCKCHAIN */}
+      
+      {/* FAQ */}
+      <section id="faq" className="space-y-4">
+        <h2 className="text-3xl font-semibold">FAQ</h2>
 
-        {/* PROCEDURE (summary) */}
-        <section id="procedure" className="space-y-2">
-          <h2 className="text-2xl font-semibold">How it works</h2>
-          <ol className="list-decimal pl-6 space-y-1 opacity-90">
-            <li>Compute the SHA‑256 locally (client-side).</li>
-            <li>Pay to enable “STAMP”.</li>
-            <li>Submit and receive your <code>.ots</code> receipt.</li>
-            <li>Later, verify on-chain and retrieve the Bitcoin block height.</li>
-          </ol>
-        </section>
+        <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
+          <summary className="cursor-pointer font-medium">Cosa è una blockchain?</summary>
+          <div className="mt-2 text-sm opacity-90 space-y-2">
+            <p>
+              La <b>blockchain</b> è un <i>registro digitale distribuito</i> e <i>immutabile</i>:
+              una catena di blocchi, dove ogni blocco contiene dati (es. transazioni) e l’hash
+              crittografico del blocco precedente. Questo collegamento rende l’intera catena
+              resistente alle manomissioni.
+            </p>
+            <p className="font-medium">Come funziona in breve:</p>
+            <ol className="list-decimal pl-5 space-y-1">
+              <li>Le operazioni vengono raccolte in un nuovo blocco.</li>
+              <li>Si calcola un’impronta univoca (hash) del blocco.</li>
+              <li>Il blocco include l’hash del precedente, formando la catena.</li>
+              <li>La rete approva il blocco tramite meccanismi di <i>consenso</i> (es. Proof of Work/Stake).</li>
+              <li>Una volta aggiunto, modificarlo richiederebbe riscrivere tutti i blocchi successivi.</li>
+            </ol>
+            <ul className="list-disc pl-5 space-y-1">
+              <li><b>Decentralizzazione:</b> nessuna autorità centrale; più nodi condividono lo stesso registro.</li>
+              <li><b>Trasparenza:</b> nelle blockchain pubbliche lo storico è verificabile da chiunque.</li>
+              <li><b>Sicurezza:</b> crittografia + consenso rendono difficile la falsificazione.</li>
+            </ul>
+            <p>
+              In pratica, è come un <i>libro mastro pubblico</i> dove ogni pagina (blocco)
+              è collegata alla precedente e approvata dalla comunità: un modo affidabile
+              di registrare informazioni senza dover credere a un intermediario.
+            </p>
+          </div>
+        </details>
 
-        {/* PRICING placeholder */}
-        <section id="pricing" className="space-y-2">
-          <h2 className="text-2xl font-semibold">Price list</h2>
-          <p className="opacity-80">Same pricing as the Italian page.</p>
-        </section>
+        <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
+          <summary className="cursor-pointer font-medium">Il mio file viene caricato o salvato da qualche parte?</summary>
+          <p className="mt-2 text-sm opacity-90">
+            No. L’impronta viene calcolata localmente nel tuo browser. Registriamo solo l’impronta (non reversibile).
+          </p>
+        </details>
 
-        {/* FAQ placeholder */}
-        <section id="faq" className="space-y-2">
-          <h2 className="text-2xl font-semibold">FAQ</h2>
-          <p className="opacity-80">For full details, refer to the Italian page.</p>
-        </section>
+        <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
+          <summary className="cursor-pointer font-medium">Cosa dimostra la prova sulla blockchain?</summary>
+          <p className="mt-2 text-sm opacity-90">
+            Dimostra che un contenuto con <b>quell’impronta specifica</b> era stato registrato su Bitcoin almeno alla
+            data di riferimento. Non rivela il contenuto e non certifica la tua identità.
+          </p>
+        </details>
 
-        {/* FOOTER NOTE */}
-        <section className="text-sm opacity-70">
-          Need help? Write to <a className="underline hover:text-amber-300" href="mailto:blockstamp.protection@gmail.com">blockstamp.protection@gmail.com</a>.
-        </section>
-      </main>
-    </>
+        <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
+          <summary className="cursor-pointer font-medium">Come verifico in futuro?</summary>
+          <p className="mt-2 text-sm opacity-90">
+            Ricalcoli l’impronta del file originale e la confronti con quella inclusa nella prova. Se combaciano,
+            hai integrità e riferimento pubblico su Bitcoin.
+          </p>
+        </details>
+
+        <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
+          <summary className="cursor-pointer font-medium">E se perdo il file?</summary>
+          <p className="mt-2 text-sm opacity-90">
+            L’impronta non permette di ricostruirlo. Conserva backup sicuri del file originale: la prova dimostra
+            esistenza e integrità, non recupera il contenuto.
+          </p>
+        </details>
+      </section>
+
+      <div className="beam beam-footer"></div>
+    </div>
   );
 }
