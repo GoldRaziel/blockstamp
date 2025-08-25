@@ -52,23 +52,23 @@ export const CONTENT_HERO = {
     subtitle: "Timbra e verifica i tuoi file con marca temporale su blockchain Bitcoin. Semplice, trasparente, internazionale.",
     primaryCta: "Procedura",
     secondaryCta: "Prezzi",
-    primaryHref: "/it#procedure",
-    secondaryHref: "/it#prezzi"
+    primaryHref: "#procedure",
+    secondaryHref: "#pricing"
   },
   en: {
     title: "Blockstamp — Protection on Bitcoin",
     subtitle: "Timestamp your files on the Bitcoin blockchain. Simple, transparent, globally verifiable.",
     primaryCta: "How it works",
     secondaryCta: "Pricing",
-    primaryHref: "/en#procedure",
-    secondaryHref: "/en#pricing"
+    primaryHref: "#procedure",
+    secondaryHref: "#pricing"
   },
   ar: {
     title: "Blockstamp — حماية على سلسلة بيتكوين",
     subtitle: "قم بختم ملفاتك بطابع زمني على سلسلة بيتكوين. بسيط وشفاف ويمكن التحقق منه عالميًا.",
     primaryCta: "الطريقة",
     secondaryCta: "الأسعار",
-    primaryHref: "/ar#procedure",
-    secondaryHref: "/ar#pricing"
+    primaryHref: "#procedure",
+    secondaryHref: "#pricing"
   }
 } as const;
