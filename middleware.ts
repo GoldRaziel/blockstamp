@@ -1,35 +1,37 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+const LOCALES = ['it', 'en', 'ar'];
 
 export function middleware(req: NextRequest) {
-  const url = req.nextUrl;
-  const { pathname, searchParams } = url;
+  const { pathname } = req.nextUrl;
 
-  // Consenti /portal se arriva con ?session_id=...
-  if ((pathname === "/portal" || pathname.startsWith("/portal/")) && searchParams.has("session_id")) {
+  // Lascia passare asset, API, build, file statici
+  if (
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/api') ||
+    pathname.match(/\.[a-zA-Z0-9]+$/)
+  ) {
     return NextResponse.next();
   }
 
-  // Proteggi /portal e /api/stamp con cookie paid=1
-  const needsPaid =
-    pathname === "/portal" ||
-    pathname.startsWith("/portal/") ||
-    pathname.startsWith("/api/stamp");
-
-  if (needsPaid) {
-    const paid = req.cookies.get("paid");
-    if (!paid || paid.value !== "1") {
-      if (pathname.startsWith("/api/")) {
-        return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
-          status: 401,
-          headers: { "Content-Type": "application/json" },
-        });
-      }
-      return NextResponse.redirect(new URL("/", req.url));
-    }
+  // Se il path ha già il locale, non toccare
+  if (LOCALES.some(l => pathname === `/${l}` || pathname.startsWith(`/${l}/`))) {
+    return NextResponse.next();
   }
 
+  // Reindirizza SOLO la root "/" alla lingua di default (/it)
+  if (pathname === '/') {
+    const url = req.nextUrl.clone();
+    url.pathname = '/it';
+    return NextResponse.redirect(url);
+  }
+
+  // Altrimenti, non fare nulla
   return NextResponse.next();
 }
 
-export const config = { matcher: ["/portal", "/portal/:path*", "/api/stamp"] };
+// Applica il middleware a tutto tranne asset/API
+export const config = {
+  matcher: ['/((?!_next|api|.*\\..*).*)'],
+};

@@ -1,14 +1,12 @@
 "use client";
-
 import { usePathname } from "next/navigation";
 
 function swapLocale(pathname: string, to: "it"|"en"|"ar") {
   const parts = pathname.split("/");
-  // parts[0] = "" (leading slash), parts[1] is maybe locale
   if (["it","en","ar"].includes(parts[1])) {
     parts[1] = to;
   } else {
-    parts.splice(1, 0, to); // insert after leading slash
+    parts.splice(1, 0, to);
   }
   return parts.join("/") || `/${to}`;
 }
@@ -16,7 +14,6 @@ function swapLocale(pathname: string, to: "it"|"en"|"ar") {
 export default function LanguageSwitcher() {
   const pathname = usePathname() || "/";
   const hash = typeof window !== "undefined" ? window.location.hash : "";
-
   const toIt = swapLocale(pathname, "it") + hash;
   const toEn = swapLocale(pathname, "en") + hash;
   const toAr = swapLocale(pathname, "ar") + hash;
