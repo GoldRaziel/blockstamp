@@ -165,3 +165,7 @@ pnpm-store/
 app/*/page.tsx.bak.*
 lib/*.bak.*
 backups/
+# local backups
+app/*/page.tsx.bak.*
+lib/*.bak.*
+backups/
