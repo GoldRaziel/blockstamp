@@ -1,3 +1,4 @@
+import NavLinks from "./components/NavLinks";
 import LangDropdown from "./components/LangDropdown";
 // app/layout.tsx
 import "./globals.css";
