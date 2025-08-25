@@ -2,16 +2,16 @@
 import {useState, useEffect, useRef} from "react";
 import {usePathname} from "next/navigation";
 
-type Opt = {code:"it"|"en"|"ar"; label:string; flag:string};
-const OPTIONS: Opt[] = [
-  {code: "it", label: "Italiano", flag: "🇮🇹"},
-  {code: "en", label: "English",  flag: "🇬🇧"},
-  {code: "ar", label: "العربية",   flag: "🇦🇪"}
+type Code = "it" | "en" | "ar";
+const OPTIONS: {code: Code; flag: string}[] = [
+  {code: "it", flag: "🇮🇹"},
+  {code: "en", flag: "🇬🇧"},
+  {code: "ar", flag: "🇦🇪"}
 ];
 
 export default function LangDropdown() {
   const pathname = usePathname() || "/";
-  const current = (pathname.split("/")[1] as Opt["code"]) || "it";
+  const current = (pathname.split("/")[1] as Code) || "it";
   const selected = OPTIONS.find(o => o.code === current) || OPTIONS[0];
 
   const [open, setOpen] = useState(false);
@@ -30,43 +30,43 @@ export default function LangDropdown() {
     return () => document.removeEventListener("click", onDocClick);
   }, [open]);
 
-  function hrefFor(code: Opt["code"]) {
-    // Semplice: portiamo sempre alla home della lingua
+  function hrefFor(code: Code) {
     return `/${code}`;
   }
 
   return (
     <div className="relative">
+      {/* trigger minimal: SOLO bandierina + codice lingua, testo bianco, senza box */}
       <button
         ref={btnRef}
         onClick={() => setOpen(v => !v)}
+        className="inline-flex items-center gap-1 text-white hover:underline"
         aria-haspopup="listbox"
         aria-expanded={open}
-        className="flex items-center gap-2 px-3 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition text-sm"
         title="Language"
       >
-        <span className="text-lg">{selected.flag}</span>
-        <span className="hidden sm:inline">{selected.label}</span>
-        <svg width="14" height="14" viewBox="0 0 20 20" className="opacity-80"><path fill="currentColor" d="M5.5 7.5L10 12l4.5-4.5"></path></svg>
+        <span className="text-base leading-none">{selected.flag}</span>
+        <span className="text-sm leading-none uppercase">{selected.code}</span>
+        <svg width="12" height="12" viewBox="0 0 20 20" className="opacity-80"><path fill="currentColor" d="M5 7l5 5 5-5"/></svg>
       </button>
 
       {open && (
         <div
           ref={menuRef}
-          className="absolute right-0 mt-2 w-44 rounded-xl border border-white/15 bg-black/70 backdrop-blur p-1 shadow-lg z-50"
+          className="absolute right-0 mt-2 w-24 rounded-md bg-black/80 border border-white/10 backdrop-blur p-1 shadow-lg z-50"
           role="listbox"
         >
           {OPTIONS.map(o => (
             <a
               key={o.code}
               href={hrefFor(o.code)}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/10 ${o.code===selected.code ? "bg-white/5" : ""}`}
+              className={`flex items-center gap-1 px-2 py-1.5 rounded hover:bg-white/10 text-white ${o.code===selected.code ? "opacity-100" : "opacity-90"}`}
               role="option"
               aria-selected={o.code===selected.code}
               onClick={() => setOpen(false)}
             >
-              <span className="text-lg">{o.flag}</span>
-              <span className="text-sm">{o.label}</span>
+              <span className="text-base leading-none">{o.flag}</span>
+              <span className="text-sm leading-none uppercase">{o.code}</span>
             </a>
           ))}
         </div>
