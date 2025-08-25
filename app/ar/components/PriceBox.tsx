@@ -1,55 +1,20 @@
 "use client";
+import { PRICE_BOX } from "../lib/content";
 
-type Props = {
-  onPay?: () => void;
-};
-
-export default function PriceBox({ onPay }: Props) {
-  async function defaultStartPayment() {
-    try {
-      const res = await fetch("/api/pay", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amount: 500,           // minor units (es. 5.00 EUR)
-          currency: "eur",
-          description: "Blockstamp Protection",
-        }),
-      });
-      const json = await res.json().catch(() => ({} as any));
-      if (!res.ok) throw new Error(json.error || "Errore pagamento");
-      if (json.url) window.location.href = json.url;
-    } catch (e) {
-      console.error(e);
-      // opzionale: potresti mostrare un toast qui
-    }
-  }
-
+export default function PriceBox() {
   return (
-    <div className="bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4">
-      <div className="text-xs font-semibold uppercase tracking-wide text-sky-300">
-        PREZZO
+    <section id="price" className="mt-10">
+      <div className="max-w-3xl mx-auto bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4">
+        <h2 className="text-xl font-semibold">{PRICE_BOX.title}</h2>
+        <ul className="list-disc pl-6 space-y-1">
+          {PRICE_BOX.points?.map((p: string, i: number) => <li key={i}>{p}</li>)}
+        </ul>
+        <div>
+          <a href="#pay" className="inline-block px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-semibold">
+            {PRICE_BOX.button}
+          </a>
+        </div>
       </div>
-
-      <div className="text-3xl font-bold text-yellow-500">
-  200 AED <span className="text-lg text-sky-100 font-medium">/ file</span>
-</div>
-
-
-      <div className="text-base font-semibold">Protezione Blockchain</div>
-      <p className="text-sm opacity-90">
-        Ancoraggio dell’impronta del tuo file su Bitcoin con guida alla verifica.
-      </p>
-
-      <ul className="list-disc pl-5 text-sm space-y-1 opacity-90">
-        <li>Impronta calcolata in locale (privacy by design)</li>
-        <li>Ancoraggio on-chain con riferimento pubblico</li>
-        <li>Documento di prova e istruzioni</li>
-        <li>Assistenza base via email</li>
-      </ul>
-
-      {/* Bottone invariato per stile; onClick torna a fare la POST corretta */}
-      
-    </div>
+    </section>
   );
 }
