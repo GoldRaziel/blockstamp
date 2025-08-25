@@ -1,5 +1,5 @@
 export const CONTENT_HERO: any = {
-  title: "Bitcoin Timestamping made simple",
+  title: "EN TEST — Bitcoin Timestamping",
   subtitle:
     "Upload your file, pay securely, and get a verifiable Bitcoin proof (.ots). Private. Fast. Reliable.",
   ctaPrimary: "Stamp Now",

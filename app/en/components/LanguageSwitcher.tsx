@@ -1,30 +1,23 @@
 "use client";
 import { usePathname } from "next/navigation";
 
-function swapLocale(pathname: string, to: "it"|"en"|"ar") {
-  const parts = pathname.split("/");
-  if (["it", "en", "ar"].includes(parts[1])) {
-    parts[1] = to;
-  } else {
-    parts.splice(1, 0, to);
-  }
-  return parts.join("/") || `/${to}`;
-}
-
 export default function LanguageSwitcher() {
   const pathname = usePathname() || "/";
-  const hash = typeof window !== "undefined" ? window.location.hash : "";
-  const toIt = swapLocale(pathname, "it") + hash;
-  const toEn = swapLocale(pathname, "en") + hash;
-  const toAr = swapLocale(pathname, "ar") + hash;
+  const base = pathname.replace(/^\/(en|ar)(?=\/|$)/, ""); // rimuove prefisso en/ar se presente
+
+  const links = [
+    { href: "/" + base.replace(/^\/+/, ""), code: "IT" },
+    { href: "/en" + base, code: "EN" },
+    { href: "/ar" + base, code: "AR" },
+  ];
 
   return (
     <div className="flex items-center gap-2 text-sm">
-      <a href={toIt} className="opacity-80 hover:opacity-100">IT</a>
-      <span className="opacity-30">|</span>
-      <a href={toEn} className="opacity-80 hover:opacity-100">EN</a>
-      <span className="opacity-30">|</span>
-      <a href={toAr} className="opacity-80 hover:opacity-100">AR</a>
+      {links.map((l, i) => (
+        <a key={i} href={l.href} className="px-2 py-1 rounded hover:bg-white/10">
+          {l.code}
+        </a>
+      ))}
     </div>
   );
 }
