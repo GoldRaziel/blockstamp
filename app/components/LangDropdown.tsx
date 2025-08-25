@@ -36,7 +36,7 @@ export default function LangDropdown() {
 
   return (
     <div className="relative">
-      {/* trigger minimal: SOLO bandierina + codice lingua, testo bianco, senza box */}
+      {/* trigger: solo bandierina + codice (bianco), zero box */}
       <button
         ref={btnRef}
         onClick={() => setOpen(v => !v)}
@@ -46,7 +46,7 @@ export default function LangDropdown() {
         title="Language"
       >
         <span className="text-base leading-none">{selected.flag}</span>
-        <span className="text-sm leading-none uppercase">{selected.code}</span>
+        <span className="text-sm leading-none uppercase">{selected.code.toUpperCase()}</span>
         <svg width="12" height="12" viewBox="0 0 20 20" className="opacity-80"><path fill="currentColor" d="M5 7l5 5 5-5"/></svg>
       </button>
 
@@ -66,7 +66,7 @@ export default function LangDropdown() {
               onClick={() => setOpen(false)}
             >
               <span className="text-base leading-none">{o.flag}</span>
-              <span className="text-sm leading-none uppercase">{o.code}</span>
+              <span className="text-sm leading-none uppercase">{o.code.toUpperCase()}</span>
             </a>
           ))}
         </div>

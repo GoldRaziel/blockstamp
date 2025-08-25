@@ -48,11 +48,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   <span className="opacity-50">•</span>
   <a href="/#contatti" className="hover:underline whitespace-nowrap">CONTATTI</a>
   <span className="opacity-50">•</span>
+  <span className="opacity-50">•</span>
   <LangDropdown />
 </nav>
           </div>
-          <div className="ml-auto flex items-center"><LangDropdown /></div>
-        <div className="ml-auto flex items-center"><LangDropdown /></div>
 </header>
 
         <main className="container mx-auto px-4 py-10">{children}</main>
