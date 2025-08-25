@@ -1,3 +1,4 @@
+import LangDropdown from "./components/LangDropdown";
 // app/layout.tsx
 import "./globals.css";
 import type { Metadata } from "next";
@@ -50,7 +51,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <a className="hover:underline whitespace-nowrap" href="/#contatti">CONTATTI</a>
             </nav>
           </div>
-        </header>
+          <div className="ml-auto flex items-center"><LangDropdown /></div>
+        <div className="ml-auto flex items-center"><LangDropdown /></div>
+</header>
 
         <main className="container mx-auto px-4 py-10">{children}</main>
 
