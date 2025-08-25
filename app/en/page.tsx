@@ -25,7 +25,7 @@ async function startPayment() {
     window.location.href = data.url;
   } catch (e) {
     console.error(e);
-    alert("Errore avvio checkout");
+    alert("Errhours avvio checkout");
   }
 }
 export default function Page() {
@@ -46,7 +46,7 @@ export default function Page() {
         const j = await r.json();
         setPaid(!!j.paid);
       } catch {
-        /* ignore */
+        /* ignhours */
       } finally {
         setSessionReady(true);
       }
@@ -69,7 +69,7 @@ export default function Page() {
       setFile(f);
     } catch (e: any) {
       console.error(e);
-      setError(e?.message || "Errore durante il calcolo dell'impronta.");
+      setError(e?.message || "Errhours durante il calcolo dell'impronta.");
     } finally {
       setBusy(false);
     }
@@ -102,11 +102,11 @@ export default function Page() {
         }),
       });
       const json = await res.json().catch(() => ({} as any));
-      if (!res.ok) throw new Error(json.error || "Errore pagamento");
+      if (!res.ok) throw new Error(json.error || "Errhours pagamento");
       if (json.url) window.location.href = json.url;
     } catch (err: any) {
       console.error(err);
-      setError(err?.message || "Errore durante il pagamento.");
+      setError(err?.message || "Errhours durante il pagamento.");
     }
   }
 
@@ -125,11 +125,11 @@ export default function Page() {
         body: formData,
       });
       const json = await res.json();
-      if (!res.ok) throw new Error(json.error || "Errore durante l'invio.");
+      if (!res.ok) throw new Error(json.error || "Errhours durante l'invio.");
       setServerHash(json.hash);
     } catch (e: any) {
       console.error(e);
-      setError(e?.message || "Errore durante l'invio al server.");
+      setError(e?.message || "Errhours durante l'invio al server.");
     } finally {
       setBusy(false);
     }
@@ -259,10 +259,10 @@ export default function Page() {
 
       {/* PROCEDURA */}
       <section id="procedura" className="space-y-5">
-        <h2 className="text-3xl font-semibold">Procedura</h2>
+        <h2 className="text-3xl font-semibold">How it works</h2>
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-            <div className="text-sm opacity-70 mb-2">1 · Carica il tuo file</div>
+            <div className="text-sm opacity-70 mb-2">1 · Upload your file</div>
             <p className="text-sm opacity-90">
               Scegli il documento, l’idea o il progetto che vuoi proteggere. Nessun contenuto viene
               reso pubblico: resta solo tuo.
@@ -276,7 +276,7 @@ export default function Page() {
             </p>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-            <div className="text-sm opacity-70 mb-2">3 · Prova e Verifica</div>
+            <div className="text-sm opacity-70 mb-2">3 · Prova e Verify</div>
             <p className="text-sm opacity-90">
               Ricevi una ricevuta digitale che potrai esibire in ogni momento per dimostrare i tuoi
               diritti. In futuro ti basterà confrontarla con il tuo file per provarne l’autenticità.
@@ -290,7 +290,7 @@ export default function Page() {
 
       {/* GUIDA */}
       <section id="guida" className="space-y-6">
-        <h2 className="text-3xl font-semibold">Guida: proteggi al meglio la tua idea</h2>
+        <h2 className="text-3xl font-semibold">Guide: proteggi al meglio la tua idea</h2>
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
             <h3 className="text-lg font-semibold mb-2">1 · Crea un file ZIP</h3>
@@ -308,9 +308,9 @@ export default function Page() {
             </p>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-            <h3 className="text-lg font-semibold mb-2">3 · Registrazione entro 72 ore</h3>
+            <h3 className="text-lg font-semibold mb-2">3 · Registrazione entro 72 hours</h3>
             <p className="text-sm opacity-90">
-              Entro <b>72 ore</b> riceverai il codice di registrazione su blockchain Bitcoin che
+              Entro <b>72 hours</b> riceverai il codice di registrazione su blockchain Bitcoin che
               certifica l’esistenza del tuo file a livello globale, rendendo la tua idea <b>protetta e
               immodificabile</b>.
             </p>
