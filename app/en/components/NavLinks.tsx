@@ -1,6 +1,6 @@
 "use client";
 import {usePathname} from "next/navigation";
-import {CONTENT, getLocaleFromPath} from "../../lib/content";
+import {CONTENT, getLocaleFromPath} from "../lib/content";
 
 export default function NavLinks() {
   const pathname = usePathname() || "/";

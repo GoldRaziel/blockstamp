@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { CONTENT_HERO } from "../../lib/content";
+import { CONTENT_HERO } from "../lib/content";
 
 type Locale = "it" | "en" | "ar";
 
