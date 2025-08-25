@@ -1,3 +1,4 @@
+import Hero from "../components/Hero";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 
 export default function Page() {
@@ -5,6 +6,7 @@ export default function Page() {
     <>
       <LanguageSwitcher />
       <main className="container mx-auto px-4 py-10 space-y-6">
+    <Hero />
         {/* HERO */}
         <section className="space-y-2">
           <h1 className="text-3xl md:text-4xl font-semibold">Protection on Bitcoin</h1>
