@@ -1,7 +1,7 @@
 import NavLinks from "./components/NavLinks";
 import LangDropdown from "./components/LangDropdown";
 // app/layout.tsx
-import "./globals.css";
+import "../globals.css";
 import type { Metadata } from "next";
 import Image from "next/image";
 
