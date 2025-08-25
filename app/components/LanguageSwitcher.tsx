@@ -3,7 +3,7 @@ import { usePathname } from "next/navigation";
 
 function swapLocale(pathname: string, to: "it"|"en"|"ar") {
   const parts = pathname.split("/");
-  if (["it","en","ar"].includes(parts[1])) {
+  if (["it", "en", "ar"].includes(parts[1])) {
     parts[1] = to;
   } else {
     parts.splice(1, 0, to);
