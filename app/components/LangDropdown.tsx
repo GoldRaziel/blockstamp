@@ -3,17 +3,15 @@ import {useState, useEffect, useRef} from "react";
 import {usePathname} from "next/navigation";
 
 type Code = "it" | "en" | "ar";
-const OPTIONS: {code: Code; flag: string}[] = [
-  {code: "it", flag: "🇮🇹"},
-  {code: "en", flag: "🇬🇧"},
-  {code: "ar", flag: "🇦🇪"}
-];
+const FLAGS: Record<Code, string> = {
+  it: "/flags/it.svg",
+  en: "/flags/gb.svg",
+  ar: "/flags/ae.svg"
+};
 
 export default function LangDropdown() {
   const pathname = usePathname() || "/";
   const current = (pathname.split("/")[1] as Code) || "it";
-  const selected = OPTIONS.find(o => o.code === current) || OPTIONS[0];
-
   const [open, setOpen] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -36,7 +34,7 @@ export default function LangDropdown() {
 
   return (
     <div className="relative">
-      {/* trigger: solo bandierina + codice (bianco), zero box */}
+      {/* Trigger minimal: bandierina + codice lingua (bianco), niente riquadro */}
       <button
         ref={btnRef}
         onClick={() => setOpen(v => !v)}
@@ -45,28 +43,28 @@ export default function LangDropdown() {
         aria-expanded={open}
         title="Language"
       >
-        <span className="text-base leading-none">{selected.flag}</span>
-        <span className="text-sm leading-none uppercase">{selected.code.toUpperCase()}</span>
+        <img src={FLAGS[current]} width="18" height="12" alt={current} className="inline-block rounded-[2px]" />
+        <span className="text-sm leading-none uppercase">{current}</span>
         <svg width="12" height="12" viewBox="0 0 20 20" className="opacity-80"><path fill="currentColor" d="M5 7l5 5 5-5"/></svg>
       </button>
 
       {open && (
         <div
           ref={menuRef}
-          className="absolute right-0 mt-2 w-24 rounded-md bg-black/80 border border-white/10 backdrop-blur p-1 shadow-lg z-50"
+          className="absolute right-0 mt-2 w-28 rounded-md bg-black/80 border border-white/10 backdrop-blur p-1 shadow-lg z-50"
           role="listbox"
         >
-          {OPTIONS.map(o => (
+          {(["it","en","ar"] as Code[]).map(code => (
             <a
-              key={o.code}
-              href={hrefFor(o.code)}
-              className={`flex items-center gap-1 px-2 py-1.5 rounded hover:bg-white/10 text-white ${o.code===selected.code ? "opacity-100" : "opacity-90"}`}
+              key={code}
+              href={hrefFor(code)}
+              className={`flex items-center gap-2 px-2 py-1.5 rounded hover:bg-white/10 text-white ${code===current ? "opacity-100" : "opacity-90"}`}
               role="option"
-              aria-selected={o.code===selected.code}
+              aria-selected={code===current}
               onClick={() => setOpen(false)}
             >
-              <span className="text-base leading-none">{o.flag}</span>
-              <span className="text-sm leading-none uppercase">{o.code.toUpperCase()}</span>
+              <img src={FLAGS[code]} width="18" height="12" alt={code} className="inline-block rounded-[2px]" />
+              <span className="text-sm leading-none uppercase">{code}</span>
             </a>
           ))}
         </div>

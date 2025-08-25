@@ -48,7 +48,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   <span className="opacity-50">•</span>
   <a href="/#contatti" className="hover:underline whitespace-nowrap">CONTATTI</a>
   <span className="opacity-50">•</span>
-  <span className="opacity-50">•</span>
   <LangDropdown />
 </nav>
           </div>
