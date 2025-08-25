@@ -39,17 +39,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 />
               </a>
             </div>
-            <nav className="text-sm flex items-center flex-wrap gap-x-3 gap-y-1">
-              <a className="hover:underline whitespace-nowrap" href="/#procedura">PROCEDURA</a>
-              <span className="opacity-50">•</span>
-              <a className="hover:underline whitespace-nowrap" href="/#guida">GUIDA</a>
-              <span className="opacity-50">•</span>
-              <a className="hover:underline whitespace-nowrap" href="/#pricing">PREZZO</a>
-            
-              <a className="hover:underline whitespace-nowrap" href="/#faq">FAQ</a>
-              <span className="opacity-50">•</span>
-              <a className="hover:underline whitespace-nowrap" href="/#contatti">CONTATTI</a>
-            </nav>
+<nav className="text-sm flex items-center flex-wrap gap-x-3 gap-y-1">
+  <a href="/#procedura" className="hover:underline whitespace-nowrap">PROCEDURA</a>
+  <span className="opacity-50">•</span>
+  <a href="/#guida" className="hover:underline whitespace-nowrap">GUIDA</a>
+  <span className="opacity-50">•</span>
+  <a href="/#faq" className="hover:underline whitespace-nowrap">FAQ</a>
+  <span className="opacity-50">•</span>
+  <a href="/#contatti" className="hover:underline whitespace-nowrap">CONTATTI</a>
+  <span className="opacity-50">•</span>
+  <LangDropdown />
+</nav>
           </div>
           <div className="ml-auto flex items-center"><LangDropdown /></div>
         <div className="ml-auto flex items-center"><LangDropdown /></div>
