@@ -26,7 +26,7 @@ export default function PriceBox({ onPay }: Props) {
   }
 
   return (
-    <div className="bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4">
+    <div dir="rtl" lang="ar" className="bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4">
       <div className="text-xs font-semibold uppercase tracking-wide text-sky-300">
         السعر
       </div>
@@ -41,7 +41,7 @@ export default function PriceBox({ onPay }: Props) {
         تثبيت بصمة ملفك على بيتكوين مع دليل التحقق.
       </p>
 
-      <ul className="list-disc pl-5 text-sm space-y-1 opacity-90">
+      <ul className="list-disc pr-5 text-sm space-y-1 opacity-90">
         <li>حساب البصمة محليًا (خصوصية حسب التصميم)</li>
         <li>تثبيت على السلسلة مع مرجع عام</li>
         <li>وثيقة إثبات وتعليمات</li>
