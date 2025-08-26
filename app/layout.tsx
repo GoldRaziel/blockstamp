@@ -1,3 +1,4 @@
+import RootNavGate from "./components/RootNavGate";
 import NavLinks from "./components/NavLinks";
 import LangDropdown from "./components/LangDropdown";
 // app/layout.tsx
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="it">
       <body>
+      <RootNavGate />
         <header className="border-b border-white/10">
           <div className="container mx-auto px-4 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
             <div className="flex justify-start">
