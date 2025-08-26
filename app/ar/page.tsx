@@ -257,27 +257,25 @@ export default function Page() {
 
       {/* PROCEDURA */}
       <section id="procedure" dir="rtl" lang="ar" className="space-y-5">
-        <h2 className="text-3xl font-semibold">Procedura</h2>
+        <h2 className="text-3xl font-semibold">الإجراء</h2>
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-            <div className="text-sm opacity-70 mb-2">1 · Carica il tuo file</div>
+            <div className="text-sm opacity-70 mb-2">١ · ارفع ملفك</div>
             <p className="text-sm opacity-90">
-              Scegli il documento, l’idea o il progetto che vuoi proteggere. Nessun contenuto viene
+              اختر المستند أو الفكرة أو المشروع الذي تريد حمايته. Nessun contenuto viene
               reso pubblico: resta solo tuo.
             </p>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-            <div className="text-sm opacity-70 mb-2">2 · Registrazione su Blockchain</div>
+            <div className="text-sm opacity-70 mb-2">٢ · التسجيل على البلوكتشين</div>
             <p className="text-sm opacity-90">
-              Creiamo una traccia indelebile che dimostra l’esistenza della tua idea in una data
-              certa. Questa prova viene incisa sulla blockchain di Bitcoin, la più sicura al mondo.
+              ننشئ أثرًا لا يُمحى يُثبت وجود فكرتك في تاريخ محدد. يتم تثبيت هذا الإثبات على بلوكتشين بيتكوين، الأكثر أمانًا في العالم.
             </p>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-            <div className="text-sm opacity-70 mb-2">3 · Prova e Verifica</div>
+            <div className="text-sm opacity-70 mb-2">٣ · الإثبات والتحقق</div>
             <p className="text-sm opacity-90">
-              Ricevi una ricevuta digitale che potrai esibire in ogni momento per dimostrare i tuoi
-              diritti. In futuro ti basterà confrontarla con il tuo file per provarne l’autenticità.
+              ستتلقى إيصالًا رقميًا يمكنك عرضه في أي وقت لإثبات حقوقك. لاحقًا يكفيك مقارنته بملفك لإثبات الأصالة.
             </p>
           </div>
         </div>

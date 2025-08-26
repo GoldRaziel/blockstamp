@@ -260,24 +260,22 @@ export default function Page() {
         <h2 className="text-3xl font-semibold">Procedure</h2>
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-            <div className="text-sm opacity-70 mb-2">1 · Carica il tuo file</div>
+            <div className="text-sm opacity-70 mb-2">1 · Upload your file</div>
             <p className="text-sm opacity-90">
-              Scegli il documento, l’idea o il progetto che vuoi proteggere. Nessun contenuto viene
+              Choose the document, idea, or project you want to protect. Nessun contenuto viene
               reso pubblico: resta solo tuo.
             </p>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-            <div className="text-sm opacity-70 mb-2">2 · Registrazione su Blockchain</div>
+            <div className="text-sm opacity-70 mb-2">2 · Blockchain Registration</div>
             <p className="text-sm opacity-90">
-              Creiamo una traccia indelebile che dimostra l’esistenza della tua idea in una data
-              certa. Questa prova viene incisa sulla blockchain di Bitcoin, la più sicura al mondo.
+              We create an indelible trace proving your idea existed at a specific date. This proof is embedded on the Bitcoin blockchain, the most secure in the world.
             </p>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-            <div className="text-sm opacity-70 mb-2">3 · Prova e Verifica</div>
+            <div className="text-sm opacity-70 mb-2">3 · Proof & Verification</div>
             <p className="text-sm opacity-90">
-              Ricevi una ricevuta digitale che potrai esibire in ogni momento per dimostrare i tuoi
-              diritti. In futuro ti basterà confrontarla con il tuo file per provarne l’autenticità.
+              You receive a digital receipt you can show anytime to assert your rights. Later, just compare it with your file to prove authenticity.
             </p>
           </div>
         </div>
