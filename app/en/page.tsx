@@ -176,7 +176,7 @@ export default function Page() {
   <ul className="list-disc pl-6 space-y-2 text-sm opacity-90">
     <li><b>Immutability:</b> once recorded, the proof cannot be altered.</li>
     <li><b>Public proof:</b> a reference verifiable by anyone, anywhere.</li>
-    <li><b>Privacy:</b> registriamo solo l’impronta; il file resta tuo.</li>
+    <li><b>Privacy:</b> we only record the fingerprint; the file stays with you.</li>
     <li><b>No intermediaries:</b> independent proof, without blind trust in third parties.</li>
     <li><b>Global validity:</b> a single registration, recognizable anywhere.</li>
   </ul>
