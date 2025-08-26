@@ -1,4 +1,4 @@
-import Navbar from "./components/Navbar";
+
 import NavLinks from "./components/NavLinks";
 import LangDropdown from "./components/LangDropdown";
 // app/layout.tsx
@@ -26,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning>
       <body>
-      <Navbar />
+      
 
         <header className="border-b border-white/10">
           <div className="container mx-auto px-4 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
