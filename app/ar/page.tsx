@@ -256,7 +256,7 @@ export default function Page() {
 
 
       {/* PROCEDURA */}
-      <section id="procedura" className="space-y-5">
+      <section id="procedure" dir="rtl" lang="ar" className="space-y-5">
         <h2 className="text-3xl font-semibold">Procedura</h2>
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
