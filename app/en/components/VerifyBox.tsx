@@ -39,7 +39,7 @@ export default function VerifyBox() {
           return;
         }
 
-        setMsg("attendi 48-72 ore prima di verificare");
+        setMsg("Please wait 48–72 hours before verifying");
         setMsgType("warn");
         return;
       }
@@ -49,14 +49,14 @@ export default function VerifyBox() {
       );
       if (Number.isFinite(h)) {
         setBlockHeight(h);
-        setMsg("Verifica completata.");
+        setMsg("Verification completed.");
         setMsgType("ok");
       } else {
         setMsg("codice inesistente");
         setMsgType("warn");
       }
     } catch {
-      setMsg("attendi 48-72 ore prima di verificare");
+      setMsg("Please wait 48–72 hours before verifying");
       setMsgType("warn");
     } finally {
       setBusy(false);
@@ -65,7 +65,7 @@ export default function VerifyBox() {
 
   return (
     <section
-      id="verifica"
+      id="verify"
       className="mt-10 bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4"
     >
       <h2 className="text-xl font-semibold text-white">VERIFY</h2>
@@ -76,10 +76,10 @@ export default function VerifyBox() {
       </p>
 
       <p className="text-sky-100 text-sm">
-        <strong>Cosa significa:</strong> la timbratura memorizza l&apos;impronta (SHA-256) del tuo file
+        <strong>What it means:</strong> la timbratura memorizza l&apos;impronta (SHA-256) del tuo file
         in Bitcoin tramite un percorso di aggiunzione (Merkle). Il <em>Block Height</em> indica il blocco
         che ancora (ancoraggio) la tua prova. Questo fornisce una <strong>prova di esistenza e priorità temporale</strong>:
-        dimostra che il tuo contenuto esisteva almeno alla data/ora di quel blocco. <strong>Conservalo: è la tua evidenza tecnica che ti tutela dal punto di vista legale.</strong>
+        it proves your content existed at least at the date/time of that block. <strong>Keep it: it is your technical evidence that protects you legally.</strong>
       </p>
 
       <div className="flex items-center gap-3">
@@ -120,13 +120,13 @@ export default function VerifyBox() {
       <div className="text-sky-200 text-sm leading-relaxed">
         <strong>Note:</strong> per una prova completa conserva insieme
         <span className="whitespace-nowrap"> (1) il file originale,</span>
-        <span className="whitespace-nowrap"> (2) il suo hash SHA-256</span> e
+        <span className="whitespace-nowrap"> (2) its SHA-256 hash</span> e
         <span className="whitespace-nowrap"> (3) il file <code>.ots</code>.</span>
         L’hash collega in modo univoco il file alla timbratura registrata su Bitcoin.
       </div>
 
       <div className="min-h-6">
-        {busy && <p className="text-sky-200 text-sm">Verifica in corso…</p>}
+        {busy && <p className="text-sky-200 text-sm">Verification in progress…</p>}
 
         {!busy && blockHeight !== null && (
           <div className="text-sky-100">
