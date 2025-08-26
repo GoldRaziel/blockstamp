@@ -141,17 +141,16 @@ export default function Page() {
       {/* HERO */}
       <section className="hero text-center space-y-6">
         <h1 className="text-4xl md:text-5xl font-semibold leading-tight">
-          <span className="text-white">Proteggi la Tua </span>
+          <span className="text-white">Protect Your </span>
           <span className="text-sky-400">Idea</span>
           <br />
-          <span className="text-white">nella </span>
+          <span className="text-white">on the </span>
           <span className="text-sky-400">Blockchain</span>
           <span className="text-sky-400 text-2xl align-middle"> • </span>
           <span className="text-white">Bitcoin</span>
         </h1>
         <p className="text-lg opacity-90 max-w-3xl mx-auto">
-          Il modo più sicuro e veloce al mondo per registrare e proteggere i tuoi diritti
-          intellettuali.
+          The safest and fastest way to record and protect your intellectual property.
         </p>
       </section>
 
@@ -166,20 +165,20 @@ export default function Page() {
       <PriceBox />
     </div>
 
-    {/* Colonna destra: Perché Blockchain + CTA */}
+    {/* Colonna destra: Why Blockchain + CTA */}
     
 <div className="space-y-6">
   
 
-<h3 className="mt-6 text-xl font-semibold">Perché Blockchain</h3>
+<h3 className="mt-6 text-xl font-semibold">Why Blockchain</h3>
 
 
   <ul className="list-disc pl-6 space-y-2 text-sm opacity-90">
-    <li><b>Immutabilità:</b> una volta registrata, la prova non può essere alterata.</li>
-    <li><b>Prova pubblica:</b> riferimento verificabile da chiunque, ovunque.</li>
+    <li><b>Immutability:</b> once recorded, the proof cannot be altered.</li>
+    <li><b>Public proof:</b> a reference verifiable by anyone, anywhere.</li>
     <li><b>Privacy:</b> registriamo solo l’impronta; il file resta tuo.</li>
-    <li><b>Nessuna intermediazione:</b> prova indipendente, senza fiducia cieca in terzi.</li>
-    <li><b>Validità globale:</b> una registrazione unica, riconoscibile ovunque.</li>
+    <li><b>No intermediaries:</b> independent proof, without blind trust in third parties.</li>
+    <li><b>Global validity:</b> a single registration, recognizable anywhere.</li>
   </ul>
 
   <PayNow />
@@ -327,69 +326,68 @@ export default function Page() {
       
       {/* FAQ */}
       <section id="faq" className="space-y-4">
-        <h2 className="text-3xl font-semibold">FAQ</h2>
+  <h2 className="text-3xl font-semibold">FAQ</h2>
 
-        <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
-          <summary className="cursor-pointer font-medium">Cosa è una blockchain?</summary>
-          <div className="mt-2 text-sm opacity-90 space-y-2">
-            <p>
-              La <b>blockchain</b> è un <i>registro digitale distribuito</i> e <i>immutabile</i>:
-              una catena di blocchi, dove ogni blocco contiene dati (es. transazioni) e l’hash
-              crittografico del blocco precedente. Questo collegamento rende l’intera catena
-              resistente alle manomissioni.
-            </p>
-            <p className="font-medium">Come funziona in breve:</p>
-            <ol className="list-decimal pl-5 space-y-1">
-              <li>Le operazioni vengono raccolte in un nuovo blocco.</li>
-              <li>Si calcola un’impronta univoca (hash) del blocco.</li>
-              <li>Il blocco include l’hash del precedente, formando la catena.</li>
-              <li>La rete approva il blocco tramite meccanismi di <i>consenso</i> (es. Proof of Work/Stake).</li>
-              <li>Una volta aggiunto, modificarlo richiederebbe riscrivere tutti i blocchi successivi.</li>
-            </ol>
-            <ul className="list-disc pl-5 space-y-1">
-              <li><b>Decentralizzazione:</b> nessuna autorità centrale; più nodi condividono lo stesso registro.</li>
-              <li><b>Trasparenza:</b> nelle blockchain pubbliche lo storico è verificabile da chiunque.</li>
-              <li><b>Sicurezza:</b> crittografia + consenso rendono difficile la falsificazione.</li>
-            </ul>
-            <p>
-              In pratica, è come un <i>libro mastro pubblico</i> dove ogni pagina (blocco)
-              è collegata alla precedente e approvata dalla comunità: un modo affidabile
-              di registrare informazioni senza dover credere a un intermediario.
-            </p>
-          </div>
-        </details>
+  <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
+    <summary className="cursor-pointer font-medium">What is a blockchain?</summary>
+    <div className="mt-2 text-sm opacity-90 space-y-2">
+      <p>
+        A <b>blockchain</b> is a <i>distributed</i>, <i>append-only</i> ledger: a chain of blocks where each block
+        contains data (e.g., transactions) and the cryptographic hash of the previous block. This linkage makes the
+        whole chain tamper-resistant.
+      </p>
+      <p className="font-medium">How it works (quickly):</p>
+      <ol className="list-decimal pl-5 space-y-1">
+        <li>Operations are grouped into a new block.</li>
+        <li>A unique fingerprint (hash) of the block is computed.</li>
+        <li>The block includes the previous block’s hash, forming the chain.</li>
+        <li>The network approves the block via <i>consensus</i> (e.g., Proof of Work/Stake).</li>
+        <li>Once added, changing it would require rewriting all subsequent blocks.</li>
+      </ol>
+      <ul className="list-disc pl-5 space-y-1">
+        <li><b>Decentralization:</b> no central authority; many nodes share the same ledger.</li>
+        <li><b>Transparency:</b> on public chains the history is verifiable by anyone.</li>
+        <li><b>Security:</b> cryptography + consensus make forgery extremely hard.</li>
+      </ul>
+      <p>
+        In practice, it’s like a <i>public ledger</i> where every page (block) is linked to the previous one and
+        approved by the network — a reliable way to record information without trusting an intermediary.
+      </p>
+    </div>
+  </details>
 
-        <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
-          <summary className="cursor-pointer font-medium">Il mio file viene caricato o salvato da qualche parte?</summary>
-          <p className="mt-2 text-sm opacity-90">
-            No. L’impronta viene calcolata localmente nel tuo browser. Registriamo solo l’impronta (non reversibile).
-          </p>
-        </details>
+  <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
+    <summary className="cursor-pointer font-medium">Do you upload or store my file?</summary>
+    <p className="mt-2 text-sm opacity-90">
+      No. The fingerprint is computed locally in your browser. We only record the fingerprint (non-reversible).
+    </p>
+  </details>
 
-        <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
-          <summary className="cursor-pointer font-medium">Cosa dimostra la prova sulla blockchain?</summary>
-          <p className="mt-2 text-sm opacity-90">
-            Dimostra che un contenuto con <b>quell’impronta specifica</b> era stato registrato su Bitcoin almeno alla
-            data di riferimento. Non rivela il contenuto e non certifica la tua identità.
-          </p>
-        </details>
+  <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
+    <summary className="cursor-pointer font-medium">What does the blockchain proof show?</summary>
+    <p className="mt-2 text-sm opacity-90">
+      It proves that content with <b>that specific fingerprint</b> was recorded on Bitcoin at least by the reference
+      date. It does not reveal the content and does not certify your identity.
+    </p>
+  </details>
 
-        <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
-          <summary className="cursor-pointer font-medium">Come verifico in futuro?</summary>
-          <p className="mt-2 text-sm opacity-90">
-            Ricalcoli l’impronta del file originale e la confronti con quella inclusa nella prova. Se combaciano,
-            hai integrità e riferimento pubblico su Bitcoin.
-          </p>
-        </details>
+  <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
+    <summary className="cursor-pointer font-medium">How do I verify later?</summary>
+    <p className="mt-2 text-sm opacity-90">
+      Recompute the fingerprint of the original file and compare it to the one included in the proof. If they match,
+      you have integrity and a public reference on Bitcoin.
+    </p>
+  </details>
 
-        <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
-          <summary className="cursor-pointer font-medium">E se perdo il file?</summary>
-          <p className="mt-2 text-sm opacity-90">
-            L’impronta non permette di ricostruirlo. Conserva backup sicuri del file originale: la prova dimostra
-            esistenza e integrità, non recupera il contenuto.
-          </p>
-        </details>
-      </section>
+  <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
+    <summary className="cursor-pointer font-medium">What if I lose the file?</summary>
+    <p className="mt-2 text-sm opacity-90">
+      The fingerprint cannot reconstruct the content. Keep safe backups of the original file: the proof demonstrates
+      existence and integrity; it does not recover the content.
+    </p>
+  </details>
+</section>
+
 
       <div className="beam beam-footer"></div>
     </div>
