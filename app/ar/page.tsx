@@ -1,4 +1,3 @@
-import LanguageSwitcher from "../components/LanguageSwitcher";
 
 export default function Page() {
   return (
@@ -6,7 +5,6 @@ export default function Page() {
       {/* Header */}
       <header className="flex items-center justify-between">
         <h1 className="text-3xl md:text-4xl font-semibold">BLOCKSTAMP — إثبات الوجود</h1>
-        <LanguageSwitcher />
       </header>
 
       {/* Hero */}
