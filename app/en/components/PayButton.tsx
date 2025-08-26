@@ -29,7 +29,7 @@ export default function PayButton({ label = "PAY NOW" }: { label?: string }) {
         className="px-5 py-2 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-black font-semibold disabled:opacity-50"
         aria-disabled={busy}
       >
-        {busy ? "Reindirizzamento..." : label}
+        {busy ? "Redirecting..." : label}
       </button>
       {err && <span className="text-red-300 text-sm">{err}</span>}
     </div>

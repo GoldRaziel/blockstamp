@@ -17,7 +17,7 @@ export default function PriceBox({ onPay }: Props) {
         }),
       });
       const json = await res.json().catch(() => ({} as any));
-      if (!res.ok) throw new Error(json.error || "Errore pagamento");
+      if (!res.ok) throw new Error(json.error || "Payment error");
       if (json.url) window.location.href = json.url;
     } catch (e) {
       console.error(e);
@@ -38,7 +38,7 @@ export default function PriceBox({ onPay }: Props) {
 
       <div className="text-base font-semibold">Protezione Blockchain</div>
       <p className="text-sm opacity-90">
-        Ancoraggio dell’impronta del tuo file su Bitcoin con guida alla verifica.
+        Anchoring your file’s fingerprint on Bitcoin with a verification guide.
       </p>
 
       <ul className="list-disc pl-5 text-sm space-y-1 opacity-90">
