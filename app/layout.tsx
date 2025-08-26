@@ -1,4 +1,4 @@
-import LangDropdown from "./components/LangDropdown";
+import Nav from "./components/Nav";
 // app/layout.tsx
 import "./globals.css";
 import type { Metadata } from "next";
@@ -39,17 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 />
               </a>
             </div>
-<nav className="text-sm flex items-center flex-wrap gap-x-3 gap-y-1">
-  <a href="/#procedura" className="hover:underline whitespace-nowrap">PROCEDURA</a>
-  <span className="opacity-50">•</span>
-  <a href="/#guida" className="hover:underline whitespace-nowrap">GUIDA</a>
-  <span className="opacity-50">•</span>
-  <a href="/#faq" className="hover:underline whitespace-nowrap">FAQ</a>
-  <span className="opacity-50">•</span>
-  <a href="/#contatti" className="hover:underline whitespace-nowrap">CONTATTI</a>
-  <span className="opacity-50">•</span>
-  <LangDropdown />
-</nav>
+            <Nav />
           </div>
 </header>
 
