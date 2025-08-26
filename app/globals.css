@@ -207,7 +207,3 @@ a[href="/pricing"] {
     radial-gradient(1200px 600px at 0% 100%,
       rgba(56,189,248,0.20), transparent 70%);
 }
-
-/* Anchor offset for sticky header */
-section[id]{scroll-margin-top:7rem}
-@media (min-width:768px){section[id]{scroll-margin-top:8rem}}
