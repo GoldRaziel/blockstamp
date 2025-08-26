@@ -45,7 +45,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <main className="container mx-auto px-4 py-10">{children}</main>
 
-        <footer id="contatti" className="border-t border-white/10 mt-16">
+        <div id="contact"></div>
+<footer id="contatti" className="border-t border-white/10 mt-16">
           <div className="container mx-auto px-4 py-6 text-sm opacity-80 flex items-center justify-center gap-3 flex-wrap text-center">
             <span>© {year} BLOCKSTAMP — Proof of Existence</span>
             <span className="hidden sm:inline">•</span>
