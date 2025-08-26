@@ -167,18 +167,18 @@ export default function Page() {
 
     {/* Colonna destra: Perché Blockchain + CTA */}
     
-<div className="space-y-6">
+<div dir="rtl" lang="ar" className="space-y-6">
   
 
-<h3 className="mt-6 text-xl font-semibold">Perché Blockchain</h3>
+<h3 className="mt-6 text-xl font-semibold">لماذا البلوكتشين</h3>
 
 
-  <ul className="list-disc pl-6 space-y-2 text-sm opacity-90">
-    <li><b>Immutabilità:</b> una volta registrata, la prova non può essere alterata.</li>
-    <li><b>Prova pubblica:</b> riferimento verificabile da chiunque, ovunque.</li>
-    <li><b>Privacy:</b> registriamo solo l’impronta; il file resta tuo.</li>
-    <li><b>Nessuna intermediazione:</b> prova indipendente, senza fiducia cieca in terzi.</li>
-    <li><b>Validità globale:</b> una registrazione unica, riconoscibile ovunque.</li>
+  <ul className="list-disc pr-6 space-y-2 text-sm opacity-90">
+    <li><b>الثبات:</b> بمجرد تسجيلها، لا يمكن تعديل الإثبات.</li>
+    <li><b>دليل عام:</b> مرجع يمكن لأيّ شخص التحقق منه في أي مكان.</li>
+    <li><b>الخصوصية:</b> نسجّل البصمة فقط؛ يبقى الملف لديك.</li>
+    <li><b>دون وساطة:</b> إثبات مستقل بلا ثقة عمياء بأطراف ثالثة.</li>
+    <li><b>صلاحية عالمية:</b> تسجيل واحد معترف به في كل مكان.</li>
   </ul>
 
   <PayNow />
