@@ -239,14 +239,14 @@ export default function Page() {
             disabled={!hash}
             className="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 disabled:opacity-40"
           >
-            Copia
+            Copy
           </button>
         </div>
       </div>
     </div>
 
     <p className="text-xs opacity-70 mt-2">
-      Tip: rinomina il file di testo con qualcosa come <code>hash.txt</code> e mantienilo dentro lo <code>.zip</code> accanto al file originale.
+      Tip: rename the text file to something like <code>hash.txt</code> and keep it inside the <code>.zip</code> next to the original file.
     </p>
   </div>
 

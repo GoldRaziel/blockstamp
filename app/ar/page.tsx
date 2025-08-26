@@ -187,7 +187,7 @@ export default function Page() {
   </div>
 
   {/* Riquadro istruzioni */}
-  <div className="mt-10 bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4">
+  <div dir="rtl" lang="ar" className="mt-10 bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4">
     <h3 className="text-lg font-semibold flex items-center gap-2">اتبع التعليمات</h3>
     <ol className="list-decimal pl-6 space-y-1 text-sm opacity-90">
       <li>اختر الملف الذي تريد حمايته.</li>
@@ -239,14 +239,14 @@ export default function Page() {
             disabled={!hash}
             className="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 disabled:opacity-40"
           >
-            Copia
+            نسخ
           </button>
         </div>
       </div>
     </div>
 
     <p className="text-xs opacity-70 mt-2">
-      نصيحة: rinomina il file di testo con qualcosa come <code>hash.txt</code> e mantienilo dentro lo <code>.zip</code> accanto al file originale.
+      نصيحة: أعد تسمية الملف النصي إلى شيء مثل <code>hash.txt</code> واحتفظ به داخل <code>.zip</code> بجانب الملف الأصلي.
     </p>
   </div>
 
