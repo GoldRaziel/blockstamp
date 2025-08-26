@@ -194,7 +194,7 @@ export default function Page() {
       <li>ستحصل على بصمة SHA-256 فريدة.</li>
       <li><b>انسخ</b> البصمة والصقها في ملف نصي <code>.txt</code>.</li>
       <li>اضغط الملف الأصلي <i>مع</i> ملف <code>.txt</code> في أرشيف <code>.zip</code>.</li>
-      <li>ارجع إلى هنا واضغط <b>PAY NOW</b>.</li>
+      <li>ارجع إلى هنا واضغط <b>ادفع الآن</b>.</li>
       <li>بعد الدفع، ارفع ملف <code>.zip</code> في الصفحة التالية.</li>
     </ol>
 
