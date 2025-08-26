@@ -262,8 +262,7 @@ export default function Page() {
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
             <div className="text-sm opacity-70 mb-2">١ · ارفع ملفك</div>
             <p className="text-sm opacity-90">
-              اختر المستند أو الفكرة أو المشروع الذي تريد حمايته. Nessun contenuto viene
-              reso pubblico: resta solo tuo.
+              اختر المستند أو الفكرة أو المشروع الذي تريد حمايته. لن يُنشر أي محتوى: يبقى ملكًا لك فقط.
             </p>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
