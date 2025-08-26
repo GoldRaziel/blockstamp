@@ -35,7 +35,7 @@ export default function PayNow() {
       disabled={busy}
       aria-disabled={busy}
     >
-      {busy ? "Redirecting..." : "PAY NOW"}
+      {busy ? "Reindirizzamento..." : "PAY NOW"}
     </button>
   );
 }

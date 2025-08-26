@@ -101,7 +101,7 @@ export default function Page() {
         }),
       });
       const json = await res.json().catch(() => ({} as any));
-      if (!res.ok) throw new Error(json.error || "Payment error");
+      if (!res.ok) throw new Error(json.error || "Errore pagamento");
       if (json.url) window.location.href = json.url;
     } catch (err: any) {
       console.error(err);
@@ -176,7 +176,7 @@ export default function Page() {
 
   <ul className="list-disc pl-6 space-y-2 text-sm opacity-90">
     <li><b>Immutabilità:</b> una volta registrata, la prova non può essere alterata.</li>
-    <li><b>Public proof:</b> a reference verifiable by anyone, anywhere.</li>
+    <li><b>Prova pubblica:</b> riferimento verificabile da chiunque, ovunque.</li>
     <li><b>Privacy:</b> registriamo solo l’impronta; il file resta tuo.</li>
     <li><b>Nessuna intermediazione:</b> prova indipendente, senza fiducia cieca in terzi.</li>
     <li><b>Validità globale:</b> una registrazione unica, riconoscibile ovunque.</li>
@@ -191,11 +191,11 @@ export default function Page() {
   <div className="mt-10 bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4">
     <h3 className="text-lg font-semibold flex items-center gap-2">SEGUI LE ISTRUZIONI</h3>
     <ol className="list-decimal pl-6 space-y-1 text-sm opacity-90">
-      <li>Select the file to protect.</li>
-      <li>You will obtain your unique SHA-256 fingerprint.</li>
+      <li>Seleziona il file da proteggere.</li>
+      <li>Otterrai la tua impronta digitale univoca SHA-256.</li>
       <li><b>Copia</b> l’impronta e incollala in un file di testo <code>.txt</code>.</li>
       <li>Comprimi il file originale <i>insieme</i> al file <code>.txt</code> in un archivio <code>.zip</code>.</li>
-      <li>Come back here and click <b>PAY NOW</b>.</li>
+      <li>Torna qui e clicca <b>PAGA ORA</b>.</li>
       <li>Dopo il pagamento, carica il file <code>.zip</code> nella pagina successiva.</li>
     </ol>
 
@@ -218,7 +218,7 @@ export default function Page() {
              border border-white/10 rounded-none
              cursor-pointer select-none"
 >
-  Choose file
+  Scegli file
 </label>
 
         {file && (
@@ -227,7 +227,7 @@ export default function Page() {
       </div>
 
       <div>
-        <label className="block text-sm opacity-80 mb-1">SHA-256 fingerprint</label>
+        <label className="block text-sm opacity-80 mb-1">Impronta SHA-256</label>
         <div className="flex gap-2">
           <textarea
             className="flex-1 h-16 rounded-lg bg-black/40 border border-white/10 p-2 text-xs font-mono"
@@ -275,7 +275,7 @@ export default function Page() {
             </p>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-            <div className="text-sm opacity-70 mb-2">3 · Proof and Verification</div>
+            <div className="text-sm opacity-70 mb-2">3 · Prova e Verifica</div>
             <p className="text-sm opacity-90">
               Ricevi una ricevuta digitale che potrai esibire in ogni momento per dimostrare i tuoi
               diritti. In futuro ti basterà confrontarla con il tuo file per provarne l’autenticità.
@@ -289,7 +289,7 @@ export default function Page() {
 
       {/* GUIDA */}
       <section id="guide" className="space-y-6">
-        <h2 className="text-3xl font-semibold">Guide: protect your idea</h2>
+        <h2 className="text-3xl font-semibold">Guida: proteggi al meglio la tua idea</h2>
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
             <h3 className="text-lg font-semibold mb-2">1 · Crea un file ZIP</h3>
@@ -348,7 +348,7 @@ export default function Page() {
             </ol>
             <ul className="list-disc pl-5 space-y-1">
               <li><b>Decentralizzazione:</b> nessuna autorità centrale; più nodi condividono lo stesso registro.</li>
-              <li><b>Transparency:</b> in public blockchains the history is verifiable by anyone.</li>
+              <li><b>Trasparenza:</b> nelle blockchain pubbliche lo storico è verificabile da chiunque.</li>
               <li><b>Sicurezza:</b> crittografia + consenso rendono difficile la falsificazione.</li>
             </ul>
             <p>
