@@ -326,70 +326,65 @@ export default function Page() {
       {/* PERCHÉ BLOCKCHAIN */}
       
       {/* FAQ */}
-      <section id="faq" className="space-y-4">
-        <h2 className="text-3xl font-semibold">FAQ</h2>
+      <section id="faq" className="space-y-4" dir="rtl" lang="ar">
+  <h2 className="text-3xl font-semibold">الأسئلة الشائعة</h2>
 
-        <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
-          <summary className="cursor-pointer font-medium">Cosa è una blockchain?</summary>
-          <div className="mt-2 text-sm opacity-90 space-y-2">
-            <p>
-              La <b>blockchain</b> è un <i>registro digitale distribuito</i> e <i>immutabile</i>:
-              una catena di blocchi, dove ogni blocco contiene dati (es. transazioni) e l’hash
-              crittografico del blocco precedente. Questo collegamento rende l’intera catena
-              resistente alle manomissioni.
-            </p>
-            <p className="font-medium">Come funziona in breve:</p>
-            <ol className="list-decimal pl-5 space-y-1">
-              <li>Le operazioni vengono raccolte in un nuovo blocco.</li>
-              <li>Si calcola un’impronta univoca (hash) del blocco.</li>
-              <li>Il blocco include l’hash del precedente, formando la catena.</li>
-              <li>La rete approva il blocco tramite meccanismi di <i>consenso</i> (es. Proof of Work/Stake).</li>
-              <li>Una volta aggiunto, modificarlo richiederebbe riscrivere tutti i blocchi successivi.</li>
-            </ol>
-            <ul className="list-disc pl-5 space-y-1">
-              <li><b>Decentralizzazione:</b> nessuna autorità centrale; più nodi condividono lo stesso registro.</li>
-              <li><b>Trasparenza:</b> nelle blockchain pubbliche lo storico è verificabile da chiunque.</li>
-              <li><b>Sicurezza:</b> crittografia + consenso rendono difficile la falsificazione.</li>
-            </ul>
-            <p>
-              In pratica, è come un <i>libro mastro pubblico</i> dove ogni pagina (blocco)
-              è collegata alla precedente e approvata dalla comunità: un modo affidabile
-              di registrare informazioni senza dover credere a un intermediario.
-            </p>
-          </div>
-        </details>
+  <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
+    <summary className="cursor-pointer font-medium">ما هي البلوكتشين؟</summary>
+    <div className="mt-2 text-sm opacity-90 space-y-2">
+      <p>
+        <b>البلوكتشين</b> سجل موزّع وغير قابل للتلاعب: سلسلة من الكُتل، كل كتلة تحتوي بيانات
+        (مثل المعاملات) وهاش الكتلة السابقة. هذا الربط يجعل السلسلة مقاومة للتزوير.
+      </p>
+      <p className="font-medium">كيف تعمل باختصار:</p>
+      <ol className="list-decimal pr-5 space-y-1">
+        <li>تُجمّع العمليات في كتلة جديدة.</li>
+        <li>يُحسب بصمة (هاش) فريدة للكتلة.</li>
+        <li>تتضمن الكتلة هاش الكتلة السابقة، فتتشكل السلسلة.</li>
+        <li>توافق الشبكة على الكتلة عبر <i>آليات إجماع</i> (مثل إثبات العمل/إثبات الحصّة).</li>
+        <li>بعد الإضافة، تغييرها يتطلب إعادة كتابة كل الكُتل اللاحقة.</li>
+      </ol>
+      <ul className="list-disc pr-5 space-y-1">
+        <li><b>اللامركزية:</b> لا سلطة مركزية؛ عقد عديدة تتشارك السجل نفسه.</li>
+        <li><b>الشفافية:</b> في الشبكات العامة، السجل متاح للتحقق من الجميع.</li>
+        <li><b>الأمان:</b> التشفير + الإجماع يصعّبان التزوير للغاية.</li>
+      </ul>
+      <p>
+        عمليًا هو كـ<i>دفتر أستاذ عام</i> ترتبط فيه كل صفحة (كتلة) بالسابقة وتُوافق عليها الشبكة —
+        طريقة موثوقة لتسجيل المعلومات دون وسيط.
+      </p>
+    </div>
+  </details>
 
-        <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
-          <summary className="cursor-pointer font-medium">Il mio file viene caricato o salvato da qualche parte?</summary>
-          <p className="mt-2 text-sm opacity-90">
-            No. L’impronta viene calcolata localmente nel tuo browser. Registriamo solo l’impronta (non reversibile).
-          </p>
-        </details>
+  <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
+    <summary className="cursor-pointer font-medium">هل يتم رفع ملفي أو تخزينه؟</summary>
+    <p className="mt-2 text-sm opacity-90">
+      لا. تُحسب البصمة محليًا داخل المتصفح. نقوم فقط بتثبيت البصمة (غير قابلة للعكس).
+    </p>
+  </details>
 
-        <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
-          <summary className="cursor-pointer font-medium">Cosa dimostra la prova sulla blockchain?</summary>
-          <p className="mt-2 text-sm opacity-90">
-            Dimostra che un contenuto con <b>quell’impronta specifica</b> era stato registrato su Bitcoin almeno alla
-            data di riferimento. Non rivela il contenuto e non certifica la tua identità.
-          </p>
-        </details>
+  <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
+    <summary className="cursor-pointer font-medium">ماذا تُثبت الحُجّة على البلوكتشين؟</summary>
+    <p className="mt-2 text-sm opacity-90">
+      تُثبت أن محتوىً ذو <b>تلك البصمة المحدّدة</b> قد تم تسجيله على بيتكوين على الأقل بتاريخ الإشارة. لا تكشف المحتوى ولا تثبت هويتك.
+    </p>
+  </details>
 
-        <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
-          <summary className="cursor-pointer font-medium">Come verifico in futuro?</summary>
-          <p className="mt-2 text-sm opacity-90">
-            Ricalcoli l’impronta del file originale e la confronti con quella inclusa nella prova. Se combaciano,
-            hai integrità e riferimento pubblico su Bitcoin.
-          </p>
-        </details>
+  <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
+    <summary className="cursor-pointer font-medium">كيف أتحقق لاحقًا؟</summary>
+    <p className="mt-2 text-sm opacity-90">
+      أعد حساب بصمة الملف الأصلي وقارنها مع البصمة الموجودة في الإثبات. إذا تطابقت، فلدَيك سلامة ومرجع عام على بيتكوين.
+    </p>
+  </details>
 
-        <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
-          <summary className="cursor-pointer font-medium">E se perdo il file?</summary>
-          <p className="mt-2 text-sm opacity-90">
-            L’impronta non permette di ricostruirlo. Conserva backup sicuri del file originale: la prova dimostra
-            esistenza e integrità, non recupera il contenuto.
-          </p>
-        </details>
-      </section>
+  <details className="bg-white/5 border border-white/10 rounded-2xl p-4">
+    <summary className="cursor-pointer font-medium">ماذا لو فقدت الملف؟</summary>
+    <p className="mt-2 text-sm opacity-90">
+      لا يمكن للبصمة استعادة المحتوى. احتفظ بنُسخ احتياطية آمنة للملف الأصلي؛ الإثبات يبرهن الوجود والسلامة في وقت محدد ولا يسترجع المحتوى.
+    </p>
+  </details>
+</section>
+
 
       <div className="beam beam-footer"></div>
     </div>
