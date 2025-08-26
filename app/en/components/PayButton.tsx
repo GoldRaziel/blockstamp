@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export default function PayButton({ label = "PAGA ORA" }: { label?: string }) {
+export default function PayButton({ label = "PAY NOW" }: { label?: string }) {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string>("");
 

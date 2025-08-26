@@ -68,10 +68,10 @@ export default function VerifyBox() {
       id="verifica"
       className="mt-10 bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4"
     >
-      <h2 className="text-xl font-semibold text-white">VERIFICA</h2>
+      <h2 className="text-xl font-semibold text-white">VERIFY</h2>
 
       <p className="text-sky-100 text-sm">
-        Inserisci qui sotto il tuo file <code>.ots</code> e clicca <strong>VERIFICA</strong>. 
+        Inserisci qui sotto il tuo file <code>.ots</code> e clicca <strong>VERIFY</strong>. 
         Otterrai il tuo <strong>numero di blocco</strong> registrato nella blockchain Bitcoin.
       </p>
 
@@ -101,24 +101,24 @@ export default function VerifyBox() {
           CARICA FILE
         </button>
 
-        {/* VERIFICA = amber */}
+        {/* VERIFY = amber */}
         <button
           type="button"
           onClick={handleVerify}
           disabled={!otsFile || busy}
           className="px-4 py-2 rounded-xl font-semibold bg-amber-400 hover:bg-amber-300 text-black disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          VERIFICA
+          VERIFY
         </button>
 
         <span className="text-sky-200 text-sm truncate max-w-[50%]">
-          {otsFile ? otsFile.name : "Nessun file selezionato"}
+          {otsFile ? otsFile.name : "No file selected"}
         </span>
       </div>
 
       {/* NOTA con stessa dimensione */}
       <div className="text-sky-200 text-sm leading-relaxed">
-        <strong>Nota:</strong> per una prova completa conserva insieme
+        <strong>Note:</strong> per una prova completa conserva insieme
         <span className="whitespace-nowrap"> (1) il file originale,</span>
         <span className="whitespace-nowrap"> (2) il suo hash SHA-256</span> e
         <span className="whitespace-nowrap"> (3) il file <code>.ots</code>.</span>
