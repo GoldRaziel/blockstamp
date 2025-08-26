@@ -39,7 +39,7 @@ export default function VerifyBox() {
           return;
         }
 
-        setMsg("يرجى الانتظار ٤٨–٧٢ ساعة قبل التحقق");
+        setMsg("attendi 48-72 ore prima di verificare");
         setMsgType("warn");
         return;
       }
@@ -49,14 +49,14 @@ export default function VerifyBox() {
       );
       if (Number.isFinite(h)) {
         setBlockHeight(h);
-        setMsg("تمّ التحقق.");
+        setMsg("Verifica completata.");
         setMsgType("ok");
       } else {
         setMsg("codice inesistente");
         setMsgType("warn");
       }
     } catch {
-      setMsg("يرجى الانتظار ٤٨–٧٢ ساعة قبل التحقق");
+      setMsg("attendi 48-72 ore prima di verificare");
       setMsgType("warn");
     } finally {
       setBusy(false);
@@ -64,29 +64,25 @@ export default function VerifyBox() {
   }
 
   return (
-    <section dir="rtl" lang="ar" dir="rtl" lang="ar"
-      id="verify"
+    <section
+      id="verifica"
       className="mt-10 bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4"
     >
-      <h2 className="text-xl font-semibold text-white">تحقّق</h2>
+      <h2 className="text-xl font-semibold text-white">VERIFICA</h2>
 
       <p className="text-sky-100 text-sm">
-        Inserisci qui sotto il tuo file <code>.ots</code> e clicca <strong>تحقّق</strong>. 
+        Inserisci qui sotto il tuo file <code>.ots</code> e clicca <strong>VERIFICA</strong>. 
         Otterrai il tuo <strong>numero di blocco</strong> registrato nella blockchain Bitcoin.
       </p>
 
       <p className="text-sky-100 text-sm">
-        <strong>ماذا يعني ذلك:</strong> la timbratura memorizza l&apos;impronta (SHA-256) del tuo file
+        <strong>Cosa significa:</strong> la timbratura memorizza l&apos;impronta (SHA-256) del tuo file
         in Bitcoin tramite un percorso di aggiunzione (Merkle). Il <em>Block Height</em> indica il blocco
         che ancora (ancoraggio) la tua prova. Questo fornisce una <strong>prova di esistenza e priorità temporale</strong>:
-        ويُثبت أن محتواك كان موجودًا على الأقل في تاريخ/وقت تلك الكتلة. <strong>احتفظ به: فهو دليلك التقني الذي يحميك قانونيًا.</strong>
+        dimostra che il tuo contenuto esisteva almeno alla data/ora di quel blocco. <strong>Conservalo: è la tua evidenza tecnica che ti tutela dal punto di vista legale.</strong>
       </p>
 
-      <div dir="rtl" lang="ar" dir="rtl" lang="ar" className="flex items-center gap-3">
-      <p>يحفظ التثبيت بصمة ملفك (SHA-256) على بيتكوين عبر مسار ميركل.</p>
-      <p>رقم الكتلة (Block Height) يحدد الكتلة التي تُرسِي إثباتك.</p>
-      <p>يوفّر ذلك إثبات وجود وأولوية زمنية:</p>
-
+      <div className="flex items-center gap-3">
         <input
           id="otsPicker"
           type="file"
@@ -95,42 +91,42 @@ export default function VerifyBox() {
           onChange={(e) => setOtsFile(e.target.files?.[0] ?? null)}
         />
 
-        {/* ارفع الملف = bianco */}
+        {/* CARICA FILE = bianco */}
         <button
           type="button"
           onClick={pickFile}
           disabled={busy}
           className="px-4 py-2 rounded-xl font-semibold bg-white hover:bg-neutral-200 text-black disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          ارفع الملف
+          CARICA FILE
         </button>
 
-        {/* تحقّق = amber */}
+        {/* VERIFICA = amber */}
         <button
           type="button"
           onClick={handleVerify}
           disabled={!otsFile || busy}
           className="px-4 py-2 rounded-xl font-semibold bg-amber-400 hover:bg-amber-300 text-black disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          تحقّق
+          VERIFICA
         </button>
 
         <span className="text-sky-200 text-sm truncate max-w-[50%]">
-          {otsFile ? otsFile.name : "لم يتم اختيار ملف"}
+          {otsFile ? otsFile.name : "Nessun file selezionato"}
         </span>
       </div>
 
       {/* NOTA con stessa dimensione */}
       <div className="text-sky-200 text-sm leading-relaxed">
-        <strong>ملاحظة:</strong> لإثبات كامل، احتفظ معًا
-        <span className="whitespace-nowrap"> (١) الملف الأصلي,</span>
-        <span className="whitespace-nowrap"> (٢) بصمة SHA-256</span> e
+        <strong>Nota:</strong> per una prova completa conserva insieme
+        <span className="whitespace-nowrap"> (1) il file originale,</span>
+        <span className="whitespace-nowrap"> (2) il suo hash SHA-256</span> e
         <span className="whitespace-nowrap"> (3) il file <code>.ots</code>.</span>
         L’hash collega in modo univoco il file alla timbratura registrata su Bitcoin.
       </div>
 
       <div className="min-h-6">
-        {busy && <p className="text-sky-200 text-sm">جاري التحقق…</p>}
+        {busy && <p className="text-sky-200 text-sm">Verifica in corso…</p>}
 
         {!busy && blockHeight !== null && (
           <div className="text-sky-100">
