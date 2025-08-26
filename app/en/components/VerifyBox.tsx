@@ -91,14 +91,14 @@ export default function VerifyBox() {
           onChange={(e) => setOtsFile(e.target.files?.[0] ?? null)}
         />
 
-        {/* UPLOAD FILE = bianco */}
+        {/* CARICA FILE = bianco */}
         <button
           type="button"
           onClick={pickFile}
           disabled={busy}
           className="px-4 py-2 rounded-xl font-semibold bg-white hover:bg-neutral-200 text-black disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          UPLOAD FILE
+          CARICA FILE
         </button>
 
         {/* VERIFY = amber */}
@@ -118,8 +118,8 @@ export default function VerifyBox() {
 
       {/* NOTA con stessa dimensione */}
       <div className="text-sky-200 text-sm leading-relaxed">
-        <strong>Note:</strong> for a complete proof, keep together
-        <span className="whitespace-nowrap"> (1) the original file,</span>
+        <strong>Note:</strong> per una prova completa conserva insieme
+        <span className="whitespace-nowrap"> (1) il file originale,</span>
         <span className="whitespace-nowrap"> (2) its SHA-256 hash</span> e
         <span className="whitespace-nowrap"> (3) il file <code>.ots</code>.</span>
         L’hash collega in modo univoco il file alla timbratura registrata su Bitcoin.

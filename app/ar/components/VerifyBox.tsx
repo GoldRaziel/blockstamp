@@ -64,7 +64,7 @@ export default function VerifyBox() {
   }
 
   return (
-    <section dir="rtl" lang="ar" dir="rtl" lang="ar"
+    <section dir="rtl" lang="ar"
       id="verify"
       className="mt-10 bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4"
     >
@@ -82,7 +82,7 @@ export default function VerifyBox() {
         ويُثبت أن محتواك كان موجودًا على الأقل في تاريخ/وقت تلك الكتلة. <strong>احتفظ به: فهو دليلك التقني الذي يحميك قانونيًا.</strong>
       </p>
 
-      <div dir="rtl" lang="ar" dir="rtl" lang="ar" className="flex items-center gap-3">
+      <div dir="rtl" lang="ar" className="flex items-center gap-3">
         <input
           id="otsPicker"
           type="file"
@@ -91,14 +91,14 @@ export default function VerifyBox() {
           onChange={(e) => setOtsFile(e.target.files?.[0] ?? null)}
         />
 
-        {/* ارفع الملف = bianco */}
+        {/* CARICA FILE = bianco */}
         <button
           type="button"
           onClick={pickFile}
           disabled={busy}
           className="px-4 py-2 rounded-xl font-semibold bg-white hover:bg-neutral-200 text-black disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          ارفع الملف
+          CARICA FILE
         </button>
 
         {/* تحقّق = amber */}
@@ -118,8 +118,8 @@ export default function VerifyBox() {
 
       {/* NOTA con stessa dimensione */}
       <div className="text-sky-200 text-sm leading-relaxed">
-        <strong>ملاحظة:</strong> لإثبات كامل، احتفظ معًا
-        <span className="whitespace-nowrap"> (١) الملف الأصلي,</span>
+        <strong>ملاحظة:</strong> per una prova completa conserva insieme
+        <span className="whitespace-nowrap"> (1) il file originale,</span>
         <span className="whitespace-nowrap"> (٢) بصمة SHA-256</span> e
         <span className="whitespace-nowrap"> (3) il file <code>.ots</code>.</span>
         L’hash collega in modo univoco il file alla timbratura registrata su Bitcoin.
