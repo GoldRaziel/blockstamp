@@ -83,6 +83,10 @@ export default function VerifyBox() {
       </p>
 
       <div dir="rtl" lang="ar" dir="rtl" lang="ar" className="flex items-center gap-3">
+      <p>يحفظ التثبيت بصمة ملفك (SHA-256) على بيتكوين عبر مسار ميركل.</p>
+      <p>رقم الكتلة (Block Height) يحدد الكتلة التي تُرسِي إثباتك.</p>
+      <p>يوفّر ذلك إثبات وجود وأولوية زمنية:</p>
+
         <input
           id="otsPicker"
           type="file"

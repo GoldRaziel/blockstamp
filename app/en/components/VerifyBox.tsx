@@ -82,6 +82,10 @@ export default function VerifyBox() {
       </p>
 
       <div className="flex items-center gap-3">
+      <p>The timestamp stores the fingerprint (SHA-256) of your file on Bitcoin via a Merkle path.</p>
+      <p>The block height indicates the block that anchors your proof.</p>
+      <p>This provides proof of existence and temporal priority:</p>
+
         <input
           id="otsPicker"
           type="file"
