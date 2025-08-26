@@ -68,7 +68,7 @@ export default function VerifyBox() {
       id="verifica"
       className="mt-10 bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4"
     >
-      <h2 className="text-xl font-semibold text-white">VERIFY</h2>
+      <h2 className="text-xl font-semibold text-white">VERIFICA</h2>
 
       <p className="text-sky-100 text-sm">
         Drop your <code>.ots</code> file below and click <strong>VERIFY</strong>. You will get the Bitcoin block height recorded on the Bitcoin blockchain.
