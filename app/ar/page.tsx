@@ -188,14 +188,14 @@ export default function Page() {
 
   {/* Riquadro istruzioni */}
   <div className="mt-10 bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4">
-    <h3 className="text-lg font-semibold flex items-center gap-2">SEGUI LE ISTRUZIONI</h3>
+    <h3 className="text-lg font-semibold flex items-center gap-2">اتبع التعليمات</h3>
     <ol className="list-decimal pl-6 space-y-1 text-sm opacity-90">
-      <li>Seleziona il file da proteggere.</li>
-      <li>Otterrai la tua impronta digitale univoca SHA-256.</li>
-      <li><b>Copia</b> l’impronta e incollala in un file di testo <code>.txt</code>.</li>
-      <li>Comprimi il file originale <i>insieme</i> al file <code>.txt</code> in un archivio <code>.zip</code>.</li>
-      <li>Torna qui e clicca <b>PAGA ORA</b>.</li>
-      <li>Dopo il pagamento, carica il file <code>.zip</code> nella pagina successiva.</li>
+      <li>اختر الملف الذي تريد حمايته.</li>
+      <li>ستحصل على بصمة SHA-256 فريدة.</li>
+      <li><b>انسخ</b> البصمة والصقها في ملف نصي <code>.txt</code>.</li>
+      <li>اضغط الملف الأصلي <i>مع</i> ملف <code>.txt</code> في أرشيف <code>.zip</code>.</li>
+      <li>ارجع إلى هنا واضغط <b>PAY NOW</b>.</li>
+      <li>بعد الدفع، ارفع ملف <code>.zip</code> في الصفحة التالية.</li>
     </ol>
 
     <div className="space-y-3">
@@ -217,7 +217,7 @@ export default function Page() {
              border border-white/10 rounded-none
              cursor-pointer select-none"
 >
-  Scegli file
+  اختر ملفًا
 </label>
 
         {file && (
@@ -226,13 +226,13 @@ export default function Page() {
       </div>
 
       <div>
-        <label className="block text-sm opacity-80 mb-1">Impronta SHA-256</label>
+        <label className="block text-sm opacity-80 mb-1">بصمة SHA-256</label>
         <div className="flex gap-2">
           <textarea
             className="flex-1 h-16 rounded-lg bg-black/40 border border-white/10 p-2 text-xs font-mono"
             readOnly
             value={hash}
-            placeholder="L'impronta verrà mostrata qui…"
+            placeholder="ستظهر البصمة هنا…"
           />
           <button
             onClick={copyHash}
@@ -246,7 +246,7 @@ export default function Page() {
     </div>
 
     <p className="text-xs opacity-70 mt-2">
-      Suggerimento: rinomina il file di testo con qualcosa come <code>hash.txt</code> e mantienilo dentro lo <code>.zip</code> accanto al file originale.
+      نصيحة: rinomina il file di testo con qualcosa come <code>hash.txt</code> e mantienilo dentro lo <code>.zip</code> accanto al file originale.
     </p>
   </div>
 

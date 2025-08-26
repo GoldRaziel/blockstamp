@@ -188,14 +188,14 @@ export default function Page() {
 
   {/* Riquadro istruzioni */}
   <div className="mt-10 bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4">
-    <h3 className="text-lg font-semibold flex items-center gap-2">SEGUI LE ISTRUZIONI</h3>
+    <h3 className="text-lg font-semibold flex items-center gap-2">FOLLOW THE INSTRUCTIONS</h3>
     <ol className="list-decimal pl-6 space-y-1 text-sm opacity-90">
-      <li>Seleziona il file da proteggere.</li>
-      <li>Otterrai la tua impronta digitale univoca SHA-256.</li>
-      <li><b>Copia</b> l’impronta e incollala in un file di testo <code>.txt</code>.</li>
-      <li>Comprimi il file originale <i>insieme</i> al file <code>.txt</code> in un archivio <code>.zip</code>.</li>
-      <li>Torna qui e clicca <b>PAGA ORA</b>.</li>
-      <li>Dopo il pagamento, carica il file <code>.zip</code> nella pagina successiva.</li>
+      <li>Select the file to protect.</li>
+      <li>You will get your unique SHA-256 fingerprint.</li>
+      <li><b>Copy</b> the fingerprint and paste it into a <code>.txt</code> text file.</li>
+      <li>Compress the original file <i>together</i> with the <code>.txt</code> file into a <code>.zip</code> archive.</li>
+      <li>Come back here and click <b>PAY NOW</b>.</li>
+      <li>After payment, upload the <code>.zip</code> file on the next page.</li>
     </ol>
 
     <div className="space-y-3">
@@ -217,7 +217,7 @@ export default function Page() {
              border border-white/10 rounded-none
              cursor-pointer select-none"
 >
-  Scegli file
+  Choose file
 </label>
 
         {file && (
@@ -226,13 +226,13 @@ export default function Page() {
       </div>
 
       <div>
-        <label className="block text-sm opacity-80 mb-1">Impronta SHA-256</label>
+        <label className="block text-sm opacity-80 mb-1">SHA-256 fingerprint</label>
         <div className="flex gap-2">
           <textarea
             className="flex-1 h-16 rounded-lg bg-black/40 border border-white/10 p-2 text-xs font-mono"
             readOnly
             value={hash}
-            placeholder="L'impronta verrà mostrata qui…"
+            placeholder="The fingerprint will appear here…"
           />
           <button
             onClick={copyHash}
@@ -246,7 +246,7 @@ export default function Page() {
     </div>
 
     <p className="text-xs opacity-70 mt-2">
-      Suggerimento: rinomina il file di testo con qualcosa come <code>hash.txt</code> e mantienilo dentro lo <code>.zip</code> accanto al file originale.
+      Tip: rinomina il file di testo con qualcosa come <code>hash.txt</code> e mantienilo dentro lo <code>.zip</code> accanto al file originale.
     </p>
   </div>
 
