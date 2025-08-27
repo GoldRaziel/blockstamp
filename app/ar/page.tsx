@@ -283,41 +283,40 @@ export default function Page() {
       <VerifyBox />
 
 
-      {/* GUIDA */}
-      <section id="guida" className="space-y-6">
-        <h2 className="text-3xl font-semibold">Guida: proteggi al meglio la tua idea</h2>
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-            <h3 className="text-lg font-semibold mb-2">1 · Crea un file ZIP</h3>
-            <p className="text-sm opacity-90">
-              Inserisci <b>più materiale possibile</b>: documenti, testi, immagini, bozze, progetti,
-              struttura del sito, contratti — tutto ciò che dimostra la paternità dell’idea.
-            </p>
-          </div>
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-            <h3 className="text-lg font-semibold mb-2">2 · Carica in HOME</h3>
-            <p className="text-sm opacity-90">
-              Vai alla sezione <a href="#upload" className="underline">Upload</a> e carica il tuo ZIP.
-              Riceverai un <b>codice .ots</b> a conferma della richiesta: salvalo <b>dentro la stessa
-              cartella ZIP</b>.
-            </p>
-          </div>
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-            <h3 className="text-lg font-semibold mb-2">3 · Registrazione entro 72 ore</h3>
-            <p className="text-sm opacity-90">
-              Entro <b>72 ore</b> riceverai il codice di registrazione su blockchain Bitcoin che
-              certifica l’esistenza del tuo file a livello globale, rendendo la tua idea <b>protetta e
-              immodificabile</b>.
-            </p>
-          </div>
-        </div>
-        <div className="bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4">
-          <p className="text-sm opacity-90 max-w-3xl mx-auto">
-            Risultato: una <b>prova tecnica e legale</b> incisa sulla blockchain di Bitcoin — <b>immodificabile</b> e valida in
-            tutto il mondo.
-          </p>
-        </div>
-      </section>
+     {/* الدليل */}
+<section id="guida" className="space-y-6" dir="rtl">
+  <h2 className="text-3xl font-semibold">دليل: احمِ فكرتك بأفضل طريقة</h2>
+  <div className="grid md:grid-cols-3 gap-6">
+    <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+      <h3 className="text-lg font-semibold mb-2">1 · أنشئ ملف ZIP</h3>
+      <p className="text-sm opacity-90">
+        ضع <b>أكبر قدر ممكن من المواد</b>: مستندات، نصوص، صور، مسودات، مشاريع،
+        هيكل الموقع، عقود — كل ما يثبت <b>ملكية</b> الفكرة.
+      </p>
+    </div>
+    <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+      <h3 className="text-lg font-semibold mb-2">2 · ارفع الملف من الصفحة الرئيسية</h3>
+      <p className="text-sm opacity-90">
+        انتقل إلى قسم <a href="#upload" className="underline">الرفع</a> وقم برفع ملف الـ ZIP.
+        ستتلقى <b>رمز ‎.ots</b> لتأكيد الطلب: احفظه <b>داخل مجلد الـ ZIP نفسه</b>.
+      </p>
+    </div>
+    <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+      <h3 className="text-lg font-semibold mb-2">3 · التسجيل خلال 72 ساعة</h3>
+      <p className="text-sm opacity-90">
+        خلال <b>72 ساعة</b> ستتلقى رمز التسجيل على بلوكتشين بيتكوين الذي يُثبت
+        وجود ملفك على مستوى العالم، مما يجعل فكرتك <b>محميّة وغير قابلة للتعديل</b>.
+      </p>
+    </div>
+  </div>
+  <div className="bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4">
+    <p className="text-sm opacity-90 max-w-3xl mx-auto">
+      النتيجة: <b>دليل تقني وقانوني</b> منقوش على بلوكتشين بيتكوين — <b>غير قابل للتغيير</b>
+      وصالح في جميع أنحاء العالم.
+    </p>
+  </div>
+</section>
+
 
       {/* PERCHÉ BLOCKCHAIN */}
       
