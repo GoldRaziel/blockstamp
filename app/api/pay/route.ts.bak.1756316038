@@ -12,15 +12,19 @@ export async function POST(req: Request) {
     } = await req.json().catch(() => ({}));
 
     const sk = process.env.STRIPE_SECRET_KEY;
-    if (!sk) return NextResponse.json({ error: "STRIPE_SECRET_KEY not set" }, { status: 500 });
+    if (!sk) {
+      return NextResponse.json({ error: "STRIPE_SECRET_KEY not set" }, { status: 500 });
+    }
 
     const stripe = new Stripe(sk, { apiVersion: "2024-06-20" } as any);
 
+    // Base fallback dal deploy (Netlify) o env
     const envBase =
       process.env.NEXT_PUBLIC_SITE_URL ||
       process.env.SITE_URL ||
       "https://melodious-starburst-f335b3.netlify.app";
 
+    // Ricava origin + locale dal Referer (o req.url). Poi dai PRIORITÀ al bodyLocale.
     const hdrs = nextHeaders();
     const ref = hdrs.get("referer") || "";
 
@@ -31,15 +35,18 @@ export async function POST(req: Request) {
       origin = u.origin || envBase;
       const seg0 = u.pathname.split("/")[1];
       if (seg0 === "en" || seg0 === "ar" || seg0 === "it") locale = seg0;
-    } catch {}
+    } catch {
+      // fallback: envBase + "it"
+    }
 
-    // PRIORITÀ al locale dal body
+    // PRIORITÀ al locale passato dal client
     if (bodyLocale === "en" || bodyLocale === "ar" || bodyLocale === "it") {
       locale = bodyLocale;
     }
 
-    const base = origin.replace(/\/+$/, "");
+    const base = origin.replace(/\/+$/, ""); // rimuove eventuali slash finali
 
+    // URL di ritorno dipendenti dal locale
     const success_url = `${base}/${locale}/portal?session_id={CHECKOUT_SESSION_ID}`;
     const cancel_url  = `${base}/${locale}/#pricing`;
 
@@ -51,7 +58,7 @@ export async function POST(req: Request) {
           price_data: {
             currency,
             product_data: { name: description },
-            unit_amount: amount, // centesimi
+            unit_amount: amount, // in centesimi
           },
           quantity: 1,
         },
