@@ -10,7 +10,7 @@ export default function VerifyBox() {
   const [blockHeight, setBlockHeight] = useState<number | null>(null);
 
   function pickFile() {
-    document.getElementById("otsPicker")?.click();
+    document.getElementById("otsPicker-en")?.click();
   }
 
   async function handleVerify() {
@@ -34,12 +34,12 @@ export default function VerifyBox() {
         const raw = (data?.error || data?.raw || "").toString().toLowerCase();
 
         if (res.status === 404 || raw.includes("not found")) {
-          setMsg("codice inesistente");
+          setMsg("Non-existent code");
           setMsgType("warn");
           return;
         }
 
-        setMsg("attendi 48-72 ore prima di verificare");
+        setMsg("Please wait 48–72 hours before verifying");
         setMsgType("warn");
         return;
       }
@@ -49,14 +49,14 @@ export default function VerifyBox() {
       );
       if (Number.isFinite(h)) {
         setBlockHeight(h);
-        setMsg("Verifica completata.");
+        setMsg("Verification completed.");
         setMsgType("ok");
       } else {
-        setMsg("codice inesistente");
+        setMsg("Non-existent code");
         setMsgType("warn");
       }
     } catch {
-      setMsg("attendi 48-72 ore prima di verificare");
+      setMsg("Please wait 48–72 hours before verifying");
       setMsgType("warn");
     } finally {
       setBusy(false);
@@ -65,42 +65,44 @@ export default function VerifyBox() {
 
   return (
     <section
-      id="verifica"
+      id="verify-en"
       className="mt-10 bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4"
     >
-      <h2 className="text-xl font-semibold text-white">VERIFICA</h2>
+      <h2 className="text-xl font-semibold text-white">VERIFY</h2>
 
       <p className="text-sky-100 text-sm">
-        Drop your <code>.ots</code> file below and click <strong>VERIFY</strong>. You will get the Bitcoin block height recorded on the Bitcoin blockchain.
+        Upload your <code>.ots</code> file below and click <strong>VERIFY</strong>.{" "}
+        You will get your <strong>block number</strong> registered on the Bitcoin blockchain.
       </p>
 
       <p className="text-sky-100 text-sm">
-        <strong>What it means:</strong> la timbratura memorizza l&apos;impronta (SHA-256) del tuo file
-        in Bitcoin tramite un percorso di aggiunzione (Merkle). Il <em>Block Height</em> indica il blocco
-        che ancora (ancoraggio) la tua prova. Questo fornisce una <strong>prova di esistenza e priorità temporale</strong>:
-        it shows your content existed at least at the date/time of that block. <strong>Keep it: it is your technical evidence that protects you legally.</strong>
+        <strong>What it means:</strong> the timestamp stores the fingerprint (SHA-256) of your file
+        in Bitcoin through an addition path (Merkle). The <em>Block Height</em> indicates the block
+        that anchors your proof. This provides a <strong>proof of existence and temporal priority</strong>:
+        it shows that your content existed at least at the date/time of that block.{" "}
+        <strong>Keep it: it is your technical evidence that protects you legally.</strong>
       </p>
 
       <div className="flex items-center gap-3">
         <input
-          id="otsPicker"
+          id="otsPicker-en"
           type="file"
           accept=".ots"
           className="hidden"
           onChange={(e) => setOtsFile(e.target.files?.[0] ?? null)}
         />
 
-        {/* CARICA FILE = bianco */}
+        {/* UPLOAD FILE = white */}
         <button
           type="button"
           onClick={pickFile}
           disabled={busy}
           className="px-4 py-2 rounded-xl font-semibold bg-white hover:bg-neutral-200 text-black disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          CARICA FILE
+          UPLOAD FILE
         </button>
 
-        {/* VERIFICA = amber */}
+        {/* VERIFY = amber */}
         <button
           type="button"
           onClick={handleVerify}
@@ -115,27 +117,27 @@ export default function VerifyBox() {
         </span>
       </div>
 
-      {/* NOTA con stessa dimensione */}
+      {/* NOTE */}
       <div className="text-sky-200 text-sm leading-relaxed">
-        <strong>Note:</strong> for a complete proof, keep together
+        <strong>Note:</strong> for complete proof keep together
         <span className="whitespace-nowrap"> (1) the original file,</span>
-        <span className="whitespace-nowrap"> (2) its SHA-256 hash</span> e
-        <span className="whitespace-nowrap"> (3) il file <code>.ots</code>.</span>
+        <span className="whitespace-nowrap"> (2) its SHA-256 hash</span> and
+        <span className="whitespace-nowrap"> (3) the <code>.ots</code> file.</span>
         The hash uniquely links the file to the timestamp recorded on Bitcoin.
       </div>
 
       <div className="min-h-6">
-        {busy && <p className="text-sky-200 text-sm">Verifica in corso…</p>}
+        {busy && <p className="text-sky-200 text-sm">Verification in progress…</p>}
 
         {!busy && blockHeight !== null && (
           <div className="text-sky-100">
-            <p className="text-sm">Risultato:</p>
+            <p className="text-sm">Result:</p>
             <p className="text-lg font-mono">
               Block Height: <span className="font-bold">{blockHeight}</span>
             </p>
             <p className="text-sky-200 text-sm mt-2">
-              Conserva questo numero insieme al tuo file <code>.ots</code> e al documento originale:
-              insieme costituiscono la tua evidenza tecnica.
+              Keep this number together with your <code>.ots</code> file and the original document:
+              together they constitute your technical evidence.
             </p>
           </div>
         )}
