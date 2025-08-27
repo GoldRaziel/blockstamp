@@ -11,14 +11,60 @@ export default function PortalPage() {
   const [copied, setCopied] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  // مثبّت: عند الوصول بـ ?session_id نضبط الكوكي وننظّف الرابط
+  // قائمة اللغة (Dropdown) — تحفظ session_id في الروابط
+  function LanguageDropdown() {
+    const [sid, setSid] = useState<string | null>(null);
+    const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+      try {
+        const sp = new URLSearchParams(window.location.search);
+        setSid(sp.get("session_id"));
+      } catch {}
+    }, []);
+
+    const hrefFor = (loc: "it" | "en" | "ar") =>
+      `/${loc}/portal${sid ? `?session_id=${encodeURIComponent(sid)}` : ""}`;
+
+    return (
+      <div className="relative text-sm" dir="ltr">
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          className="flex items-center gap-2 px-3 py-2 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 text-sky-100"
+        >
+          <span>🌐 اللغة</span>
+          <span className="opacity-80">▼</span>
+        </button>
+
+        {open && (
+          <div className="absolute right-0 z-10 mt-2 w-44 rounded-md bg-black/70 border border-white/10 shadow-lg backdrop-blur">
+            <a href={hrefFor("it")} className="flex items-center gap-2 px-3 py-2 hover:bg-white/10">
+              <span>🇮🇹</span><span>الإيطالية</span>
+            </a>
+            <a href={hrefFor("en")} className="flex items-center gap-2 px-3 py-2 hover:bg-white/10">
+              <span>🇬🇧</span><span>الإنجليزية</span>
+            </a>
+            <a href={hrefFor("ar")} className="flex items-center gap-2 px-3 py-2 hover:bg-white/10">
+              <span>🇦🇪</span><span>العربية</span>
+            </a>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // مثبّت: عند الوصول بـ ?session_id نؤكد ثم نحذف الاستعلام فقط (ونبقي على المسار/اللغة الحالية)
   useEffect(() => {
     if (typeof window === "undefined") return;
     const sp = new URLSearchParams(window.location.search);
     const sid = sp.get("session_id");
     if (sid) {
       fetch(`/api/confirm?session_id=${encodeURIComponent(sid)}`, { cache: "no-store" })
-        .finally(() => history.replaceState({}, "", "/portal"));
+        .finally(() => {
+          // أبقِ /ar/portal (أو المسار الحالي) واحذف الاستعلام فقط
+          history.replaceState({}, "", window.location.pathname);
+        });
     }
   }, []);
 
@@ -60,57 +106,30 @@ export default function PortalPage() {
       await navigator.clipboard.writeText(receiptCode);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
-    } catch (_) {
+    } catch {
       setCopied(false);
     }
   }
 
-function LanguageSwitcher() {
-
-  const [sid, setSid] = useState<string | null>(null);
-
-  useEffect(() => {
-
-    try {
-
-      const sp = new URLSearchParams(window.location.search);
-
-      setSid(sp.get("session_id"));
-
-    } catch {}
-
-  }, []);
-
-  const make = (loc: "it" | "en" | "ar") => sid ? `/${loc}/portal?session_id=${"${encodeURIComponent(sid)}"}` : `/${loc}/portal`;
-
-  return (
-
-    <div className="flex flex-row-reverse items-center gap-2 text-xs md:text-sm text-sky-200/90">
-
-      <span className="opacity-80">اللغة:</span>
-
-      <a href={make("it")} className="px-2 py-1 rounded-md bg-white/5 hover:bg-white/10 border border-white/10">IT</a>
-
-      <a href={make("en")} className="px-2 py-1 rounded-md bg-white/5 hover:bg-white/10 border border-white/10">EN</a>
-
-      <a href={make("ar")} className="px-2 py-1 rounded-md bg-white/5 hover:bg-white/10 border border-white/10">AR</a>
-
-    </div>
-
-  );
-
-}
-
   return (
     <div className="max-w-3xl mx-auto pt-6 pb-24" dir="rtl">
-      {/* الشعار أعلى اليسار، غير قابل للنقر */}
-      <div className="mb-6">
-        <img src="/logo.png" width="1000" height="500" alt="Blockstamp" className="h-auto max-h-14 md:max-h-20 w-auto origin-left md:scale-100 scale-[1.15] select-none pointer-events-none" />
+      {/* شريط علوي: الشعار (يسار بصريًا) + قائمة اللغة (يمين) */}
+      <div className="mb-6 flex items-center justify-between" dir="ltr">
+        {/* الشعار — غير قابل للنقر */}
+        <img
+          src="/logo.png"
+          width="1000"
+          height="500"
+          alt="Blockstamp"
+          className="h-auto max-h-14 md:max-h-20 w-auto origin-left md:scale-100 scale-[1.15] select-none pointer-events-none"
+        />
+        {/* قائمة اللغة على اليمين */}
+        <LanguageDropdown />
       </div>
 
-      <h1 className="text-2xl md:text-3xl font-bold text-sky-100 mb-6">منطقة محمية: ارفع ملف ‎.zip واطبع الختم</h1>
-
-      <LanguageSwitcher />
+      <h1 className="text-2xl md:text-3xl font-bold text-sky-100 mb-6" dir="rtl">
+        منطقة محمية: ارفع ملف ‎.zip واطبع الختم
+      </h1>
 
       <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
         <p className="text-sky-100"><strong>التعليمات:</strong> أنشئ ملف <strong>.zip</strong> يحتوي على:</p>
@@ -125,7 +144,7 @@ function LanguageSwitcher() {
           <li>احتفظ به: فهو دليلك القاطع على الملكية الفكرية اعتبارًا من ذلك التاريخ.</li>
         </ul>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3" dir="ltr">
           <input
             ref={inputRef}
             type="file"
@@ -142,18 +161,26 @@ function LanguageSwitcher() {
           </button>
         </div>
 
-        {error && <div className="mt-2 text-red-300 text-sm">{error}</div>}
+        {error && <div className="mt-2 text-red-300 text-sm" dir="rtl">{error}</div>}
       </div>
 
       <div className="mt-8 bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-3">
-        <h2 className="font-semibold text-sky-200">سيظهر ختمك هنا:</h2>
-        <div className="flex items-center gap-3">
+        <h2 className="font-semibold text-sky-200" dir="rtl">سيظهر ختمك هنا:</h2>
+        <div className="flex items-center gap-3" dir="ltr">
           <div className="flex-1">
-            <div className="text-sky-300 break-all text-sm bg-black/20 rounded-md px-3 py-2 min-h-[2.5rem]">{receiptCode ? receiptCode : "\u2014 بانتظار التوليد \u2014"}</div>
+            <div className="text-sky-300 break-all text-sm bg-black/20 rounded-md px-3 py-2 min-h-[2.5rem]">
+              {receiptCode ? receiptCode : "\u2014 بانتظار التوليد \u2014"}
+            </div>
           </div>
-          <button onClick={handleCopy} disabled={!receiptCode} className="px-4 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-black font-semibold disabled:opacity-50">نسخ</button>
+          <button
+            onClick={handleCopy}
+            disabled={!receiptCode}
+            className="px-4 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-black font-semibold disabled:opacity-50"
+          >
+            نسخ
+          </button>
         </div>
-        {copied && <div className="text-xs text-sky-400">تم النسخ إلى الحافظة \u2705</div>}
+        {copied && <div className="text-xs text-sky-400" dir="rtl">تم النسخ إلى الحافظة \u2705</div>}
       </div>
 
       {/* إخفاء عناصر الترويسة/التنقل الموروثة */}

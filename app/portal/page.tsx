@@ -11,14 +11,60 @@ export default function PortalPage() {
   const [copied, setCopied] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  // Stabilizzatore: se arrivo con ?session_id, setto il cookie e ripulisco l'URL
+  // Navbar lingua (dropdown a destra) — mantiene eventuale session_id
+  function LanguageDropdown() {
+    const [sid, setSid] = useState<string | null>(null);
+    const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+      try {
+        const sp = new URLSearchParams(window.location.search);
+        setSid(sp.get("session_id"));
+      } catch {}
+    }, []);
+
+    const hrefFor = (loc: "it" | "en" | "ar") =>
+      `/${loc}/portal${sid ? `?session_id=${encodeURIComponent(sid)}` : ""}`;
+
+    return (
+      <div className="relative text-sm">
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          className="flex items-center gap-2 px-3 py-2 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 text-sky-100"
+        >
+          <span>🌐 Lingua</span>
+          <span className="opacity-80">▼</span>
+        </button>
+
+        {open && (
+          <div className="absolute right-0 z-10 mt-2 w-44 rounded-md bg-black/70 border border-white/10 shadow-lg backdrop-blur">
+            <a href={hrefFor("it")} className="flex items-center gap-2 px-3 py-2 hover:bg-white/10">
+              <span>🇮🇹</span><span>Italiano</span>
+            </a>
+            <a href={hrefFor("en")} className="flex items-center gap-2 px-3 py-2 hover:bg-white/10">
+              <span>🇬🇧</span><span>English</span>
+            </a>
+            <a href={hrefFor("ar")} className="flex items-center gap-2 px-3 py-2 hover:bg-white/10">
+              <span>🇦🇪</span><span>العربية</span>
+            </a>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Stabilizzatore: se arrivo con ?session_id, conferma e pulisci SOLO la query (mantieni locale/percorso)
   useEffect(() => {
     if (typeof window === "undefined") return;
     const sp = new URLSearchParams(window.location.search);
     const sid = sp.get("session_id");
     if (sid) {
       fetch(`/api/confirm?session_id=${encodeURIComponent(sid)}`, { cache: "no-store" })
-        .finally(() => history.replaceState({}, "", "/portal"));
+        .finally(() => {
+          // Mantiene il path/locale correnti (es. /it/portal, /en/portal, /ar/portal) e rimuove solo la query
+          history.replaceState({}, "", window.location.pathname);
+        });
     }
   }, []);
 
@@ -40,12 +86,15 @@ export default function PortalPage() {
       const blob = await res.blob();
       const code = res.headers.get("x-receipt-code") || "";
       setReceiptCode(code);
-        setLocked(true);
+      setLocked(true);
 
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = url; a.download = "blockstamp_receipt.ots";
-      document.body.appendChild(a); a.click(); a.remove();
+      a.href = url;
+      a.download = "blockstamp_receipt.ots";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
       URL.revokeObjectURL(url);
     } catch (e: any) {
       setError(e.message || "Errore imprevisto.");
@@ -60,66 +109,47 @@ export default function PortalPage() {
       await navigator.clipboard.writeText(receiptCode);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
-    } catch (_) {
+    } catch {
       setCopied(false);
     }
   }
-function LanguageSwitcher() {
-
-  const [sid, setSid] = useState<string | null>(null);
-
-  useEffect(() => {
-
-    try {
-
-      const sp = new URLSearchParams(window.location.search);
-
-      setSid(sp.get("session_id"));
-
-    } catch {}
-
-  }, []);
-
-  const make = (loc: "it" | "en" | "ar") => sid ? `/${loc}/portal?session_id=${"${encodeURIComponent(sid)}"}` : `/${loc}/portal`;
-
-  return (
-
-    <div className="flex items-center gap-2 text-xs md:text-sm text-sky-200/90">
-
-      <span className="opacity-80">Language:</span>
-
-      <a href={make("it")} className="px-2 py-1 rounded-md bg-white/5 hover:bg-white/10 border border-white/10">IT</a>
-
-      <a href={make("en")} className="px-2 py-1 rounded-md bg-white/5 hover:bg-white/10 border border-white/10">EN</a>
-
-      <a href={make("ar")} className="px-2 py-1 rounded-md bg-white/5 hover:bg-white/10 border border-white/10">AR</a>
-
-    </div>
-
-  );
-
-}
 
   return (
     <div className="max-w-3xl mx-auto pt-6 pb-24">
-      {/* Logo alto a sinistra, NON cliccabile */}
-      <div className="mb-6">
-        <img src="/logo.png" width="1000" height="500" alt="Blockstamp" className="h-auto max-h-14 md:max-h-20 w-auto origin-left md:scale-100 scale-[1.15] select-none pointer-events-none" />
+      {/* Header strip: logo (sinistra) + dropdown lingua (destra) */}
+      <div className="mb-6 flex items-center justify-between">
+        {/* Logo non cliccabile */}
+        <img
+          src="/logo.png"
+          width="1000"
+          height="500"
+          alt="Blockstamp"
+          className="h-auto max-h-14 md:max-h-20 w-auto origin-left md:scale-100 scale-[1.15] select-none pointer-events-none"
+        />
+        <LanguageDropdown />
       </div>
 
-      <h1 className="text-2xl md:text-3xl font-bold text-sky-100 mb-6">Area riservata: Carica .zip e TIMBRA</h1>
-
-      <LanguageSwitcher />
+      <h1 className="text-2xl md:text-3xl font-bold text-sky-100 mb-6">
+        Area riservata: Carica .zip e TIMBRA
+      </h1>
 
       <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
-        <p className="text-sky-100"><strong>ISTRUZIONI:</strong> Crea un file <strong>.zip</strong> con :</p>
+        <p className="text-sky-100">
+          <strong>ISTRUZIONI:</strong> Crea un file <strong>.zip</strong> con :
+        </p>
         <ul className="list-disc list-inside text-sky-100">
           <li>Il tuo <strong>file originale</strong> (o cartella) da proteggere</li>
-          <li>Il <strong>file di testo (.txt)</strong> con il <span className="text-sky-300">codice SHA-256</span> che hai generato sul nostro sito</li>
+          <li>
+            Il <strong>file di testo (.txt)</strong> con il{" "}
+            <span className="text-sky-300">codice SHA-256</span> che hai generato sul nostro sito
+          </li>
           <li>Carica qui sotto il file <strong>.zip</strong> creato</li>
-                  <li>Otterrai un <strong>codice .ots</strong>: è la prova di avvenuta registrazione;</li>
+          <li>Otterrai un <strong>codice .ots</strong>: è la prova di avvenuta registrazione;</li>
           <li>Conserva il <strong>codice .ots</strong> assieme al tuo <strong>file .zip</strong>;</li>
-          <li>Tra <strong>48–72 ore</strong> inserisci il tuo <strong>codice .ots</strong> sulla nostra Home, sezione <strong>VERIFICA</strong>;</li>
+          <li>
+            Tra <strong>48–72 ore</strong> inserisci il tuo <strong>codice .ots</strong> sulla nostra
+            Home, sezione <strong>VERIFICA</strong>;
+          </li>
           <li>Riceverai il tuo <strong>numero di blocco</strong> nella blockchain Bitcoin;</li>
           <li>Conservalo: è la tua prova inconfutabile di proprietà intellettuale a quella data.</li>
         </ul>
@@ -148,9 +178,17 @@ function LanguageSwitcher() {
         <h2 className="font-semibold text-sky-200">Il tuo timbro verrà generato qui:</h2>
         <div className="flex items-center gap-3">
           <div className="flex-1">
-            <div className="text-sky-300 break-all text-sm bg-black/20 rounded-md px-3 py-2 min-h-[2.5rem]">{receiptCode ? receiptCode : "\u2014 in attesa di generazione \u2014"}</div>
+            <div className="text-sky-300 break-all text-sm bg-black/20 rounded-md px-3 py-2 min-h-[2.5rem]">
+              {receiptCode ? receiptCode : "\u2014 in attesa di generazione \u2014"}
+            </div>
           </div>
-          <button onClick={handleCopy} disabled={!receiptCode} className="px-4 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-black font-semibold disabled:opacity-50">COPIA</button>
+          <button
+            onClick={handleCopy}
+            disabled={!receiptCode}
+            className="px-4 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-black font-semibold disabled:opacity-50"
+          >
+            COPIA
+          </button>
         </div>
         {copied && <div className="text-xs text-sky-400">Copiato negli appunti \u2705</div>}
       </div>

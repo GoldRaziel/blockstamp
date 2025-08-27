@@ -11,14 +11,60 @@ export default function PortalPage() {
   const [copied, setCopied] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  // Stabilizer: if we arrive with ?session_id, set the cookie and clean the URL
+  // Language dropdown (right side) — keeps session_id in links
+  function LanguageDropdown() {
+    const [sid, setSid] = useState<string | null>(null);
+    const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+      try {
+        const sp = new URLSearchParams(window.location.search);
+        setSid(sp.get("session_id"));
+      } catch {}
+    }, []);
+
+    const hrefFor = (loc: "it" | "en" | "ar") =>
+      `/${loc}/portal${sid ? `?session_id=${encodeURIComponent(sid)}` : ""}`;
+
+    return (
+      <div className="relative text-sm">
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          className="flex items-center gap-2 px-3 py-2 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 text-sky-100"
+        >
+          <span>🌐 Language</span>
+          <span className="opacity-80">▼</span>
+        </button>
+
+        {open && (
+          <div className="absolute right-0 z-10 mt-2 w-44 rounded-md bg-black/70 border border-white/10 shadow-lg backdrop-blur">
+            <a href={hrefFor("it")} className="flex items-center gap-2 px-3 py-2 hover:bg-white/10">
+              <span>🇮🇹</span><span>Italiano</span>
+            </a>
+            <a href={hrefFor("en")} className="flex items-center gap-2 px-3 py-2 hover:bg-white/10">
+              <span>🇬🇧</span><span>English</span>
+            </a>
+            <a href={hrefFor("ar")} className="flex items-center gap-2 px-3 py-2 hover:bg-white/10">
+              <span>🇦🇪</span><span>العربية</span>
+            </a>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Stabilizer: if we arrive with ?session_id, confirm & remove only the query (keep current locale/path)
   useEffect(() => {
     if (typeof window === "undefined") return;
     const sp = new URLSearchParams(window.location.search);
     const sid = sp.get("session_id");
     if (sid) {
       fetch(`/api/confirm?session_id=${encodeURIComponent(sid)}`, { cache: "no-store" })
-        .finally(() => history.replaceState({}, "", "/portal"));
+        .finally(() => {
+          // keep /en/portal (or current locale path), just drop the query string
+          history.replaceState({}, "", window.location.pathname);
+        });
     }
   }, []);
 
@@ -44,8 +90,11 @@ export default function PortalPage() {
 
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = url; a.download = "blockstamp_receipt.ots";
-      document.body.appendChild(a); a.click(); a.remove();
+      a.href = url;
+      a.download = "blockstamp_receipt.ots";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
       URL.revokeObjectURL(url);
     } catch (e: any) {
       setError(e.message || "Unexpected error.");
@@ -60,63 +109,38 @@ export default function PortalPage() {
       await navigator.clipboard.writeText(receiptCode);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
-    } catch (_) {
+    } catch {
       setCopied(false);
     }
   }
 
-function LanguageSwitcher() {
-
-  const [sid, setSid] = useState<string | null>(null);
-
-  useEffect(() => {
-
-    try {
-
-      const sp = new URLSearchParams(window.location.search);
-
-      setSid(sp.get("session_id"));
-
-    } catch {}
-
-  }, []);
-
-  const make = (loc: "it" | "en" | "ar") => sid ? `/${loc}/portal?session_id=${"${encodeURIComponent(sid)}"}` : `/${loc}/portal`;
-
-  return (
-
-    <div className="flex items-center gap-2 text-xs md:text-sm text-sky-200/90">
-
-      <span className="opacity-80">Language:</span>
-
-      <a href={make("it")} className="px-2 py-1 rounded-md bg-white/5 hover:bg-white/10 border border-white/10">IT</a>
-
-      <a href={make("en")} className="px-2 py-1 rounded-md bg-white/5 hover:bg-white/10 border border-white/10">EN</a>
-
-      <a href={make("ar")} className="px-2 py-1 rounded-md bg-white/5 hover:bg-white/10 border border-white/10">AR</a>
-
-    </div>
-
-  );
-
-}
-
   return (
     <div className="max-w-3xl mx-auto pt-6 pb-24">
-      {/* Top-left logo, NOT clickable */}
-      <div className="mb-6">
-        <img src="/logo.png" width="1000" height="500" alt="Blockstamp" className="h-auto max-h-14 md:max-h-20 w-auto origin-left md:scale-100 scale-[1.15] select-none pointer-events-none" />
+      {/* Header strip: logo (left) + language dropdown (right) */}
+      <div className="mb-6 flex items-center justify-between">
+        {/* Top-left logo, NOT clickable */}
+        <img
+          src="/logo.png"
+          width="1000"
+          height="500"
+          alt="Blockstamp"
+          className="h-auto max-h-14 md:max-h-20 w-auto origin-left md:scale-100 scale-[1.15] select-none pointer-events-none"
+        />
+        <LanguageDropdown />
       </div>
 
-      <h1 className="text-2xl md:text-3xl font-bold text-sky-100 mb-6">Protected area: Upload .zip and STAMP</h1>
-
-      <LanguageSwitcher />
+      <h1 className="text-2xl md:text-3xl font-bold text-sky-100 mb-6">
+        Protected area: Upload .zip and STAMP
+      </h1>
 
       <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
         <p className="text-sky-100"><strong>INSTRUCTIONS:</strong> Create a <strong>.zip</strong> containing:</p>
         <ul className="list-disc list-inside text-sky-100">
           <li>Your <strong>original file</strong> (or folder) to protect</li>
-          <li>The <strong>text file (.txt)</strong> with the <span className="text-sky-300">SHA-256 code</span> you generated on our site</li>
+          <li>
+            The <strong>text file (.txt)</strong> with the{" "}
+            <span className="text-sky-300">SHA-256 code</span> you generated on our site
+          </li>
           <li>Upload the created <strong>.zip</strong> below</li>
           <li>You will receive an <strong>.ots code</strong>: it’s the proof that registration was requested/completed</li>
           <li>Keep the <strong>.ots code</strong> together with your <strong>.zip file</strong></li>
@@ -149,9 +173,17 @@ function LanguageSwitcher() {
         <h2 className="font-semibold text-sky-200">Your stamp will be generated here:</h2>
         <div className="flex items-center gap-3">
           <div className="flex-1">
-            <div className="text-sky-300 break-all text-sm bg-black/20 rounded-md px-3 py-2 min-h-[2.5rem]">{receiptCode ? receiptCode : "\u2014 waiting for generation \u2014"}</div>
+            <div className="text-sky-300 break-all text-sm bg-black/20 rounded-md px-3 py-2 min-h-[2.5rem]">
+              {receiptCode ? receiptCode : "\u2014 waiting for generation \u2014"}
+            </div>
           </div>
-          <button onClick={handleCopy} disabled={!receiptCode} className="px-4 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-black font-semibold disabled:opacity-50">COPY</button>
+          <button
+            onClick={handleCopy}
+            disabled={!receiptCode}
+            className="px-4 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-black font-semibold disabled:opacity-50"
+          >
+            COPY
+          </button>
         </div>
         {copied && <div className="text-xs text-sky-400">Copied to clipboard \u2705</div>}
       </div>
