@@ -64,6 +64,42 @@ export default function PortalPage() {
       setCopied(false);
     }
   }
+function LanguageSwitcher() {
+
+  const [sid, setSid] = useState<string | null>(null);
+
+  useEffect(() => {
+
+    try {
+
+      const sp = new URLSearchParams(window.location.search);
+
+      setSid(sp.get("session_id"));
+
+    } catch {}
+
+  }, []);
+
+  const make = (loc: "it" | "en" | "ar") => sid ? `/${loc}/portal?session_id=${"${encodeURIComponent(sid)}"}` : `/${loc}/portal`;
+
+  return (
+
+    <div className="flex items-center gap-2 text-xs md:text-sm text-sky-200/90">
+
+      <span className="opacity-80">Language:</span>
+
+      <a href={make("it")} className="px-2 py-1 rounded-md bg-white/5 hover:bg-white/10 border border-white/10">IT</a>
+
+      <a href={make("en")} className="px-2 py-1 rounded-md bg-white/5 hover:bg-white/10 border border-white/10">EN</a>
+
+      <a href={make("ar")} className="px-2 py-1 rounded-md bg-white/5 hover:bg-white/10 border border-white/10">AR</a>
+
+    </div>
+
+  );
+
+}
+
   return (
     <div className="max-w-3xl mx-auto pt-6 pb-24">
       {/* Logo alto a sinistra, NON cliccabile */}
@@ -72,6 +108,8 @@ export default function PortalPage() {
       </div>
 
       <h1 className="text-2xl md:text-3xl font-bold text-sky-100 mb-6">Area riservata: Carica .zip e TIMBRA</h1>
+
+      <LanguageSwitcher />
 
       <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
         <p className="text-sky-100"><strong>ISTRUZIONI:</strong> Crea un file <strong>.zip</strong> con :</p>
