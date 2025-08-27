@@ -10,7 +10,7 @@ export default function VerifyBox() {
   const [blockHeight, setBlockHeight] = useState<number | null>(null);
 
   function pickFile() {
-    document.getElementById("otsPicker")?.click();
+    document.getElementById("otsPicker-ar")?.click();
   }
 
   async function handleVerify() {
@@ -34,12 +34,12 @@ export default function VerifyBox() {
         const raw = (data?.error || data?.raw || "").toString().toLowerCase();
 
         if (res.status === 404 || raw.includes("not found")) {
-          setMsg("codice inesistente");
+          setMsg("رمز غير موجود");
           setMsgType("warn");
           return;
         }
 
-        setMsg("attendi 48-72 ore prima di verificare");
+        setMsg("يُرجى الانتظار 48–72 ساعة قبل التحقق");
         setMsgType("warn");
         return;
       }
@@ -49,14 +49,14 @@ export default function VerifyBox() {
       );
       if (Number.isFinite(h)) {
         setBlockHeight(h);
-        setMsg("Verifica completata.");
+        setMsg("تم اكتمال التحقق.");
         setMsgType("ok");
       } else {
-        setMsg("codice inesistente");
+        setMsg("رمز غير موجود");
         setMsgType("warn");
       }
     } catch {
-      setMsg("attendi 48-72 ore prima di verificare");
+      setMsg("يُرجى الانتظار 48–72 ساعة قبل التحقق");
       setMsgType("warn");
     } finally {
       setBusy(false);
@@ -64,78 +64,81 @@ export default function VerifyBox() {
   }
 
   return (
-    <section dir="rtl" lang="ar"
-      id="verifica"
+    <section
+      id="verify-ar"
+      dir="rtl"
       className="mt-10 bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4"
     >
-      <h2 className="text-xl font-semibold text-white">VERIFICA</h2>
+      <h2 className="text-xl font-semibold text-white">تحقق</h2>
 
       <p className="text-sky-100 text-sm">
-        أدرج ملف <code>.ots</code> أدناه واضغط <strong>تحقّق</strong>. ستحصل على رقم الكتلة المسجّل على بلوكتشين بيتكوين.
+        قم بتحميل ملفك <code>.ots</code> أدناه ثم اضغط <strong>تحقق</strong>.{" "}
+        ستحصل على <strong>رقم الكتلة</strong> المسجّل في سلسلة كتل البيتكوين.
       </p>
 
       <p className="text-sky-100 text-sm">
-        <strong>ماذا يعني ذلك:</strong> la timbratura memorizza l&apos;impronta (SHA-256) del tuo file
-        in Bitcoin tramite un percorso di aggiunzione (Merkle). Il <em>Block Height</em> indica il blocco
-        che ancora (ancoraggio) la tua prova. Questo fornisce una <strong>prova di esistenza e priorità temporale</strong>:
-        ويُظهر أن محتواك كان موجودًا على الأقل في تاريخ/وقت تلك الكتلة. <strong>احتفظ به: فهو دليلك التقني الذي يحميك قانونيًا.</strong>
+        <strong>ماذا يعني ذلك:</strong> الختم الزمني يحفظ البصمة الرقمية (SHA-256) لملفك
+        على بيتكوين عبر مسار الإضافة (Merkle). يشير <em>ارتفاع الكتلة</em> إلى الكتلة
+        التي تُثبّت دليلك. هذا يوفّر <strong>دليل وجود وأولوية زمنية</strong>:
+        يثبت أن محتواك كان موجودًا على الأقل في تاريخ/وقت تلك الكتلة.{" "}
+        <strong>احتفظ به: فهو دليلك التقني الذي يحميك قانونيًا.</strong>
       </p>
 
       <div className="flex items-center gap-3">
         <input
-          id="otsPicker"
+          id="otsPicker-ar"
           type="file"
           accept=".ots"
           className="hidden"
           onChange={(e) => setOtsFile(e.target.files?.[0] ?? null)}
         />
 
-        {/* CARICA FILE = bianco */}
+        {/* تحميل الملف = white */}
         <button
           type="button"
           onClick={pickFile}
           disabled={busy}
           className="px-4 py-2 rounded-xl font-semibold bg-white hover:bg-neutral-200 text-black disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          CARICA FILE
+          تحميل الملف
         </button>
 
-        {/* VERIFICA = amber */}
+        {/* تحقق = amber */}
         <button
           type="button"
           onClick={handleVerify}
           disabled={!otsFile || busy}
           className="px-4 py-2 rounded-xl font-semibold bg-amber-400 hover:bg-amber-300 text-black disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          تحقّق
+          تحقق
         </button>
 
         <span className="text-sky-200 text-sm truncate max-w-[50%]">
-          {otsFile ? otsFile.name : "لم يتم اختيار ملف"}
+          {otsFile ? otsFile.name : "لم يتم اختيار أي ملف"}
         </span>
       </div>
 
-      {/* NOTA con stessa dimensione */}
+      {/* ملاحظة */}
       <div className="text-sky-200 text-sm leading-relaxed">
-        <strong>ملاحظة:</strong> لإثبات كامل، احتفظ معًا
-        <span className="whitespace-nowrap"> (١) الملف الأصلي,</span>
-        <span className="whitespace-nowrap"> (٢) بصمته SHA-256</span> e
-        <span className="whitespace-nowrap"> (3) il file <code>.ots</code>.</span>
-        تربط البصمة الملف بشكل فريد بالطابع الزمني المُسجّل على بيتكوين.
+        <strong>ملاحظة:</strong> للحصول على دليل كامل، احتفظ معًا بـ
+        <span className="whitespace-nowrap"> (1) الملف الأصلي،</span>
+        <span className="whitespace-nowrap"> (2) بصمته SHA-256</span>
+        <span className="whitespace-nowrap"> و(3) ملف <code>.ots</code>.</span>
+        تربط البصمة الملف بشكل فريد بالختم المسجّل على بيتكوين.
       </div>
 
       <div className="min-h-6">
-        {busy && <p className="text-sky-200 text-sm">Verifica in corso…</p>}
+        {busy && <p className="text-sky-200 text-sm">جاري التحقق…</p>}
 
         {!busy && blockHeight !== null && (
           <div className="text-sky-100">
-            <p className="text-sm">Risultato:</p>
+            <p className="text-sm">النتيجة:</p>
             <p className="text-lg font-mono">
-              Block Height: <span className="font-bold">{blockHeight}</span>
+              ارتفاع الكتلة: <span className="font-bold">{blockHeight}</span>
             </p>
             <p className="text-sky-200 text-sm mt-2">
-              Conserva questo numero insieme al tuo file <code>.ots</code> e al documento originale:
-              insieme costituiscono la tua evidenza tecnica.
+              احتفظ بهذا الرقم مع ملف <code>.ots</code> والوثيقة الأصلية:
+              معًا يُشكّلان دليلك التقني.
             </p>
           </div>
         )}
