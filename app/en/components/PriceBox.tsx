@@ -7,10 +7,12 @@ type Props = {
 export default function PriceBox({ onPay }: Props) {
   async function defaultStartPayment() {
     try {
+    const seg0 = (typeof window !== "undefined" ? window.location.pathname.split("/")[1] : "it");
+     const locale = (seg0 === "en" || seg0 === "ar" || seg0 === "it") ? seg0 : "it";
       const res = await fetch("/api/pay", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+        body: JSON.stringify({ locale, 
           amount: 500,           // minor units (es. 5.00 EUR)
           currency: "eur",
           description: "Blockstamp Protection",

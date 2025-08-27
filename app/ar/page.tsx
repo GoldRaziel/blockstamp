@@ -90,11 +90,13 @@ export default function Page() {
 
   async function startPayment() {
     try {
+    const seg0 = (typeof window !== "undefined" ? window.location.pathname.split("/")[1] : "it");
+     const locale = (seg0 === "en" || seg0 === "ar" || seg0 === "it") ? seg0 : "it";
       const res = await fetch("/api/pay", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+        body: JSON.stringify({ locale, 
           amount: 500,
           currency: "eur",
           description: "Blockstamp Protection",

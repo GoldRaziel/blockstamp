@@ -8,7 +8,6 @@ export async function POST(req: Request) {
       amount = 500,
       currency = "eur",
       description = "Blockstamp Protection",
-      locale: bodyLocale,
     } = await req.json().catch(() => ({}));
 
     const sk = process.env.STRIPE_SECRET_KEY;
@@ -18,13 +17,13 @@ export async function POST(req: Request) {
 
     const stripe = new Stripe(sk, { apiVersion: "2024-06-20" } as any);
 
-    // Base fallback dal deploy (Netlify) o env
+    // Base di fallback dal deploy (Netlify) o env
     const envBase =
       process.env.NEXT_PUBLIC_SITE_URL ||
       process.env.SITE_URL ||
       "https://melodious-starburst-f335b3.netlify.app";
 
-    // Ricava origin + locale dal Referer (o req.url). Poi dai PRIORITÀ al bodyLocale.
+    // Ricava origin + locale dal Referer (se c'è), altrimenti da req.url; fallback envBase
     const hdrs = nextHeaders();
     const ref = hdrs.get("referer") || "";
 
@@ -36,19 +35,14 @@ export async function POST(req: Request) {
       const seg0 = u.pathname.split("/")[1];
       if (seg0 === "en" || seg0 === "ar" || seg0 === "it") locale = seg0;
     } catch {
-      // fallback: envBase + "it"
-    }
-
-    // PRIORITÀ al locale passato dal client
-    if (bodyLocale === "en" || bodyLocale === "ar" || bodyLocale === "it") {
-      locale = bodyLocale;
+      // se new URL fallisse, restiamo su envBase + "it"
     }
 
     const base = origin.replace(/\/+$/, ""); // rimuove eventuali slash finali
 
     // URL di ritorno dipendenti dal locale
     const success_url = `${base}/${locale}/portal?session_id={CHECKOUT_SESSION_ID}`;
-    const cancel_url  = `${base}/${locale}/#pricing`;
+    const cancel_url = `${base}/${locale}/#pricing`;
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -58,7 +52,7 @@ export async function POST(req: Request) {
           price_data: {
             currency,
             product_data: { name: description },
-            unit_amount: amount, // in centesimi
+            unit_amount: amount, // in centesimi (es. 500 = €5.00)
           },
           quantity: 1,
         },
