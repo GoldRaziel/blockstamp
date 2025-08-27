@@ -2,7 +2,7 @@
 import PayNow from "../components/PayNow";
 import PayButton from "../components/PayButton";
 import { ArrowDownCircleIcon } from "@heroicons/react/24/outline";
-import VerifyBox from "../components/VerifyBox";
+import VerifyBoxLocalized from "@/components/VerifyBoxLocalized";
 import { useEffect, useState } from "react";
 import PriceBox from "../components/PriceBox";
 
@@ -284,7 +284,7 @@ export default function Page() {
         </div>
       </section>
 
-      <VerifyBox />
+      <VerifyBoxLocalized locale="it" />
 
 
       {/* GUIDA */}
