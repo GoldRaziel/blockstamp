@@ -92,7 +92,7 @@ export default function Page() {
     try {
     const seg0 = (typeof window !== "undefined" ? window.location.pathname.split("/")[1] : "it");
      const locale = (seg0 === "en" || seg0 === "ar" || seg0 === "it") ? seg0 : "it";
-      const res = await fetch("/api/pay", {
+      const res = await fetch(`/api/pay?locale=${locale}`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

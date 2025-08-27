@@ -27,6 +27,7 @@ export async function POST(req: Request) {
 
     const stripe = new Stripe(sk, { apiVersion: "2024-06-20" } as any);
 
+    // Base di fallback (Netlify)
     const envBase =
       process.env.NEXT_PUBLIC_SITE_URL ||
       process.env.SITE_URL ||
@@ -34,10 +35,10 @@ export async function POST(req: Request) {
 
     const hdrs = nextHeaders();
 
-    // 1) body
+    // 1) locale dal body (priorità massima)
     let locale: Locale | null = normalizeLocale(bodyLocale);
 
-    // 2) query ?locale=
+    // 2) locale da query ?locale=
     if (!locale) {
       try {
         const u = new URL(req.url);
@@ -52,28 +53,38 @@ export async function POST(req: Request) {
       if (m) locale = normalizeLocale(m[1]);
     }
 
-    // 4) origin + path
+    // 4) path dal referer o req.url
     let origin = envBase;
-    try {
-      const ref = hdrs.get("referer") || "";
-      const u = new URL(ref || req.url);
-      origin = u.origin || envBase;
-      if (!locale) {
+    if (!locale) {
+      try {
+        const ref = hdrs.get("referer") || "";
+        const u = new URL(ref || req.url);
+        origin = u.origin || envBase;
         const seg0 = u.pathname.split("/")[1];
         locale = normalizeLocale(seg0);
+      } catch {
+        // resta envBase
       }
-    } catch {}
+    } else {
+      // comunque aggiorniamo origin da referer/req, se disponibile
+      try {
+        const ref = hdrs.get("referer") || "";
+        const u = new URL(ref || req.url);
+        origin = u.origin || envBase;
+      } catch {}
+    }
 
-    // 5) Accept-Language
+    // 5) Accept-Language (fallback dolce)
     if (!locale) {
       const al = hdrs.get("accept-language") || "";
       locale = normalizeLocale(al);
     }
 
-    // 6) fallback definitivo
+    // 6) Fallback definitivo
     if (!locale) locale = "it";
 
     const base = (origin || envBase).replace(/\/+$/, "");
+
     const success_url = `${base}/${locale}/portal?session_id={CHECKOUT_SESSION_ID}`;
     const cancel_url  = `${base}/${locale}/#pricing`;
 
@@ -85,7 +96,7 @@ export async function POST(req: Request) {
           price_data: {
             currency,
             product_data: { name: description },
-            unit_amount: amount,
+            unit_amount: amount, // centesimi
           },
           quantity: 1,
         },
