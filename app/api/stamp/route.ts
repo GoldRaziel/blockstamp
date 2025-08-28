@@ -1,3 +1,4 @@
+import Stripe from "stripe";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
@@ -28,6 +29,29 @@ function zipHasTxtFile(buf: Buffer): boolean {
 }
 
 export async function POST(req: NextRequest) {
+  // ==== BS_AUTH_START ====
+  const cookieOk = cookies().get("bs_portal")?.value === "ok";
+  let authorized = !!cookieOk;
+  try {
+    if (!authorized) {
+      const u = new URL(req.url);
+      const sid = u.searchParams.get("session_id") || "";
+      if (sid && process.env.STRIPE_SECRET_KEY) {
+        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2024-06-20" });
+        const s = await stripe.checkout.sessions.retrieve(sid);
+        authorized = (s.payment_status === "paid");
+      }
+    }
+    if (!authorized && process.env.PORTAL_BYPASS_ENABLED === "true") {
+      const u = new URL(req.url);
+      const key = u.searchParams.get("key") || req.headers.get("x-portal-bypass-key") || "";
+      if (key && key === (process.env.PORTAL_BYPASS_KEY || "")) authorized = true;
+    }
+  } catch (e) { /* ignore, authorized resterà false */ }
+  if (!authorized) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  // ==== BS_AUTH_END ====
   const authed = cookies().get("bs_portal")?.value === "ok";
   if (!authed) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
