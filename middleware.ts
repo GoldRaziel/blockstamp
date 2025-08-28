@@ -1,35 +1,19 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-export function middleware(req: NextRequest) {
-  const url = req.nextUrl;
-  const { pathname, searchParams } = url;
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
 
-  // Consenti /portal se arriva con ?session_id=...
-  if ((pathname === "/portal" || pathname.startsWith("/portal/")) && searchParams.has("session_id")) {
-    return NextResponse.next();
+  // Evita redirect se la lingua è già presente
+  const isLocaleSet = pathname.startsWith('/en') || pathname.startsWith('/it') || pathname.startsWith('/ar');
+
+  if (!isLocaleSet && pathname === '/') {
+    return NextResponse.redirect(new URL('/en', request.url));
   }
 
-  // Proteggi /portal e /api/stamp con cookie paid=1
-  const needsPaid =
-    pathname === "/portal" ||
-    pathname.startsWith("/portal/") ||
-    pathname.startsWith("/api/stamp");
-
-  if (needsPaid) {
-    const paid = req.cookies.get("paid");
-    if (!paid || paid.value !== "1") {
-      if (pathname.startsWith("/api/")) {
-        return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
-          status: 401,
-          headers: { "Content-Type": "application/json" },
-        });
-      }
-      return NextResponse.redirect(new URL("/", req.url));
-    }
+  if (!isLocaleSet && pathname === '/portal') {
+    return NextResponse.redirect(new URL('/en/portal', request.url));
   }
 
   return NextResponse.next();
 }
-
-export const config = { matcher: ["/portal", "/portal/:path*", "/api/stamp"] };
