@@ -1,43 +1,35 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-
-const LOCALES = ['en', 'it', 'ar'];
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const { nextUrl } = req;
-  const { pathname } = nextUrl;
+  const url = req.nextUrl;
+  const { pathname, searchParams } = url;
 
-  // Escludi asset/API/statici
-  if (
-    pathname.startsWith('/_next') ||
-    pathname.startsWith('/api') ||
-    pathname.startsWith('/assets') ||
-    pathname.startsWith('/favicon') ||
-    /\.\w+$/.test(pathname) // file con estensione
-  ) {
+  // Consenti /portal se arriva con ?session_id=...
+  if ((pathname === "/portal" || pathname.startsWith("/portal/")) && searchParams.has("session_id")) {
     return NextResponse.next();
   }
 
-  // Se manca il prefisso locale, forziamo EN
-  const hasLocale = LOCALES.some((loc) => pathname === `/${loc}` || pathname.startsWith(`/${loc}/`));
+  // Proteggi /portal e /api/stamp con cookie paid=1
+  const needsPaid =
+    pathname === "/portal" ||
+    pathname.startsWith("/portal/") ||
+    pathname.startsWith("/api/stamp");
 
-  if (!hasLocale) {
-    // Caso speciale: /portal -> /en/portal (e sotto-route)
-    if (pathname === '/portal' || pathname.startsWith('/portal/')) {
-      const url = nextUrl.clone();
-      url.pathname = `/en${pathname}`;
-      return NextResponse.redirect(url);
+  if (needsPaid) {
+    const paid = req.cookies.get("paid");
+    if (!paid || paid.value !== "1") {
+      if (pathname.startsWith("/api/")) {
+        return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
+          status: 401,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+      return NextResponse.redirect(new URL("/", req.url));
     }
-
-    const url = nextUrl.clone();
-    url.pathname = `/en${pathname}`;
-    return NextResponse.redirect(url);
   }
 
   return NextResponse.next();
 }
 
-// Applica a tutte le route tranne statiche e API
-export const config = {
-  matcher: ['/((?!_next|api|.*\\..*).*)'],
-};
+export const config = { matcher: ["/portal", "/portal/:path*", "/api/stamp"] };
