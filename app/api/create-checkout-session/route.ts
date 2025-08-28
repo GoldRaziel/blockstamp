@@ -8,7 +8,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, { apiVersion:
 
 export async function POST(req: Request) {
   try {
-    const origin = req.headers.get("origin") ?? process.env.DOMAIN_URL ?? new URL(req.url).origin;
+    const origin = req.headers.get("origin") ?? process.env.NEXT_PUBLIC_BASE_URL || process.env.DOMAIN_URL ?? new URL(req.url).origin;
 
     if (!process.env.STRIPE_PRICE_ID) {
       return NextResponse.json({ error: "Missing STRIPE_PRICE_ID" }, { status: 400 });
