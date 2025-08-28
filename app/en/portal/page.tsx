@@ -151,13 +151,8 @@ export default function PortalPage() {
         </ul>
 
         <div className="flex items-center gap-3">
-          <input
-            ref={inputRef}
-            type="file"
-            accept=".zip"
-            className="file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 text-sky-100"
-            onChange={(e) => setZipFile(e.target.files?.[0] || null)}
-          />
+            <input ref={inputRef} id="file-en" type="file" accept=".zip" className="hidden" onChange={(e) => setZipFile(e.target.files?.[0] || null)} />
+            <label htmlFor="file-en" className="px-4 py-2 rounded-md bg-amber-400 hover:bg-amber-300 text-black font-semibold cursor-pointer">Choose File</label>
           <button
             onClick={handleStamp}
             disabled={busy || locked}
