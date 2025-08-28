@@ -26,7 +26,7 @@ export default function PayButton({ label = "PAGA ORA" }: { label?: string }) {
       <button
         onClick={startCheckout}
         disabled={busy}
-        className="px-5 py-2 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-black font-semibold disabled:opacity-50"
+        className="px-5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-semibold disabled:opacity-50"
         aria-disabled={busy}
       >
         {busy ? "Reindirizzamento..." : label}
