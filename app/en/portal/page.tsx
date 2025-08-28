@@ -81,7 +81,7 @@ export default function PortalPage() {
       fd.append("zip", zipFile);
 
       
-      const apiUrl = `/api/stamp${sid ? `?session_id=${encodeURIComponent(sid)}` : ""}`;
+      const apiUrl = "/api/stamp";
       const res = await fetch(apiUrl, {  method: "POST", credentials: "include", body: fd });
       if (!res.ok) throw new Error(await res.text());
 
