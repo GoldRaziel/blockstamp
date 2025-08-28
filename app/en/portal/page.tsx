@@ -1,5 +1,4 @@
 "use client";
-import LangDropdown from "@/components/LangDropdown";
 
 import { useRef, useState, useEffect } from "react";
 
@@ -150,9 +149,35 @@ export default function PortalPage() {
           <li>Keep it safe: it is your indisputable proof of intellectual property on that date.</li>
         </ul>
 
-        <div className="flex items-center gap-3">
-            <input ref={inputRef} id="file-en" type="file" accept=".zip" className="hidden" onChange={(e) => setZipFile(e.target.files?.[0] || null)} />
-            <label htmlFor="file-en" className="px-4 py-2 rounded-md bg-amber-400 hover:bg-amber-300 text-black font-semibold cursor-pointer">Choose File</label>
+        <div className="flex items-start gap-3">
+          {/* Hidden input */}
+          <input
+            ref={inputRef}
+            id="file-en"
+            type="file"
+            accept=".zip"
+            className="hidden"
+            onChange={(e) => setZipFile(e.target.files?.[0] || null)}
+          />
+
+          {/* Button + selected filename underneath */}
+          <div className="flex flex-col">
+            <label
+              htmlFor="file-en"
+              className="px-4 py-2 rounded-md bg-amber-400 hover:bg-amber-300 text-black font-semibold cursor-pointer"
+            >
+              Choose File
+            </label>
+
+            {/* Show selected filename */}
+            {zipFile && (
+              <div className="mt-2 text-sky-200 text-sm">
+                {zipFile.name}
+              </div>
+            )}
+          </div>
+
+          {/* STAMP button */}
           <button
             onClick={handleStamp}
             disabled={busy || locked}

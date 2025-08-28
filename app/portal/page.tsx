@@ -1,5 +1,4 @@
 "use client";
-import LangDropdown from "@/components/LangDropdown";
 
 import { useRef, useState, useEffect } from "react";
 
@@ -155,9 +154,35 @@ export default function PortalPage() {
           <li>Conservalo: è la tua prova inconfutabile di proprietà intellettuale a quella data.</li>
         </ul>
 
-        <div className="flex items-center gap-3">
-            <input ref={inputRef} id="file-it" type="file" accept=".zip" className="hidden" onChange={(e) => setZipFile(e.target.files?.[0] || null)} />
-            <label htmlFor="file-it" className="px-4 py-2 rounded-md bg-amber-400 hover:bg-amber-300 text-black font-semibold cursor-pointer">SCEGLI FILE</label>
+        <div className="flex items-start gap-3">
+          {/* Input nascosto */}
+          <input
+            ref={inputRef}
+            id="file-it"
+            type="file"
+            accept=".zip"
+            className="hidden"
+            onChange={(e) => setZipFile(e.target.files?.[0] || null)}
+          />
+
+          {/* Bottone + nome file sotto */}
+          <div className="flex flex-col">
+            <label
+              htmlFor="file-it"
+              className="px-4 py-2 rounded-md bg-amber-400 hover:bg-amber-300 text-black font-semibold cursor-pointer"
+            >
+              SCEGLI FILE
+            </label>
+
+            {/* Nome file selezionato */}
+            {zipFile && (
+              <div className="mt-2 text-sky-200 text-sm">
+                {zipFile.name}
+              </div>
+            )}
+          </div>
+
+          {/* Bottone TIMBRA */}
           <button
             onClick={handleStamp}
             disabled={busy || locked}

@@ -1,5 +1,4 @@
 "use client";
-import LangDropdown from "@/components/LangDropdown";
 
 import { useRef, useState, useEffect } from "react";
 
