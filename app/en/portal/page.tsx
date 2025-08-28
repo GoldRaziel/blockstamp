@@ -81,8 +81,8 @@ export default function PortalPage() {
       fd.append("zip", zipFile);
 
       
-      const url = `/api/stamp${sid ? `?session_id=${encodeURIComponent(sid)}` : ""}`;
-      const res = await fetch(url, {  method: "POST", credentials: "include", body: fd });
+      const apiUrl = `/api/stamp${sid ? `?session_id=${encodeURIComponent(sid)}` : ""}`;
+      const res = await fetch(apiUrl, {  method: "POST", credentials: "include", body: fd });
       if (!res.ok) throw new Error(await res.text());
 
       const blob = await res.blob();
@@ -90,14 +90,14 @@ export default function PortalPage() {
       setReceiptCode(code);
       setLocked(true);
 
-      const url = URL.createObjectURL(blob);
+      const blobUrl = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = url;
+      a.href = blobUrl;
       a.download = "blockstamp_receipt.ots";
       document.body.appendChild(a);
       a.click();
       a.remove();
-      URL.revokeObjectURL(url);
+      URL.revokeObjectURL(blobUrl);
     } catch (e: any) {
       setError(e.message || "Unexpected error.");
     } finally {
