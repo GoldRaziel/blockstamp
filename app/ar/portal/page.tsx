@@ -145,9 +145,36 @@ export default function PortalPage() {
           <li>احتفظ به: فهو دليلك القاطع على الملكية الفكرية اعتبارًا من ذلك التاريخ.</li>
         </ul>
 
-        <div className="flex items-center gap-3" dir="ltr">
-            <input ref={inputRef} id="file-ar" type="file" accept=".zip" className="hidden" onChange={(e) => setZipFile(e.target.files?.[0] || null)} />
-            <label htmlFor="file-ar" className="px-4 py-2 rounded-md bg-amber-400 hover:bg-amber-300 text-black font-semibold cursor-pointer">اختر ملف</label>
+        {/* السطر LTR لعناصر الرفع والطباعة */}
+        <div className="flex items-start gap-3" dir="ltr">
+          {/* input مخفي */}
+          <input
+            ref={inputRef}
+            id="file-ar"
+            type="file"
+            accept=".zip"
+            className="hidden"
+            onChange={(e) => setZipFile(e.target.files?.[0] || null)}
+          />
+
+          {/* زر اختر ملف + اسم الملف تحت */}
+          <div className="flex flex-col">
+            <label
+              htmlFor="file-ar"
+              className="px-4 py-2 rounded-md bg-amber-400 hover:bg-amber-300 text-black font-semibold cursor-pointer"
+            >
+              اختر ملف
+            </label>
+
+            {/* اسم الملف المحدد */}
+            {zipFile && (
+              <div className="mt-2 text-sky-200 text-sm" dir="rtl">
+                {zipFile.name}
+              </div>
+            )}
+          </div>
+
+          {/* زر الطباعة على البلوكتشين */}
           <button
             onClick={handleStamp}
             disabled={busy || locked}
