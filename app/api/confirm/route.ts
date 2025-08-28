@@ -14,8 +14,20 @@ export async function GET(req: NextRequest) {
   try {
     const session = await stripe.checkout.sessions.retrieve(session_id);
     const paid = session.payment_status === "paid";
-    // Qui potresti anche settare cookie/server flag se vuoi bloccare riuso, ma non è indispensabile.
-    return NextResponse.json({ ok: true, paid });
+
+    const res = NextResponse.json({ ok: true, paid });
+    if (paid) {
+      res.cookies.set({
+        name: "bs_portal",
+        value: "ok",
+        httpOnly: true,
+        sameSite: "lax",
+        secure: true,
+        path: "/",
+        maxAge: 60 * 30, // 30 min
+      });
+    }
+    return res;
   } catch (e: any) {
     return NextResponse.json({ ok: false, error: e?.message ?? "retrieve_error" }, { status: 400 });
   }

@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 
@@ -27,6 +28,10 @@ function zipHasTxtFile(buf: Buffer): boolean {
 }
 
 export async function POST(req: NextRequest) {
+  const authed = cookies().get("bs_portal")?.value === "ok";
+  if (!authed) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   // deve essere pagato
   const paid = req.cookies.get("paid");
   if (!paid || paid.value !== "1") {
