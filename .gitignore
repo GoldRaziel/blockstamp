@@ -161,3 +161,9 @@ Thumbs.db
 
 # pnpm store (only if you use pnpm)
 pnpm-store/
+
+# backup locali
+*.bak.*
+
+# backup i18n
+.bak-i18n/
