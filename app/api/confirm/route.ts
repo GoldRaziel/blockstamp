@@ -24,7 +24,8 @@ export async function GET(req: NextRequest) {
         sameSite: "lax",
         secure: true,
         path: "/",
-        maxAge: 60 * 30, // 30 min
+        domain: ".blockstamp.ae",   // << IMPORTANTISSIMO
+        maxAge: 60 * 30,            // 30 min
       });
     }
     return res;

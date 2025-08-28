@@ -13,7 +13,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "forbidden" }, { status: 403 });
   }
 
-  // Imposta cookie HttpOnly per sbloccare /portal (15 min)
   const res = NextResponse.redirect(new URL("/portal", url.origin));
   res.cookies.set({
     name: "bs_portal",
@@ -22,6 +21,7 @@ export async function GET(req: NextRequest) {
     sameSite: "lax",
     secure: true,
     path: "/",
+    domain: ".blockstamp.ae",  // << qui!
     maxAge: 60 * 15,
   });
   return res;

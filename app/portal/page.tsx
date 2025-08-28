@@ -60,7 +60,7 @@ export default function PortalPage() {
     const sp = new URLSearchParams(window.location.search);
     const sid = sp.get("session_id");
     if (sid) {
-      fetch(`/api/confirm?session_id=${encodeURIComponent(sid)}`, { cache: "no-store", credentials: "include" })
+      fetch(`/api/confirm?session_id=${encodeURIComponent(sid)}`, { cache: "no-store", credentials: "include", credentials: "include" })
         .finally(() => {
           // Mantiene il path/locale correnti (es. /it/portal, /en/portal, /ar/portal) e rimuove solo la query
           history.replaceState({}, "", window.location.pathname);
