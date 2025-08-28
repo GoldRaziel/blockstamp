@@ -13,10 +13,16 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "forbidden" }, { status: 403 });
   }
 
-  const host = url.hostname;
+  // usa sempre DOMAIN_URL come host canonico (apex)
+  const origin = (process.env.DOMAIN_URL && process.env.DOMAIN_URL.startsWith("http"))
+    ? process.env.DOMAIN_URL
+    : `https://${url.hostname}`;
+
+  // cookie valido per apex (e www)
+  const host = new URL(origin).hostname;
   const domain = host.endsWith("blockstamp.ae") ? ".blockstamp.ae" : host;
 
-  const res = NextResponse.redirect(new URL("/portal", url.origin));
+  const res = NextResponse.redirect(new URL("/portal", origin));
   res.cookies.set({
     name: "bs_portal",
     value: "ok",
