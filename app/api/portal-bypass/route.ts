@@ -4,14 +4,17 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
+  const url = new URL(req.url);
   const enabled = process.env.PORTAL_BYPASS_ENABLED === "true";
   const secret = process.env.PORTAL_BYPASS_KEY || "";
-  const url = new URL(req.url);
   const provided = url.searchParams.get("key") || "";
 
   if (!enabled || !secret || provided !== secret) {
     return NextResponse.json({ ok: false, error: "forbidden" }, { status: 403 });
   }
+
+  const host = url.hostname;
+  const domain = host.endsWith("blockstamp.ae") ? ".blockstamp.ae" : host;
 
   const res = NextResponse.redirect(new URL("/portal", url.origin));
   res.cookies.set({
@@ -21,7 +24,17 @@ export async function GET(req: NextRequest) {
     sameSite: "lax",
     secure: true,
     path: "/",
-    domain: ".blockstamp.ae",  // << qui!
+    domain,
+    maxAge: 60 * 15,
+  });
+  res.cookies.set({
+    name: "paid",
+    value: "1",
+    httpOnly: true,
+    sameSite: "lax",
+    secure: true,
+    path: "/",
+    domain,
     maxAge: 60 * 15,
   });
   return res;

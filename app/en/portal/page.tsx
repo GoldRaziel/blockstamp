@@ -60,7 +60,7 @@ export default function PortalPage() {
     const sp = new URLSearchParams(window.location.search);
     const sid = sp.get("session_id");
     if (sid) {
-      fetch(`/api/confirm?session_id=${encodeURIComponent(sid)}`, { cache: "no-store" })
+      fetch(`/api/confirm?session_id=${encodeURIComponent(sid)}`, { cache: "no-store", credentials: "include" })
         .finally(() => {
           // keep /en/portal (or current locale path), just drop the query string
           history.replaceState({}, "", window.location.pathname);
@@ -80,7 +80,9 @@ export default function PortalPage() {
       const fd = new FormData();
       fd.append("zip", zipFile);
 
-      const res = await fetch("/api/stamp", { method: "POST", body: fd });
+      
+      const url = `/api/stamp${sid ? `?session_id=${encodeURIComponent(sid)}` : ""}`;
+      const res = await fetch(url, {  method: "POST", credentials: "include", body: fd });
       if (!res.ok) throw new Error(await res.text());
 
       const blob = await res.blob();

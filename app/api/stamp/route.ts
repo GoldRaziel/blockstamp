@@ -52,16 +52,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   // ==== BS_AUTH_END ====
-  const authed = cookies().get("bs_portal")?.value === "ok";
-  if (!authed) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-  // deve essere pagato
-  const paid = req.cookies.get("paid");
-  if (!paid || paid.value !== "1") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
+  // (paid/cookie check removed; using unified authorized)
   const form = await req.formData();
   const file = form.get("zip");
   if (!(file instanceof File)) return new NextResponse("File .zip mancante", { status: 400 });

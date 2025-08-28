@@ -60,7 +60,7 @@ export default function PortalPage() {
     const sp = new URLSearchParams(window.location.search);
     const sid = sp.get("session_id");
     if (sid) {
-      fetch(`/api/confirm?session_id=${encodeURIComponent(sid)}`, { cache: "no-store", credentials: "include", credentials: "include", credentials: "include" })
+      fetch(`/api/confirm?session_id=${encodeURIComponent(sid)}`, { cache: "no-store", credentials: "include" })
         .finally(() => {
           // Mantiene il path/locale correnti (es. /it/portal, /en/portal, /ar/portal) e rimuove solo la query
           history.replaceState({}, "", window.location.pathname);
@@ -80,7 +80,9 @@ export default function PortalPage() {
       const fd = new FormData();
       fd.append("zip", zipFile);
 
-      const res = await fetch("/api/stamp", { method: "POST", credentials: "include", body: fd });
+      
+      const url = `/api/stamp${sid ? `?session_id=${encodeURIComponent(sid)}` : ""}`;
+      const res = await fetch(url, {  method: "POST", credentials: "include", credentials: "include", body: fd });
       if (!res.ok) throw new Error(await res.text());
 
       const blob = await res.blob();

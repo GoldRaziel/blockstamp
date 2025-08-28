@@ -7,8 +7,8 @@ export const dynamic = "force-dynamic";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2024-06-20" });
 
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const session_id = searchParams.get("session_id");
+  const url = new URL(req.url);
+  const session_id = url.searchParams.get("session_id");
   if (!session_id) return NextResponse.json({ ok: false, error: "missing_session_id" }, { status: 400 });
 
   try {
@@ -16,7 +16,12 @@ export async function GET(req: NextRequest) {
     const paid = session.payment_status === "paid";
 
     const res = NextResponse.json({ ok: true, paid });
+
     if (paid) {
+      // cookie validi sia su apex (blockstamp.ae) sia su preview
+      const host = url.hostname;
+      const domain = host.endsWith("blockstamp.ae") ? ".blockstamp.ae" : host;
+
       res.cookies.set({
         name: "bs_portal",
         value: "ok",
@@ -24,8 +29,19 @@ export async function GET(req: NextRequest) {
         sameSite: "lax",
         secure: true,
         path: "/",
-        domain: ".blockstamp.ae",   // << IMPORTANTISSIMO
-        maxAge: 60 * 30,            // 30 min
+        domain,
+        maxAge: 60 * 30,
+      });
+
+      res.cookies.set({
+        name: "paid",
+        value: "1",
+        httpOnly: true,
+        sameSite: "lax",
+        secure: true,
+        path: "/",
+        domain,
+        maxAge: 60 * 30,
       });
     }
     return res;
