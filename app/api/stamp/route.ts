@@ -8,6 +8,27 @@ export const dynamic = "force-dynamic";
 
 /* ===== i18n helpers ===== */
 type Loc = "it" | "en" | "ar";
+function detectLocale_OLD(req: NextRequest): Loc {
+  // 1) locale dal client (header esplicito)
+  const xl = (req.headers.get("x-locale") || "").toLowerCase();
+  if (xl === "en" || xl.startsWith("en")) return "en";
+  if (xl === "ar" || xl.startsWith("ar")) return "ar";
+
+  // 2) fallback: deduci dal Referer (es. https://blockstamp.ae/ar/portal)
+  const ref = req.headers.get("referer") || "";
+  try {
+    const u = new URL(ref);
+    const seg = u.pathname.split("/")[1]?.toLowerCase();
+    if (seg === "en" || seg === "ar") return seg as Loc;
+  } catch {}
+
+  // 3) fallback: Accept-Language
+  const al = (req.headers.get("accept-language") || "").toLowerCase();
+  if (al.startsWith("en")) return "en";
+  if (al.startsWith("ar")) return "ar";
+
+  return "it";
+}
 
 function detectLocale(req: NextRequest): Loc {
   const xl = (req.headers.get("x-locale") || "").toLowerCase();
