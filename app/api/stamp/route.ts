@@ -57,6 +57,24 @@ function t(loc: Loc) {
         OTS_CONN_FAIL: "Failed to connect to the OTS service",
         OTS_ERR_PREFIX: "OTS error: ",
       };
+
+/** Ritorna la frase MISSING_TXT tenendo conto del contesto AR:
+ *  - se la richiesta proviene da /ar/... (Referer), forza l'inglese
+ *  - altrimenti usa la lingua già rilevata (loc)
+ */
+function missingTxtFor(req: NextRequest, loc: Loc): string {
+  const ref = req.headers.get("referer") || "";
+  try {
+    const u = new URL(ref);
+    const isAr = u.pathname.split("/")[1]?.toLowerCase() === "ar";
+    if (isAr) {
+      // forza inglese per la frase MISSING_TXT in contesto AR
+      return t("en").MISSING_TXT;
+    }
+  } catch {}
+  return t(loc).MISSING_TXT;
+}
+
     case "ar":
       // Richiesta: in AR, lasciare il messaggio *in inglese* per la mancanza del .txt
       return {
