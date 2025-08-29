@@ -62,6 +62,12 @@ function t(loc: Loc) {
   }
 }
 
+// Forza la resa RTL per stringhe arabe anche dentro container LTR
+// U+2067 (RLI) ... U+2069 (PDI) isola la direzionalità
+function rtlWrap(loc: Loc, s: string) {
+  return loc === "ar" ? `\u2067${s}\u2069` : s;
+}
+
 /* ===== ZIP check: esiste almeno un .txt nell'archivio? ===== */
 function zipHasTxtFile(buf: Buffer): boolean {
   const SIG = 0x02014b50; // PK\x01\x02 (central directory)
@@ -116,21 +122,39 @@ export async function POST(req: NextRequest) {
 
   const form = await req.formData();
   const file = form.get("zip");
-  if (!(file instanceof File)) return new NextResponse(L.MISSING_ZIP, { status: 400 });
-  if (!file.name.toLowerCase().endsWith(".zip")) return new NextResponse(L.ONLY_ZIP, { status: 400 });
+  if (!(file instanceof File)) {
+    return new NextResponse(rtlWrap(loc, L.MISSING_ZIP), {
+      status: 400,
+      headers: { "Content-Language": loc },
+    });
+  }
+  if (!file.name.toLowerCase().endsWith(".zip")) {
+    return new NextResponse(rtlWrap(loc, L.ONLY_ZIP), {
+      status: 400,
+      headers: { "Content-Language": loc },
+    });
+  }
 
   const buf = Buffer.from(await (file as File).arrayBuffer());
 
   // obbligo del .txt nello ZIP
   if (!zipHasTxtFile(buf)) {
-    return new NextResponse(L.MISSING_TXT, { status: 400 });
+    return new NextResponse(rtlWrap(loc, L.MISSING_TXT), {
+      status: 400,
+      headers: { "Content-Language": loc },
+    });
   }
 
   // receiptCode = SHA-256 dello ZIP
   const receiptCode = crypto.createHash("sha256").update(buf).digest("hex");
 
   const otsUrl = process.env.OTS_SERVICE_URL;
-  if (!otsUrl) return new NextResponse(L.OTS_URL_MISSING, { status: 500 });
+  if (!otsUrl) {
+    return new NextResponse(rtlWrap(loc, L.OTS_URL_MISSING), {
+      status: 500,
+      headers: { "Content-Language": loc },
+    });
+  }
 
   const fd = new FormData();
   fd.append("file", new Blob([buf], { type: "application/zip" }), file.name);
@@ -139,11 +163,17 @@ export async function POST(req: NextRequest) {
   try {
     upstream = await fetch(otsUrl, { method: "POST", body: fd });
   } catch {
-    return new NextResponse(L.OTS_CONN_FAIL, { status: 502 });
+    return new NextResponse(rtlWrap(loc, L.OTS_CONN_FAIL), {
+      status: 502,
+      headers: { "Content-Language": loc },
+    });
   }
   if (!upstream.ok) {
     const text = await upstream.text();
-    return new NextResponse(`${L.OTS_ERR_PREFIX}${text}`, { status: 502 });
+    return new NextResponse(rtlWrap(loc, `${L.OTS_ERR_PREFIX}${text}`), {
+      status: 502,
+      headers: { "Content-Language": loc },
+    });
   }
 
   const otsBlob = await upstream.blob();
@@ -156,6 +186,7 @@ export async function POST(req: NextRequest) {
       "Content-Disposition": 'attachment; filename="blockstamp_receipt.ots"',
       "x-receipt-code": receiptCode,
       "Cache-Control": "no-store",
+      "Content-Language": loc,
     },
   });
 
