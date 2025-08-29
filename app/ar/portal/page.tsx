@@ -60,11 +60,13 @@ export default function PortalPage() {
     const sp = new URLSearchParams(window.location.search);
     const sid = sp.get("session_id");
     if (sid) {
-      fetch(`/api/confirm?session_id=${encodeURIComponent(sid)}`, { cache: "no-store" })
-        .finally(() => {
-          // أبقِ /ar/portal (أو المسار الحالي) واحذف الاستعلام فقط
-          history.replaceState({}, "", window.location.pathname);
-        });
+      fetch(`/api/confirm?session_id=${encodeURIComponent(sid)}`, {
+        cache: "no-store",
+        credentials: "include", // << مهم: أرسل الكوكيز
+      }).finally(() => {
+        // أبقِ /ar/portal (أو المسار الحالي) واحذف الاستعلام فقط
+        history.replaceState({}, "", window.location.pathname);
+      });
     }
   }, []);
 
@@ -80,7 +82,14 @@ export default function PortalPage() {
       const fd = new FormData();
       fd.append("zip", zipFile);
 
-      const res = await fetch("/api/stamp", { method: "POST", body: fd });
+      // نُجبر إرسال اللغة "ar" للـ API
+      const res = await fetch("/api/stamp", {
+        method: "POST",
+        credentials: "include",             // أرسل الكوكيز
+        headers: { "x-locale": "ar" },      // أجبر اللغة العربية (السيرفر سيعرض EN لهذه الرسالة كما اتفقنا)
+        body: fd,
+        cache: "no-store",
+      });
       if (!res.ok) throw new Error(await res.text());
 
       const blob = await res.blob();
@@ -88,11 +97,14 @@ export default function PortalPage() {
       setReceiptCode(code);
       setLocked(true);
 
-      const url = URL.createObjectURL(blob);
+      const blobUrl = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = url; a.download = "blockstamp_receipt.ots";
-      document.body.appendChild(a); a.click(); a.remove();
-      URL.revokeObjectURL(url);
+      a.href = blobUrl;
+      a.download = "blockstamp_receipt.ots";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(blobUrl);
     } catch (e: any) {
       setError(e.message || "خطأ غير متوقع.");
     } finally {
