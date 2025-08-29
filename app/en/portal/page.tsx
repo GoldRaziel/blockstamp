@@ -82,7 +82,10 @@ export default function PortalPage() {
 
       
       const apiUrl = "/api/stamp";
-      const res = await fetch(apiUrl, {  method: "POST", credentials: "include", body: fd });
+      const seg = (typeof window !== "undefined" ? window.location.pathname.split("/")[1] : "") || "";
+      const locale = (seg === "en" || seg === "ar") ? seg : "it";
+
+      const res = await fetch(apiUrl, { headers: { "x-locale": locale }, method: "POST", credentials: "include", body: fd });
       if (!res.ok) throw new Error(await res.text());
 
       const blob = await res.blob();
