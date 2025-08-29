@@ -140,11 +140,7 @@ export default function PortalPage() {
           <strong>ISTRUZIONI:</strong> Crea un file <strong>.zip</strong> con :
         </p>
         <ul className="list-disc list-inside text-sky-100">
-          <li>Il tuo <strong>file originale</strong> (o cartella) da proteggere</li>
-          <li>
-            Il <strong>file di testo (.txt)</strong> con il{" "}
-            <span className="text-sky-300">codice SHA-256</span> che hai generato sul nostro sito
-          </li>
+          <li>Nel file <strong>.zip</strong> deve essere presente un <strong>file di testo (.txt)</strong> con il codice <span className="text-sky-300">SHA-256</span> generato in <strong>Home</strong>.</li>
           <li>Carica qui sotto il file <strong>.zip</strong> creato</li>
           <li>Otterrai un <strong>codice .ots</strong>: è la prova di avvenuta registrazione;</li>
           <li>Conserva il <strong>codice .ots</strong> assieme al tuo <strong>file .zip</strong>;</li>

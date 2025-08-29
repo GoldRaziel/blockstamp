@@ -134,8 +134,7 @@ export default function PortalPage() {
       <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
         <p className="text-sky-100"><strong>التعليمات:</strong> أنشئ ملف <strong>.zip</strong> يحتوي على:</p>
         <ul className="list-disc list-inside text-sky-100">
-          <li><strong>ملفك الأصلي</strong> (أو المجلد) الذي تريد حمايته</li>
-          <li><strong>ملف نصي (.txt)</strong> يتضمن <span className="text-sky-300">رمز SHA-256</span> الذي أنشأته على موقعنا</li>
+          <li>يجب أن يحتوي ملف <strong>.zip</strong> على <strong>ملف نصي (.txt)</strong> يتضمّن رمز <span className="text-sky-300">SHA-256</span> الذي تم توليده في <strong>الصفحة الرئيسية</strong>.</li>
           <li>قم برفع ملف <strong>.zip</strong> الذي أنشأته أدناه</li>
           <li>ستتلقى <strong>رمز ‎.ots</strong>: وهو دليل على تنفيذ/طلب التسجيل</li>
           <li>احتفظ بـ <strong>رمز ‎.ots</strong> مع <strong>ملف ‎.zip</strong> الخاص بك</li>

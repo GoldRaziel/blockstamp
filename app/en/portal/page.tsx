@@ -138,11 +138,7 @@ export default function PortalPage() {
       <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
         <p className="text-sky-100"><strong>INSTRUCTIONS:</strong> Create a <strong>.zip</strong> containing:</p>
         <ul className="list-disc list-inside text-sky-100">
-          <li>Your <strong>original file</strong> (or folder) to protect</li>
-          <li>
-            The <strong>text file (.txt)</strong> with the{" "}
-            <span className="text-sky-300">SHA-256 code</span> you generated on our site
-          </li>
+          <li>Your <strong>.zip</strong> must include a <strong>text file (.txt)</strong> containing the <span className="text-sky-300">SHA-256</span> code generated on <strong>Home</strong>.</li>
           <li>Upload the created <strong>.zip</strong> below</li>
           <li>You will receive an <strong>.ots code</strong>: it’s the proof that registration was requested/completed</li>
           <li>Keep the <strong>.ots code</strong> together with your <strong>.zip file</strong></li>
