@@ -10,16 +10,13 @@ export const dynamic = "force-dynamic";
 type Loc = "it" | "en" | "ar";
 
 function detectLocale(req: NextRequest): Loc {
-  // 1) header esplicito dal client
   const xl = (req.headers.get("x-locale") || "").toLowerCase();
   if (xl === "en" || xl.startsWith("en")) return "en";
   if (xl === "ar" || xl.startsWith("ar")) return "ar";
 
-  // 2) segment locale da URL (/en/..., /ar/...)
   const seg = new URL(req.url).pathname.split("/")[1]?.toLowerCase();
   if (seg === "en" || seg === "ar") return seg;
 
-  // 3) Accept-Language
   const al = (req.headers.get("accept-language") || "").toLowerCase();
   if (al.startsWith("en")) return "en";
   if (al.startsWith("ar")) return "ar";
@@ -40,11 +37,12 @@ function t(loc: Loc) {
         OTS_ERR_PREFIX: "OTS error: ",
       };
     case "ar":
+      // Richiesta: in AR, lasciare il messaggio *in inglese* per la mancanza del .txt
       return {
         MISSING_ZIP: "ملف ‎.zip مفقود",
         ONLY_ZIP: "يُسمح فقط بملفات ‎.zip",
         MISSING_TXT:
-          "يجب أن يحتوي ملف .zip على ملف نصي (.txt) يتضمّن رمز SHA-256 الذي تم توليده في الصفحة الرئيسية.",
+          "Your .zip must include a text file (.txt) containing the SHA-256 code generated on Home.",
         OTS_URL_MISSING: "لم يتم ضبط OTS_SERVICE_URL",
         OTS_CONN_FAIL: "فشل الاتصال بخدمة OTS",
         OTS_ERR_PREFIX: "خطأ OTS: ",
@@ -62,10 +60,10 @@ function t(loc: Loc) {
   }
 }
 
-// Forza la resa RTL per stringhe arabe anche dentro container LTR
-// U+2067 (RLI) ... U+2069 (PDI) isola la direzionalità
+// RTL wrapper smart: applica RLI/PDI solo se la stringa contiene caratteri arabi
 function rtlWrap(loc: Loc, s: string) {
-  return loc === "ar" ? `\u2067${s}\u2069` : s;
+  const hasArabic = /[\u0600-\u06FF]/.test(s);
+  return loc === "ar" && hasArabic ? `\u2067${s}\u2069` : s;
 }
 
 /* ===== ZIP check: esiste almeno un .txt nell'archivio? ===== */
@@ -112,9 +110,7 @@ export async function POST(req: NextRequest) {
       const key = u.searchParams.get("key") || req.headers.get("x-portal-bypass-key") || "";
       if (key && key === (process.env.PORTAL_BYPASS_KEY || "")) authorized = true;
     }
-  } catch {
-    /* ignore; authorized resterà false */
-  }
+  } catch { /* ignore */ }
   if (!authorized) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -178,7 +174,6 @@ export async function POST(req: NextRequest) {
 
   const otsBlob = await upstream.blob();
 
-  // risposta + (opzionale) "consumo" della sessione
   const res = new NextResponse(otsBlob, {
     status: 200,
     headers: {
@@ -190,7 +185,7 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  // Invalida solo il cookie 'paid' (se lo usi come segnale usa-una-volta)
+  // opzionale: invalida 'paid' usa-una-volta
   res.cookies.set({
     name: "paid",
     value: "",
