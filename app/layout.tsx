@@ -22,8 +22,8 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const year = new Date().getFullYear();
   return (
-    <div>
-      <div>
+    <html lang="it">
+      <body>
         <header className="border-b border-white/10">
           <div className="container mx-auto px-4 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
             <div className="flex justify-start">
@@ -66,6 +66,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   Falcon Prime Solutions FZE<br />
   Business Center, Sharjah Publishing City Free Zone<br />
   Sharjah, UAE
+  <br />
+  Falcon Prime Solutions FZE<br />
+  Business Center, Sharjah Publishing City Free Zone<br />
+  Sharjah, UAE
               className="hover:text-sky-400 transition"
             >
               blockstamp.protection@gmail.com
@@ -73,10 +77,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   Falcon Prime Solutions FZE<br />
   Business Center, Sharjah Publishing City Free Zone<br />
   Sharjah, UAE
+  <br />
+  Falcon Prime Solutions FZE<br />
+  Business Center, Sharjah Publishing City Free Zone<br />
+  Sharjah, UAE
             </a>
           </div>
         </footer>
-      </div>
-    </div>
+      </body>
+    </html>
   );
 }
