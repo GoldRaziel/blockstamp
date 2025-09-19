@@ -40,6 +40,7 @@ export default function PriceBox({ onPay }: Props) {
 
       <div className="text-base font-semibold">حماية عبر البلوكتشين</div>
 
+        <p className="text-sm opacity-90 text-right">إليك ما ستحصل عليه من خدمتنا:</p>
       <ul className="list-disc pr-5 text-sm space-y-1 opacity-90 text-right">
   <li>تثبيت البصمة الرقمية للملف على سلسلة بيتكوين</li>
   <li>حساب البصمة محليًا (الخصوصية حسب التصميم)</li>
