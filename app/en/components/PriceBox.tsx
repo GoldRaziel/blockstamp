@@ -39,9 +39,6 @@ export default function PriceBox({ onPay }: Props) {
 
 
       <div className="text-base font-semibold">Blockchain Protection</div>
-      <p className="text-sm opacity-90">
-        Anchoring your file's fingerprint on Bitcoin with a verification guide.
-      </p>
 
       <ul className="list-disc pl-5 text-sm space-y-1 opacity-90">
   <li>Cryptographic anchoring of the file’s fingerprint on Bitcoin blockchain</li>

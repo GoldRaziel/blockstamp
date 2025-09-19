@@ -39,9 +39,6 @@ export default function PriceBox({ onPay }: Props) {
 
 
       <div className="text-base font-semibold">Protezione Blockchain</div>
-      <p className="text-sm opacity-90">
-        Ancoraggio dell’impronta del tuo file su Bitcoin con guida alla verifica.
-      </p>
 
       <ul className="list-disc pl-5 text-sm space-y-1 opacity-90">
   <li>Ancoraggio crittografico dell’impronta del file su blockchain Bitcoin</li>
