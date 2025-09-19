@@ -1,4 +1,4 @@
-import Nav from "./components/Nav";
+import LangDropdown from "./components/LangDropdown";
 // app/layout.tsx
 import "./globals.css";
 import type { Metadata } from "next";
@@ -39,32 +39,40 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 />
               </a>
             </div>
-            <Nav />
+<nav className="text-sm flex items-center flex-wrap gap-x-3 gap-y-1">
+  <a href="/#procedura" className="hover:underline whitespace-nowrap">PROCEDURA</a>
+  <span className="opacity-50">•</span>
+  <a href="/#guida" className="hover:underline whitespace-nowrap">GUIDA</a>
+  <span className="opacity-50">•</span>
+  <a href="/#faq" className="hover:underline whitespace-nowrap">FAQ</a>
+  <span className="opacity-50">•</span>
+  <a href="/#contatti" className="hover:underline whitespace-nowrap">CONTATTI</a>
+  <span className="opacity-50">•</span>
+  <span className="opacity-50">•</span>
+  <LangDropdown />
+</nav>
           </div>
 </header>
 
         <main className="container mx-auto px-4 py-10">{children}</main>
 
-        <div id="contact"></div>
-<footer id="contatti" className="border-t border-white/10 mt-16">
+        <footer id="contatti" className="border-t border-white/10 mt-16">
           <div className="container mx-auto px-4 py-6 text-sm opacity-80 flex items-center justify-center gap-3 flex-wrap text-center">
             <span>© {year} BLOCKSTAMP — Proof of Existence</span>
             <span className="hidden sm:inline">•</span>
             <a
               href="mailto:blockstamp.protection@gmail.com"
-  <p className="text-sm opacity-80 mt-2">
+  <br />
   Falcon Prime Solutions FZE<br />
   Business Center, Sharjah Publishing City Free Zone<br />
   Sharjah, UAE
-  </p>
               className="hover:text-sky-400 transition"
             >
               blockstamp.protection@gmail.com
-  <p className="text-sm opacity-80 mt-2">
+  <br />
   Falcon Prime Solutions FZE<br />
   Business Center, Sharjah Publishing City Free Zone<br />
   Sharjah, UAE
-  </p>
             </a>
           </div>
         </footer>
