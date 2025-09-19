@@ -52,9 +52,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <span className="hidden sm:inline">•</span>
             <a
               href="mailto:blockstamp.protection@gmail.com"
+  <p className="text-sm opacity-80 mt-2">
+  Falcon Prime Solutions FZE<br />
+  Business Center, Sharjah Publishing City Free Zone<br />
+  Sharjah, UAE
+  </p>
               className="hover:text-sky-400 transition"
             >
               blockstamp.protection@gmail.com
+  <p className="text-sm opacity-80 mt-2">
+  Falcon Prime Solutions FZE<br />
+  Business Center, Sharjah Publishing City Free Zone<br />
+  Sharjah, UAE
+  </p>
             </a>
           </div>
         </footer>
