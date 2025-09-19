@@ -43,12 +43,12 @@ export default function PriceBox({ onPay }: Props) {
         تثبيت بصمة ملفك على بيتكوين مع دليل التحقق.
       </p>
 
-      <ul className="list-disc pr-5 text-sm space-y-1 opacity-90">
-        <li>حساب البصمة محليًا (خصوصية حسب التصميم)</li>
-        <li>تثبيت على السلسلة مع مرجع عام</li>
-        <li>وثيقة إثبات وتعليمات</li>
-        <li>دعم أساسي عبر البريد الإلكتروني</li>
-      </ul>
+      <ul className="list-disc pr-5 text-sm space-y-1 opacity-90 text-right">
+  <li>تثبيت البصمة الرقمية للملف على سلسلة بيتكوين</li>
+  <li>حساب البصمة محليًا (الخصوصية حسب التصميم)</li>
+  <li>شهادة PDF قانونية رسمية لإثبات الحماية</li>
+  <li>كتلتك على سلسلة بيتكوين كضمان عالمي ودائم</li>
+</ul>
 
       {/* Bottone invariato per stile; onClick torna a fare la POST corretta */}
       

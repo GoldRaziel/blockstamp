@@ -44,11 +44,11 @@ export default function PriceBox({ onPay }: Props) {
       </p>
 
       <ul className="list-disc pl-5 text-sm space-y-1 opacity-90">
-        <li>Fingerprint computed locally (privacy by design)</li>
-        <li>On-chain anchoring with public reference</li>
-        <li>Proof document and instructions</li>
-        <li>Basic support via email</li>
-      </ul>
+  <li>Cryptographic anchoring of the file’s fingerprint on Bitcoin blockchain</li>
+  <li>Fingerprint calculated locally (privacy by design)</li>
+  <li>Official legal PDF proof certificate</li>
+  <li>Your block on the Bitcoin blockchain as universal and permanent guarantee</li>
+</ul>
 
       {/* Bottone invariato per stile; onClick torna a fare la POST corretta */}
       

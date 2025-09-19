@@ -44,11 +44,11 @@ export default function PriceBox({ onPay }: Props) {
       </p>
 
       <ul className="list-disc pl-5 text-sm space-y-1 opacity-90">
-        <li>Impronta calcolata in locale (privacy by design)</li>
-        <li>Ancoraggio on-chain con riferimento pubblico</li>
-        <li>Documento di prova e istruzioni</li>
-        <li>Assistenza base via email</li>
-      </ul>
+  <li>Ancoraggio crittografico dell’impronta del file su blockchain Bitcoin</li>
+  <li>Impronta calcolata in locale (privacy by design)</li>
+  <li>Certificato PDF di prova ufficiale legale</li>
+  <li>Il tuo blocco nella blockchain Bitcoin come garanzia universale e permanente</li>
+</ul>
 
       {/* Bottone invariato per stile; onClick torna a fare la POST corretta */}
       
