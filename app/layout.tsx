@@ -53,11 +53,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <a
               href="mailto:blockstamp.protection@gmail.com"
               className="hover:text-sky-400 transition"
-Falcon Prime Solutions FZE • Business Center, Sharjah Publishing City Free Zone • Sharjah, UAE
             >
               blockstamp.protection@gmail.com
             </a>
-Falcon Prime Solutions FZE • Business Center, Sharjah Publishing City Free Zone • Sharjah, UAE
           </div>
         </footer>
       </body>
