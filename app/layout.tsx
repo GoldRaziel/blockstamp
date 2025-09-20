@@ -38,7 +38,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   className="h-auto max-h-14 md:max-h-20 w-auto origin-left md:scale-100 scale-[1.15]"
                 />
               </a>
-<br/>Falcon Prime Solutions FZE<br/>Business Center, Sharjah Publishing City Free Zone<br/>Sharjah, UAE
             </div>
             <Nav />
           </div>
@@ -57,7 +56,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             >
               blockstamp.protection@gmail.com
             </a>
-<br/>Falcon Prime Solutions FZE<br/>Business Center, Sharjah Publishing City Free Zone<br/>Sharjah, UAE
           </div>
         </footer>
       </body>
