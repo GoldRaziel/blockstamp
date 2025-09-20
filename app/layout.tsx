@@ -3,6 +3,7 @@ import Nav from "./components/Nav";
 import "./globals.css";
 import type { Metadata } from "next";
 import Image from "next/image";
+import DisableContextMenu from "./components/DisableContextMenu";
 
 export const metadata: Metadata = {
   title: "BLOCKSTAMP — Proof of Existence",
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="it">
       <body>
+          <DisableContextMenu />
         <header className="border-b border-white/10">
           <div className="container mx-auto px-4 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
             <div className="flex justify-start">
