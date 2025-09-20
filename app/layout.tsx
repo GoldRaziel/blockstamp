@@ -56,7 +56,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             >
               blockstamp.protection@gmail.com
            </a>
-    <br />
+
+    {/* Forza l'andata a capo in flex */}
+    <span className="basis-full w-full" />
+    
     <span>
       Falcon Prime Solutions FZE • Business Center • Sharjah, UAE
     </span>
