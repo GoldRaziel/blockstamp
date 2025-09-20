@@ -55,9 +55,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               className="hover:text-sky-400 transition"
             >
               blockstamp.protection@gmail.com
-            </a>
-          </div>
-        </footer>
+           </a>
+    <br />
+    <span>
+      Falcon Prime Solutions FZE • Business Center, Sharjah Publishing City Free Zone • Sharjah, UAE
+    </span>
+  </div>
+</footer>
       </body>
     </html>
   );
