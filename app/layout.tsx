@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const year = new Date().getFullYear();
   return (
     <html lang="it">
-      <body>
+      <body className="select-none select-none">
           <DisableContextMenu />
         <header className="border-b border-white/10">
           <div className="container mx-auto px-4 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
