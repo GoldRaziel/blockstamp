@@ -58,7 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
            </a>
     <br />
     <span>
-      Falcon Prime Solutions FZE • Business Center, Sharjah Publishing City Free Zone • Sharjah, UAE
+      Falcon Prime Solutions FZE • Business Center • Sharjah, UAE
     </span>
   </div>
 </footer>
