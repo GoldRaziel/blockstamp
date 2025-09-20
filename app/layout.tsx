@@ -74,9 +74,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   Falcon Prime Solutions FZE<br />
   Business Center, Sharjah Publishing City Free Zone<br />
   Sharjah, UAE
+  <br />
+  Falcon Prime Solutions FZE<br />
+  Business Center, Sharjah Publishing City Free Zone<br />
+  Sharjah, UAE
               className="hover:text-sky-400 transition"
             >
               blockstamp.protection@gmail.com
+  <br />
+  Falcon Prime Solutions FZE<br />
+  Business Center, Sharjah Publishing City Free Zone<br />
+  Sharjah, UAE
   <br />
   Falcon Prime Solutions FZE<br />
   Business Center, Sharjah Publishing City Free Zone<br />
