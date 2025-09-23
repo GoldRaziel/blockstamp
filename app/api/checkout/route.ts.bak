@@ -11,6 +11,8 @@ export async function POST(req: Request) {
     line_items: [{ price: process.env.STRIPE_PRICE_ID as string, quantity: 1 }],
     success_url: `${origin}/stripe/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/`,
+        // Enable promo codes
+        allow_promotion_codes: true,
   });
 
   return NextResponse.json({ url: session.url });
