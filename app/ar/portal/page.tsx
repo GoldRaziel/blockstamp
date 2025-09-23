@@ -144,8 +144,8 @@ export default function PortalPage() {
       </h1>
 
       <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
-<p className="text-sm leading-relaxed space-y-2">
-  <strong>التعليمات:</strong>
+<p className="text-sm leading-relaxed space-y-2 mb-1">
+  <strong>التعليمات:</strong>{' '}
 </p>
 <ul className="list-disc list-inside text-sky-100 space-y-1">
   <li>في ملف <strong>.zip</strong> الذي أنشأته مسبقًا، ضع ملف نصي <strong>(.txt)</strong> يحتوي على كود <strong>SHA256</strong> المولد من صفحة <strong>الرئيسية</strong>.</li>
