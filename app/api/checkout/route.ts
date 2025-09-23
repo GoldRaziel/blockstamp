@@ -9,6 +9,8 @@ export async function POST(req: Request) {
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
     metadata: { bs_route: "app/api/checkout/route.ts", promo_on: "true" },
+    allow_promotion_codes: true,
+    metadata: { bs_marker: "v2-allow-promo" },
     line_items: [{ price: process.env.STRIPE_PRICE_ID as string, quantity: 1 }],
     success_url: `${origin}/stripe/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/`,
@@ -16,5 +18,5 @@ export async function POST(req: Request) {
         allow_promotion_codes: true,
   });
 
-  return NextResponse.json({ url: session.url });
+  console.log("CHKOUT_SESSION_CREATED", session.id); return NextResponse.json({ url: session.url });
 }
