@@ -167,3 +167,5 @@ pnpm-store/
 
 # backup i18n
 .bak-i18n/
+
+*.bak
