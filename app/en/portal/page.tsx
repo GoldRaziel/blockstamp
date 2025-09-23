@@ -139,16 +139,22 @@ export default function PortalPage() {
       </h1>
 
       <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
-        <p className="text-sky-100"><strong>INSTRUCTIONS:</strong> Create a <strong>.zip</strong> containing:</p>
-        <ul className="list-disc list-inside text-sky-100">
-          <li>Your <strong>.zip</strong> must include a <strong>text file (.txt)</strong> containing the <span className="text-sky-300">SHA-256</span> code generated on <strong>Home</strong>.</li>
-          <li>Upload the created <strong>.zip</strong> below</li>
-          <li>You will receive an <strong>.ots code</strong>: it’s the proof that registration was requested/completed</li>
-          <li>Keep the <strong>.ots code</strong> together with your <strong>.zip file</strong></li>
-          <li>In <strong>48–72 hours</strong> enter your <strong>.ots code</strong> on our Home, <strong>VERIFY</strong> section</li>
-          <li>You will receive your <strong>block height</strong> on the Bitcoin blockchain</li>
-          <li>Keep it safe: it is your indisputable proof of intellectual property on that date.</li>
-        </ul>
+<p className="text-sm leading-relaxed space-y-2">
+  <strong>INSTRUCTIONS:</strong>
+</p>
+<ul className="list-disc list-inside text-sky-100 space-y-1">
+  <li>In the <strong>.zip</strong> file created earlier, insert a text file <strong>(.txt)</strong> containing the <strong>SHA256</strong> code generated on the <strong>Home</strong> page.</li>
+  <li>Upload the <strong>.zip</strong> file below.</li>
+  <li>You will receive an <strong>.ots</strong> file as proof of registration.</li>
+  <li>Save the <strong>.ots</strong> file inside the folder containing the <strong>.zip</strong>.</li>
+  <li>Save in another text file <strong>(.txt)</strong> the <strong>stamp code</strong> generated below and insert it into the folder containing the <strong>.zip</strong>.</li>
+  <li>After <strong>48–72 hours</strong>, upload the <strong>.ots</strong> file in the <strong>VERIFY</strong> section of our Home page.</li>
+  <li>You will receive your <strong>block number</strong> on the Bitcoin blockchain.</li>
+  <li>Generate your <strong>ownership certificate</strong> and store it safely.</li>
+</ul>
+<p className="text-xs opacity-80 mt-2">
+  Note: in <em>VERIFY</em> you must upload the <strong>.ots file</strong>. The <strong>stamp code</strong> is an internal reference to recover the record.
+</p>
 
         <div className="flex items-start gap-3">
           {/* Hidden input */}

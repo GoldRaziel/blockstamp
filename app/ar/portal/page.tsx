@@ -144,16 +144,22 @@ export default function PortalPage() {
       </h1>
 
       <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
-        <p className="text-sky-100"><strong>التعليمات:</strong> أنشئ ملف <strong>.zip</strong> يحتوي على:</p>
-        <ul className="list-disc list-inside text-sky-100">
-          <li>يجب أن يحتوي ملف <strong>.zip</strong> على <strong>ملف نصي (.txt)</strong> يتضمّن رمز <span className="text-sky-300">SHA-256</span> الذي تم توليده في <strong>الصفحة الرئيسية</strong>.</li>
-          <li>قم برفع ملف <strong>.zip</strong> الذي أنشأته أدناه</li>
-          <li>ستتلقى <strong>رمز ‎.ots</strong>: وهو دليل على تنفيذ/طلب التسجيل</li>
-          <li>احتفظ بـ <strong>رمز ‎.ots</strong> مع <strong>ملف ‎.zip</strong> الخاص بك</li>
-          <li>خلال <strong>48–72 ساعة</strong> أدخل <strong>رمز ‎.ots</strong> في صفحتنا الرئيسية ضمن قسم <strong>التحقق</strong></li>
-          <li>ستستلم <strong>رقم الكتلة</strong> على بلوكتشين بيتكوين</li>
-          <li>احتفظ به: فهو دليلك القاطع على الملكية الفكرية اعتبارًا من ذلك التاريخ.</li>
-        </ul>
+<p className="text-sm leading-relaxed space-y-2">
+  <strong>التعليمات:</strong>
+</p>
+<ul className="list-disc list-inside text-sky-100 space-y-1">
+  <li>في ملف <strong>.zip</strong> الذي أنشأته مسبقًا، ضع ملف نصي <strong>(.txt)</strong> يحتوي على كود <strong>SHA256</strong> المولد من صفحة <strong>الرئيسية</strong>.</li>
+  <li>قم بتحميل ملف <strong>.zip</strong> أدناه.</li>
+  <li>ستحصل على ملف <strong>.ots</strong> كدليل على التسجيل.</li>
+  <li>احفظ ملف <strong>.ots</strong> داخل المجلد الذي يحتوي على ملف <strong>.zip</strong>.</li>
+  <li>احفظ في ملف نصي آخر <strong>(.txt)</strong> <strong>رمز الختم</strong> الذي سيتم إنشاؤه أدناه وضعه في المجلد الذي يحتوي على ملف <strong>.zip</strong>.</li>
+  <li>بعد <strong>48–72</strong> ساعة، قم بتحميل ملف <strong>.ots</strong> في قسم <strong>VERIFY</strong> من صفحتنا الرئيسية.</li>
+  <li>ستتلقى <strong>رقم الكتلة</strong> في سلسلة بلوكشين بيتكوين.</li>
+  <li>أنشئ <strong>شهادة الملكية</strong> الخاصة بك واحتفظ بها بأمان.</li>
+</ul>
+<p className="text-xs opacity-80 mt-2">
+  ملاحظة: في <em>VERIFY</em> يجب تحميل <strong>ملف .ots</strong>. أما <strong>رمز الختم</strong> فهو مرجع داخلي لاسترجاع العملية.
+</p>
 
         {/* السطر LTR لعناصر الرفع والطباعة */}
         <div className="flex items-start gap-3" dir="ltr">

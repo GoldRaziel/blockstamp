@@ -139,21 +139,24 @@ export default function PortalPage() {
       </h1>
 
       <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
-        <p className="text-sky-100">
-          <strong>ISTRUZIONI:</strong> Crea un file <strong>.zip</strong> con :
-        </p>
-        <ul className="list-disc list-inside text-sky-100">
-          <li>Nel file <strong>.zip</strong> deve essere presente un <strong>file di testo (.txt)</strong> con il codice <span className="text-sky-300">SHA-256</span> generato in <strong>Home</strong>.</li>
-          <li>Carica qui sotto il file <strong>.zip</strong> creato</li>
-          <li>Otterrai un <strong>codice .ots</strong>: è la prova di avvenuta registrazione;</li>
-          <li>Conserva il <strong>codice .ots</strong> assieme al tuo <strong>file .zip</strong>;</li>
-          <li>
-            Tra <strong>48–72 ore</strong> inserisci il tuo <strong>codice .ots</strong> sulla nostra
-            Home, sezione <strong>VERIFICA</strong>;
-          </li>
-          <li>Riceverai il tuo <strong>numero di blocco</strong> nella blockchain Bitcoin;</li>
-          <li>Conservalo: è la tua prova inconfutabile di proprietà intellettuale a quella data.</li>
-        </ul>
+        <div className="text-sky-100">
+<p className="text-sm leading-relaxed space-y-2">
+  <strong>ISTRUZIONI:</strong>
+</p>
+<ul className="list-disc list-inside text-sky-100 space-y-1">
+  <li>Nel file <strong>.zip</strong> creato in precedenza, inserisci un file di testo <strong>(.txt)</strong> contenente il codice <strong>SHA256</strong> generato nella pagina <strong>Home</strong>.</li>
+  <li>Carica qui sotto il file <strong>.zip</strong> appena creato.</li>
+  <li>Otterrai un file <strong>.ots</strong> come prova di avvenuta registrazione.</li>
+  <li>Salva il file <strong>.ots</strong> dentro alla cartella contenente il file <strong>.zip</strong>.</li>
+  <li>Salva in un altro file di testo <strong>(.txt)</strong> il <strong>codice timbro</strong> che si genererà qui sotto ed inseriscilo nella cartella contenente il file <strong>.zip</strong>.</li>
+  <li>Tra <strong>48–72 ore</strong>, carica il file <strong>.ots</strong> nella sezione <strong>VERIFY</strong> della nostra pagina Home.</li>
+  <li>Riceverai il tuo <strong>numero di blocco</strong> nella blockchain Bitcoin.</li>
+  <li>Genera il tuo <strong>certificato di proprietà</strong> e salvalo in modo sicuro.</li>
+</ul>
+<p className="text-xs opacity-80 mt-2">
+  Nota: in <em>VERIFY</em> va caricato il <strong>file .ots</strong>. Il <strong>codice timbro</strong> è un riferimento interno per recuperare la pratica.
+</p>
+        </div>
 
         <div className="flex items-start gap-3">
           {/* Input nascosto */}
