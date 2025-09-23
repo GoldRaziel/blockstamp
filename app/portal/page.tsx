@@ -141,7 +141,7 @@ export default function PortalPage() {
       <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
         <div className="text-sky-100">
 <p className="text-sm leading-relaxed space-y-2 mb-1">
-    <strong>ISTRUZIONI:</strong><br/>
+    <strong>ISTRUZIONI:</strong>
 </p>
 <ul className="list-disc list-inside text-sky-100 space-y-1">
   <li>Nel file <strong>.zip</strong> creato in precedenza, inserisci un file di testo <strong>(.txt)</strong> contenente il codice <strong>SHA256</strong> generato nella pagina <strong>Home</strong>.</li>
