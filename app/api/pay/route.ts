@@ -74,8 +74,8 @@ export async function POST(req: Request) {
     if (!locale) locale = "it";
 
     const base = (origin || envBase).replace(/\/+$/, "");
-    const success_url = `${base}/${locale}/portal?session_id={CHECKOUT_SESSION_ID}`;
-    const cancel_url  = `${base}/${locale}/#pricing`;
+      const success_url = `${base}/en/portal?session_id={CHECKOUT_SESSION_ID}`;
+      const cancel_url  = `${base}/en/#pricing`;
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
