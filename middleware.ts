@@ -1,65 +1,62 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const LOCALES = ["it","en","ar"];
+const LOCALES = ["it","en","ar"] as const;
 
 export async function middleware(req: NextRequest) {
-  const { pathname, searchParams, origin } = new URL(req.url);
+  const url = req.nextUrl.clone();
+  const pathname = url.pathname;
+  const parts = pathname.split("/").filter(Boolean); // ["it","portal"] | ["portal"]
 
-  // Match /portal e /{lang}/portal
-  const parts = pathname.split("/").filter(Boolean);
   const isPortal =
     (parts.length === 1 && parts[0] === "portal") ||
-    (parts.length === 2 && LOCALES.includes(parts[0]) && parts[1] === "portal");
+    (parts.length === 2 && LOCALES.includes(parts[0] as any) && parts[1] === "portal");
 
   if (!isPortal) return NextResponse.next();
 
-  // 1) Bypass DEV opzionale via chiave (se vuoi disattivalo, elimina questo blocco)
-    return NextResponse.next();
-  }
+  const locale = LOCALES.includes(parts[0] as any) ? (parts[0] as any) : "it";
+  const sessionId = url.searchParams.get("session_id");
 
-  // 2) Richiede session_id Stripe in query (?session_id=...)
-  const sessionId = searchParams.get("session_id");
+  // Se manca session_id -> redirect a /{locale}/pay
   if (!sessionId) {
-    // No session → redirect a /pay
-    const locale = LOCALES.includes(parts[0]) ? parts[0] : "it";
-    return NextResponse.redirect(`${origin}/${locale}/pay?reason=missing_session`);
+    url.pathname = `/${locale}/pay`;
+    url.searchParams.set("reason", "missing_session");
+    return NextResponse.redirect(url);
   }
 
-  // 3) Verifica lato server la sessione Stripe (usa tua API interna già presente)
+  // Verifica sessione Stripe via API interna
   try {
-    const check = await fetch(`${origin}/api/stripe/session?session_id=${encodeURIComponent(sessionId)}`, {
-      headers: { "accept": "application/json" },
-      // Importante sugli edge: no-cache per evitare falsi positivi
-      cache: "no-store"
-    });
+    const apiUrl = new URL("/api/stripe/session", req.url);
+    apiUrl.searchParams.set("session_id", sessionId);
+    const resp = await fetch(apiUrl, { headers: { accept: "application/json" }, cache: "no-store" });
 
-    if (!check.ok) {
-      const locale = LOCALES.includes(parts[0]) ? parts[0] : "it";
-      return NextResponse.redirect(`${origin}/${locale}/pay?reason=session_lookup_failed`);
+    if (!resp.ok) {
+      url.pathname = `/${locale}/pay`;
+      url.searchParams.set("reason", "session_lookup_failed");
+      return NextResponse.redirect(url);
     }
 
-    const data = await check.json();
-    // Adatta la condizione al tuo payload (qui assumo { paid: true } oppure status === "complete")
-    const paid = data?.paid === true || data?.status === "complete" || data?.payment_status === "paid";
+    const data = await resp.json();
+    const paid =
+      data?.paid === true ||
+      data?.status === "complete" ||
+      data?.payment_status === "paid";
+
     if (!paid) {
-      const locale = LOCALES.includes(parts[0]) ? parts[0] : "it";
-      return NextResponse.redirect(`${origin}/${locale}/pay?reason=unpaid`);
+      url.pathname = `/${locale}/pay`;
+      url.searchParams.set("reason", "unpaid");
+      return NextResponse.redirect(url);
     }
 
-    // OK: consenti accesso al portal
+    // OK
     return NextResponse.next();
   } catch {
-    const locale = LOCALES.includes(parts[0]) ? parts[0] : "it";
-    return NextResponse.redirect(`${origin}/${locale}/pay?reason=check_error`);
+    url.pathname = `/${locale}/pay`;
+    url.searchParams.set("reason", "check_error");
+    return NextResponse.redirect(url);
   }
 }
 
 export const config = {
-  matcher: [
-    "/portal",
-    "/it/portal",
-    "/en/portal",
-    "/ar/portal",
-  ],
+  matcher: ["/portal", "/it/portal", "/en/portal", "/ar/portal"],
 };
