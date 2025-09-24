@@ -150,7 +150,7 @@ export default function PortalPage() {
   <li>Save in another text file <strong>(.txt)</strong> the <strong>stamp code</strong> generated below and insert it into the folder containing the <strong>.zip</strong>.</li>
   <li>After <strong>48–72 hours</strong>, upload the <strong>.ots</strong> file in the <strong>VERIFY</strong> section of our Home page.</li>
   <li>You will receive your <strong>block number</strong> on the Bitcoin blockchain.</li>
-  <li>Request your <strong>ownership certificate</strong> in Services</li>
+  <li>Request your <strong>ownership certificate</strong> in our <strong>Services</strong>.</li>
 </ul>
 <p className="text-xs opacity-80 mt-2">
   Note: in <em>VERIFY</em> you must upload the <strong>.ots file</strong>. The <strong>stamp code</strong> is an internal reference to recover the record.

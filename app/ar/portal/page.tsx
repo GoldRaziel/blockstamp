@@ -155,7 +155,7 @@ export default function PortalPage() {
   <li>احفظ في ملف نصي آخر <strong>(.txt)</strong> <strong>رمز الختم</strong> الذي سيتم إنشاؤه أدناه وضعه في المجلد الذي يحتوي على ملف <strong>.zip</strong>.</li>
   <li>بعد <strong>48–72</strong> ساعة، قم بتحميل ملف <strong>.ots</strong> في قسم <strong>VERIFY</strong> من صفحتنا الرئيسية.</li>
   <li>ستتلقى <strong>رقم الكتلة</strong> في سلسلة بلوكشين بيتكوين.</li>
-  <li>اطلب <strong>شهادة الملكية</strong> الخاصة بك في الخدمات</li>
+  <li>اطلب <strong>شهادة الملكية</strong> الخاصة بك في <strong>خدماتنا</strong>.</li>
 </ul>
 <p className="text-xs opacity-80 mt-2">
   ملاحظة: في <em>VERIFY</em> يجب تحميل <strong>ملف .ots</strong>. أما <strong>رمز الختم</strong> فهو مرجع داخلي لاسترجاع العملية.
