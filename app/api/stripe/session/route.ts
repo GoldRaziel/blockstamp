@@ -1,24 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
-export const runtime = "nodejs"; // <<< importante: niente Edge qui
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
-export async function POST(req: NextRequest) {
+// ✅ Verifica stato di una Checkout Session esistente
+export async function GET(req: NextRequest) {
   try {
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string); // niente apiVersion
-    const priceId = process.env.PRICE_ID as string;
-    const siteUrl = process.env.SITE_URL as string;
+    const secret = process.env.STRIPE_SECRET_KEY;
+    if (!secret) return NextResponse.json({ error: "STRIPE_SECRET_KEY missing" }, { status: 500 });
 
-    const session = await stripe.checkout.sessions.create({
-      mode: "payment",
-      line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${siteUrl}/pay/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${siteUrl}/#pricing`,
-      allow_promotion_codes: true,
+    const sessionId = new URL(req.url).searchParams.get("session_id");
+    if (!sessionId) return NextResponse.json({ error: "session_id missing" }, { status: 400 });
+
+    const stripe = new Stripe(secret, { apiVersion: "2024-06-20" });
+    const s = await stripe.checkout.sessions.retrieve(sessionId);
+
+    const paid =
+      s.payment_status === "paid" ||
+      s.payment_status === "no_payment_required" ||
+      s.status === "complete";
+
+    return NextResponse.json({
+      id: s.id,
+      status: s.status,
+      payment_status: s.payment_status,
+      paid,
+      amount_total: s.amount_total,
+      currency: s.currency,
+      mode: s.mode,
     });
-
-    return NextResponse.json({ url: session.url });
   } catch (e: any) {
-    return NextResponse.json({ error: e.message || "Stripe error" }, { status: 500 });
+    return NextResponse.json({ error: e?.message || "stripe_session_lookup_failed" }, { status: 500 });
   }
 }
