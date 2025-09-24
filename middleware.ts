@@ -15,9 +15,6 @@ export async function middleware(req: NextRequest) {
   if (!isPortal) return NextResponse.next();
 
   // 1) Bypass DEV opzionale via chiave (se vuoi disattivalo, elimina questo blocco)
-  const bypass = searchParams.get("bypass");
-  const bypassKey = process.env.PORTAL_BYPASS_KEY;
-  if (bypass && bypassKey && bypass === bypassKey) {
     return NextResponse.next();
   }
 
