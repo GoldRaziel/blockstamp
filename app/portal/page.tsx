@@ -151,7 +151,7 @@ export default function PortalPage() {
   <li>Salva in un altro file di testo <strong>(.txt)</strong> il <strong>codice timbro</strong> che si genererà qui sotto ed inseriscilo nella cartella contenente il file <strong>.zip</strong>.</li>
   <li>Tra <strong>48–72 ore</strong>, carica il file <strong>.ots</strong> nella sezione <strong>VERIFY</strong> della nostra pagina Home.</li>
   <li>Riceverai il tuo <strong>numero di blocco</strong> nella blockchain Bitcoin.</li>
-  <li>Genera il tuo <strong>certificato di proprietà</strong> e salvalo in modo sicuro.</li>
+  <li>Richiedi il tuo <strong>certificato di proprietà</strong> in Servizi</li>
 </ul>
 <p className="text-xs opacity-80 mt-2">
   Nota: in <em>VERIFY</em> va caricato il <strong>file .ots</strong>. Il <strong>codice timbro</strong> è un riferimento interno per recuperare la pratica.
