@@ -19,7 +19,7 @@ export async function middleware(req: NextRequest) {
 
   // Se manca session_id -> redirect a /{locale}/pay
   if (!sessionId) {
-    url.pathname = `/portal/error`;
+    url.pathname = `/`;
     url.searchParams.set("reason",  "missing_session");
     return NextResponse.redirect(url);
   }
@@ -31,7 +31,7 @@ export async function middleware(req: NextRequest) {
     const resp = await fetch(apiUrl, { headers: { accept: "application/json" }, cache: "no-store" });
 
     if (!resp.ok) {
-      url.pathname = `/portal/error`;
+      url.pathname = `/`;
       url.searchParams.set("reason",  "session_lookup_failed");
       return NextResponse.redirect(url);
     }
@@ -40,7 +40,7 @@ export async function middleware(req: NextRequest) {
     const paid = data?.paid === true || data?.status === "complete" || data?.payment_status === "paid" || data?.payment_status === "no_payment_required";
 
     if (!paid) {
-      url.pathname = `/portal/error`;
+      url.pathname = `/`;
       url.searchParams.set("reason",  "unpaid");
       return NextResponse.redirect(url);
     }
@@ -48,7 +48,7 @@ export async function middleware(req: NextRequest) {
     // OK
     return NextResponse.next();
   } catch {
-    url.pathname = `/portal/error`;
+    url.pathname = `/`;
     url.searchParams.set("reason",  "check_error");
     return NextResponse.redirect(url);
   }
