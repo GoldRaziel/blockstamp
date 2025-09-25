@@ -1,72 +1,85 @@
+// app/components/LangDropdown.tsx (robust locale handling)
 "use client";
-import {useState, useEffect, useRef} from "react";
-import {usePathname} from "next/navigation";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 type Code = "it" | "en" | "ar";
+const LOCALES: Code[] = ["it", "en", "ar"];
 const FLAGS: Record<Code, string> = {
   it: "/flags/it.svg",
   en: "/flags/gb.svg",
-  ar: "/flags/ae.svg"
+  ar: "/flags/ae.svg",
 };
 
 export default function LangDropdown() {
-  const pathname = usePathname() || "/";
-  const current = (pathname.split("/")[1] as Code) || "it";
+  const pathname = (usePathname() || "/").replace(/\/+$/, "") || "/";
+  const btnRef = useRef<HTMLButtonElement | null>(null);
   const [open, setOpen] = useState(false);
-  const btnRef = useRef<HTMLButtonElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    function onDocClick(e: MouseEvent) {
-      if (!open) return;
-      const t = e.target as Node;
-      if (menuRef.current && !menuRef.current.contains(t) && btnRef.current && !btnRef.current.contains(t)) {
-        setOpen(false);
-      }
+  // 1) Locale corrente: valido solo se il primo segmento è fra quelli supportati
+  const seg1 = pathname.split("/")[1] || "";
+  const isLocale = (seg1 === "it" || seg1 === "en" || seg1 === "ar");
+  const current: Code = (isLocale ? (seg1 as Code) : "it");
+
+  // 2) Resto del path (pagina corrente) senza prefisso locale
+  const restPath = isLocale ? ("/" + pathname.split("/").slice(2).join("/")) || "/" : pathname;
+
+  // 3) Costruisci href per ciascuna lingua preservando la pagina
+  function hrefFor(code: Code): string {
+    // Italiano: NO prefisso
+    if (code === "it") {
+      return restPath === "" ? "/" : restPath;
     }
-    document.addEventListener("click", onDocClick);
-    return () => document.removeEventListener("click", onDocClick);
-  }, [open]);
-
-  function hrefFor(code: Code) {
-    return `/${code}`;
+    // en/ar: prefisso locale
+    return `/${code}${restPath === "/" ? "" : restPath}`;
   }
 
+  // Chiudi menu su click esterno/escape
+  useEffect(() => {
+    function onDoc(e: MouseEvent) {
+      if (!btnRef.current) return;
+      if (!btnRef.current.closest(".lang-dd-root")) setOpen(false);
+    }
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("click", onDoc);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("click", onDoc);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, []);
+
   return (
-    <div className="relative">
-      {/* Trigger minimal: bandierina + codice lingua (bianco), niente riquadro */}
+    <div className="relative lang-dd-root">
+      {/* Trigger: bandierina + codice */}
       <button
         ref={btnRef}
         onClick={() => setOpen(v => !v)}
-        className="inline-flex items-center gap-1 text-white hover:underline"
-        aria-haspopup="listbox"
+        className="inline-flex items-center gap-2 px-2 py-1"
+        aria-haspopup="menu"
         aria-expanded={open}
-        title="Language"
       >
-        <img src={FLAGS[current]} width="18" height="12" alt={current} className="inline-block rounded-[2px]" />
-        <span className="text-sm leading-none uppercase">{current}</span>
-        <svg width="12" height="12" viewBox="0 0 20 20" className="opacity-80"><path fill="currentColor" d="M5 7l5 5 5-5"/></svg>
+        <Image src={FLAGS[current]} alt={current} width={20} height={14} />
+        <span className="uppercase">{current}</span>
       </button>
 
       {open && (
         <div
-          ref={menuRef}
-          className="absolute right-0 mt-2 w-28 rounded-md bg-black/80 border border-white/10 backdrop-blur p-1 shadow-lg z-50"
-          role="listbox"
+          role="menu"
+          className="absolute right-0 z-10 mt-2 w-44 rounded-md bg-black/70 border border-white/10 shadow-lg backdrop-blur"
         >
-          {(["it","en","ar"] as Code[]).map(code => (
-            <a
-              key={code}
-              href={hrefFor(code)}
-              className={`flex items-center gap-2 px-2 py-1.5 rounded hover:bg-white/10 text-white ${code===current ? "opacity-100" : "opacity-90"}`}
-              role="option"
-              aria-selected={code===current}
-              onClick={() => setOpen(false)}
-            >
-              <img src={FLAGS[code]} width="18" height="12" alt={code} className="inline-block rounded-[2px]" />
-              <span className="text-sm leading-none uppercase">{code}</span>
-            </a>
-          ))}
+          <a href={hrefFor("it")} role="menuitem" className="flex items-center gap-2 px-3 py-2 hover:bg-white/10">
+            <Image src={FLAGS.it} alt="it" width={20} height={14} /><span>Italiano</span>
+          </a>
+          <a href={hrefFor("en")} role="menuitem" className="flex items-center gap-2 px-3 py-2 hover:bg-white/10">
+            <Image src={FLAGS.en} alt="en" width={20} height={14} /><span>English</span>
+          </a>
+          <a href={hrefFor("ar")} role="menuitem" className="flex items-center gap-2 px-3 py-2 hover:bg-white/10">
+            <Image src={FLAGS.ar} alt="ar" width={20} height={14} /><span>العربية</span>
+          </a>
         </div>
       )}
     </div>
