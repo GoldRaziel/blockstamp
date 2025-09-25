@@ -29,13 +29,7 @@ export default function LangDropdown() {
     return () => document.removeEventListener("click", onDocClick);
   }, [open]);
 
-    function hrefFor(code: Code) {
-      // rileva primo segmento (se è lingua lo salta)
-      const seg1 = (pathname.split("/")[1] || "");
-      const isLocale = (seg1==="it"||seg1==="en"||seg1==="ar");
-      const restPath = isLocale ? ("/" + pathname.split("/").slice(2).join("/")) : pathname;
-      if (code === "it") return restPath || "/";
-      return `/${code}${restPath === "/" ? "" : restPath}`;
+  function hrefFor(code: Code) {
     return `/${code}`;
   }
 
