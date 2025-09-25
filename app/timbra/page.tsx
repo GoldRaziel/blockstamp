@@ -1,3 +1,4 @@
+import { usePathname } from "next/navigation";
 "use client";
 import { useState } from "react";
 
@@ -9,6 +10,7 @@ function toHex(buffer: ArrayBuffer) {
 }
 
 export default function TimbraPage() {
+  const pathname = usePathname() || "/";
   const [file, setFile] = useState<File | null>(null);
   const [hash, setHash] = useState<string>("");
 

@@ -1,3 +1,5 @@
+import { usePathname } from "next/navigation";
+"use client";
 import { redirect } from "next/navigation";
 
 export default async function SuccessPage({ searchParams }: { searchParams: { session_id?: string }}) {

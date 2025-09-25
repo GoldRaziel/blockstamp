@@ -1,7 +1,9 @@
+import { usePathname } from "next/navigation";
 "use client";
 import { useEffect, useState } from "react";
 
 export default function TestUpload() {
+  const pathname = usePathname() || "/";
   const [file, setFile] = useState<File|null>(null);
   const [msg, setMsg] = useState("");
 
