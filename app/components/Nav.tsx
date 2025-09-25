@@ -10,15 +10,15 @@ const LABELS: Record<Locale, {
   ids: { procedure: string; guide: string; faq: string; contact: string; };
 }> = {
   it: {
-    procedure: "PROCEDURA", guide: "GUIDA", faq: "FAQ", contact: "CONTATTI",
+    procedure: "PROCEDURA", guide: "GUIDA", service: "SERVIZI", faq: "FAQ", contact: "CONTATTI",
     ids: { procedure: "procedura", guide: "guida", faq: "faq", contact: "contatti" }
   },
   en: {
-    procedure: "PROCEDURE", guide: "GUIDE", faq: "FAQ", contact: "CONTACT",
+    procedure: "PROCEDURE", guide: "GUIDE", service: "SERVICE", faq: "FAQ", contact: "CONTACT",
     ids: { procedure: "procedure", guide: "guide", faq: "faq", contact: "contact" }
   },
   ar: {
-    procedure: "الإجراء", guide: "الدليل", faq: "الأسئلة الشائعة", contact: "اتصل بنا",
+    procedure: "الإجراء", guide: "الدليل", service: "الخدمات", faq: "الأسئلة الشائعة", contact: "اتصل بنا",
     ids: { procedure: "procedure", guide: "guide", faq: "faq", contact: "contact" }
   }
 };
@@ -33,15 +33,17 @@ export default function Nav() {
 
   return (
     <nav className="text-sm flex items-center flex-wrap gap-x-3 gap-y-1" dir={dir}>
-      <Link href={`${base}#${t.ids.procedure}`} className="hover:underline whitespace-nowrap">{t.procedure}</Link>
-      <span className="opacity-50">•</span>
-      <Link href={`${base}#${t.ids.guide}`} className="hover:underline whitespace-nowrap">{t.guide}</Link>
-      <span className="opacity-50">•</span>
-      <Link href={`${base}#${t.ids.faq}`} className="hover:underline whitespace-nowrap">{t.faq}</Link>
-      <span className="opacity-50">•</span>
-      <Link href={`${base}#${t.ids.contact}`} className="hover:underline whitespace-nowrap">{t.contact}</Link>
-      <span className="opacity-50">•</span>
-      <LangDropdown />
-    </nav>
+  <Link href={`${base}#${t.ids.procedure}`} className="hover:underline whitespace-nowrap">{t.procedure}</Link>
+  <span className="opacity-50">•</span>
+  <Link href={`${base}#${t.ids.guide}`} className="hover:underline whitespace-nowrap">{t.guide}</Link>
+  <span className="opacity-50">•</span>
+  <Link href={`${base}/service`} className="hover:underline whitespace-nowrap">{t.service}</Link>
+  <span className="opacity-50">•</span>
+  <Link href={`${base}#${t.ids.faq}`} className="hover:underline whitespace-nowrap">{t.faq}</Link>
+  <span className="opacity-50">•</span>
+  <Link href={`${base}#${t.ids.contact}`} className="hover:underline whitespace-nowrap">{t.contact}</Link>
+  <LangDropdown />
+</nav>
+
   );
 }
