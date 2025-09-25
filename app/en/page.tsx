@@ -326,7 +326,7 @@ export default function Page() {
       
       {/* FAQ */}
 <section id="service" className="py-20">
-  <h2 className="text-3xl font-bold mb-6">{t.service}</h2>
+  <h2 className="text-3xl font-bold mb-6">SERVICE</h2>
   <p className="text-sky-100">Here you will find information about the services offered.</p>
 </section>
 
