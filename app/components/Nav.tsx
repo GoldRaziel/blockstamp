@@ -7,6 +7,7 @@ type Locale = "it" | "en" | "ar";
 
 const LABELS: Record<Locale, {
   procedure: string; guide: string; faq: string; contact: string;
+      <Link href={lang==="en"?"/en/services":lang==="ar"?"/ar/services":"/services"} className="hover:underline">{lang==="en"?"Services":lang==="ar"?"الخدمات":"Servizi"}</Link>
   ids: { procedure: string; guide: string; faq: string; contact: string; };
 }> = {
   it: {
