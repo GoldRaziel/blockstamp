@@ -10,15 +10,15 @@ const LABELS: Record<Locale, {
   ids: { procedure: string; guide: string; faq: string; contact: string; };
 }> = {
   it: {
-    procedure: "PROCEDURA", guide: "GUIDA", faq: "FAQ", contact: "CONTATTI",
+    procedure: "PROCEDURA", guide: "GUIDA", service: "SERVIZI", faq: "FAQ", contact: "CONTATTI",
     ids: { procedure: "procedura", guide: "guida", faq: "faq", contact: "contatti" }
   },
   en: {
-    procedure: "PROCEDURE", guide: "GUIDE", faq: "FAQ", contact: "CONTACT",
+    procedure: "PROCEDURE", guide: "GUIDE", service: "SERVICE", faq: "FAQ", contact: "CONTACT",
     ids: { procedure: "procedure", guide: "guide", faq: "faq", contact: "contact" }
   },
   ar: {
-    procedure: "الإجراء", guide: "الدليل", faq: "الأسئلة الشائعة", contact: "اتصل بنا",
+    procedure: "الإجراء", guide: "الدليل", service: "الخدمات", faq: "الأسئلة الشائعة", contact: "اتصل بنا",
     ids: { procedure: "procedure", guide: "guide", faq: "faq", contact: "contact" }
   }
 };
