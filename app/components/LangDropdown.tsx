@@ -10,9 +10,9 @@ const FLAGS: Record<Code, string> = {
 };
 
 export default function LangDropdown() {
-  const pathname = usePathname() || "/";
-  const current = (pathname.split("/")[1] as Code) || "it";
-  const [open, setOpen] = useState(false);
+    const seg = (pathname.split("/")[1] as Code) || "it";
+    const current: Code = (["it","en","ar"] as Code[]).includes(seg as Code) ? (seg as Code) : "it";
+    const [open, setOpen] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
