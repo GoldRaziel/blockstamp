@@ -328,6 +328,11 @@ export default function Page() {
       {/* PERCHÉ BLOCKCHAIN */}
       
       {/* FAQ */}
+<section id="service" className="py-20">
+  <h2 className="text-3xl font-bold mb-6">{t.service}</h2>
+  <p className="text-sky-100">Qui andranno le informazioni sui servizi offerti.</p>
+</section>
+
       <section id="faq" className="space-y-4">
         <h2 className="text-3xl font-semibold">FAQ</h2>
 
