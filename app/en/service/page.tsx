@@ -1,4 +1,4 @@
-import CertificateBox from "@/components/CertificateBox";
+import CertificateBox from "../../components/CertificateBox";
 
 export default function ServicePageEN() {
   return (
