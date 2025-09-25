@@ -43,13 +43,10 @@ export default function Nav() {
       <span className="opacity-50">•</span>
       <LangDropdown />
       {/* EN */}
-      <Link href="/en/services" className="hover:underline">Services</Link>
 
       {/* IT */}
-      <Link href="/services" className="hover:underline">Servizi</Link>
 
       {/* AR */}
-      <Link href="/ar/services" className="hover:underline">الخدمات</Link>
 
     </nav>
   );
