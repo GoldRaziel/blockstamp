@@ -48,6 +48,7 @@ export default function Nav() {
 
       {/* AR */}
 
+      <Link href={typeof lang!=="undefined" ? (lang==="en"?"/en/services":lang==="ar"?"/ar/services":"/services") : "/services"} className="hover:underline">{t("services") ?? "Services"}</Link>
     </nav>
   );
 }
