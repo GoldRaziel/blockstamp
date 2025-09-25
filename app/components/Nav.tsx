@@ -42,6 +42,15 @@ export default function Nav() {
       <Link href={`${base}#${t.ids.contact}`} className="hover:underline whitespace-nowrap">{t.contact}</Link>
       <span className="opacity-50">•</span>
       <LangDropdown />
+      {/* EN */}
+      <Link href="/en/services" className="hover:underline">Services</Link>
+
+      {/* IT */}
+      <Link href="/services" className="hover:underline">Servizi</Link>
+
+      {/* AR */}
+      <Link href="/ar/services" className="hover:underline">الخدمات</Link>
+
     </nav>
   );
 }
