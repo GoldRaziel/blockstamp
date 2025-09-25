@@ -33,13 +33,17 @@ export default function Nav() {
 
   return (
     <nav className="text-sm flex items-center flex-wrap gap-x-3 gap-y-1" dir={dir}>
-      <Link href={`${base}#${t.ids.procedure}`} className="hover:underline whitespace-nowrap">{t.procedure}</Link>
-      <span className="opacity-50">•</span>
-      <Link href={`${base}#${t.ids.guide}`} className="hover:underline whitespace-nowrap">{t.guide}</Link>
-      <Link href={`${base}/service`} className="hover:underline whitespace-nowrap">{t.service}</Link>
-      <Link href={`${base}#${t.ids.faq}`} className="hover:underline whitespace-nowrap">{t.faq}</Link>
-      <Link href={`${base}#${t.ids.contact}`} className="hover:underline whitespace-nowrap">{t.contact}</Link>
-      <LangDropdown />
-    </nav>
+  <Link href={`${base}#${t.ids.procedure}`} className="hover:underline whitespace-nowrap">{t.procedure}</Link>
+  <span className="opacity-50">•</span>
+  <Link href={`${base}#${t.ids.guide}`} className="hover:underline whitespace-nowrap">{t.guide}</Link>
+  <span className="opacity-50">•</span>
+  <Link href={`${base}/service`} className="hover:underline whitespace-nowrap">{t.service}</Link>
+  <span className="opacity-50">•</span>
+  <Link href={`${base}#${t.ids.faq}`} className="hover:underline whitespace-nowrap">{t.faq}</Link>
+  <span className="opacity-50">•</span>
+  <Link href={`${base}#${t.ids.contact}`} className="hover:underline whitespace-nowrap">{t.contact}</Link>
+  <LangDropdown />
+</nav>
+
   );
 }
