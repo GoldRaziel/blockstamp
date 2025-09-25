@@ -8,10 +8,9 @@ export default function CertificateBox({ locale }: Props) {
     it: {
       title: "CERTIFICATO DI PROPRIETÀ",
       subtitle:
-        "Genera il tuo Certificato di Proprietà con valore probatorio, utile in giudizio e nelle controversie.",
+        "Genera il tuo Certificato di Proprietà con valore probatorio, utile in sede giudiziaria e nelle controversie.",
       priceLabel: "Prezzo",
       price: "350 AED",
-      note: "L’elaborazione del certificato di proprietà richiede tra le 24 e 48 ore.",
       cta: "ACQUISTA",
       dir: "ltr" as const,
     },
@@ -21,7 +20,6 @@ export default function CertificateBox({ locale }: Props) {
         "Generate your Ownership Certificate with evidentiary value, useful in court and legal disputes.",
       priceLabel: "Price",
       price: "350 AED",
-      note: "Processing of the ownership certificate requires between 24 and 48 hours.",
       cta: "BUY NOW",
       dir: "ltr" as const,
     },
@@ -31,7 +29,6 @@ export default function CertificateBox({ locale }: Props) {
         "أنشئ شهادة ملكية ذات قيمة إثباتية، مفيدة أمام المحاكم والنزاعات القانونية.",
       priceLabel: "السعر",
       price: "350 درهم",
-      note: "تستغرق معالجة شهادة الملكية ما بين 24 و48 ساعة.",
       cta: "اشترِ الآن",
       dir: "rtl" as const,
     },
@@ -46,8 +43,8 @@ export default function CertificateBox({ locale }: Props) {
         <div className="text-base">
           <span className="opacity-80">{t.priceLabel}:</span>{" "}
           <strong className="text-white">{t.price}</strong>
-          <p className="text-xs opacity-70 mt-1">{t.note}</p>
         </div>
+
         <div className="ml-auto">
           <a
             href="/pay"
