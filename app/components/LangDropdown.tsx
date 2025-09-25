@@ -11,7 +11,8 @@ const FLAGS: Record<Code, string> = {
 
 export default function LangDropdown() {
   const pathname = usePathname() || "/";
-  const current = (pathname.split("/")[1] as Code) || "it";
+  const seg1 = (pathname.split("/")[1] || "");
+  const current = (seg1==="it"||seg1==="en"||seg1==="ar") ? (seg1 as Code) : "it";
   const [open, setOpen] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
