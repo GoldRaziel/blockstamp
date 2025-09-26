@@ -1,6 +1,7 @@
 "use client";
 import {useState, useEffect, useRef} from "react";
 import {usePathname} from "next/navigation";
+import Link from "next/link";
 
 type Code = "it" | "en" | "ar";
 const FLAGS: Record<Code, string> = {
@@ -62,9 +63,9 @@ export default function LangDropdown() {
           role="listbox"
         >
           {(["it","en","ar"] as Code[]).map(code => (
-            <a
+            <Link href={hrefFor(code)} prefetch={false}
               key={code}
-              href={hrefFor(code)}
+              
               className={`flex items-center gap-2 px-2 py-1.5 rounded hover:bg-white/10 text-white ${code===current ? "opacity-100" : "opacity-90"}`}
               role="option"
               aria-selected={code===current}
@@ -72,7 +73,7 @@ export default function LangDropdown() {
             >
               <img src={FLAGS[code]} width="18" height="12" alt={code} className="inline-block rounded-[2px]" />
               <span className="text-sm leading-none uppercase">{code}</span>
-            </a>
+            </Link>
           ))}
         </div>
       )}
