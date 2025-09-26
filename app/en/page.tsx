@@ -393,7 +393,3 @@ export default function Page() {
     </div>
   );
 }
-
-{/* silent contact anchor */}
-<div id="contact" className="sr-only" aria-hidden="true"></div>
-<div id="contatti" className="sr-only" aria-hidden="true"></div>
