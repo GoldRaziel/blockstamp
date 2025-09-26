@@ -207,3 +207,4 @@ a[href="/pricing"] {
     radial-gradient(1200px 600px at 0% 100%,
       rgba(56,189,248,0.20), transparent 70%);
 }
+[id] { scroll-margin-top: 96px; }

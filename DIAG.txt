@@ -1,0 +1,37 @@
+▶ START DIAG diag/20250926-142047
+
+=== GIT STATUS ===
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	DIAG.txt
+	uploads/
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+=== GIT REMOTE ===
+origin	https://github.com/GoldRaziel/blockstamp (fetch)
+origin	https://github.com/GoldRaziel/blockstamp (push)
+
+=== LAST COMMITS ===
+31a3f6a Fix imports: use relative paths for VerifyBox (Netlify build)
+2d97db4 Wire Verify pages to new VerifyBox (ZIP+OTS, multilingual).
+b5bb7c8 Reset VERIFY feature: ZIP+OTS required, multilingual notes IT/EN/AR, LangSelector fixed
+69b6230 Verify: ZIP+OTS with multilingual notes (IT/EN/AR) and localized UI. LangSelector kept fixed.
+1c52d94 style(certificate): titolo azzurro #00ccff nel riquadro CERTIFICATO di PROPRIETÀ
+e623d6f feat(certificate): aggiunta nota 24-48h sotto al prezzo in IT/EN/AR
+40d9bdf fix(service): CertificateBox + import relativi (compat Netlify) + netlify.toml pulito
+8f50fbc ci(netlify): Node 20 + pnpm + @netlify/plugin-nextjs; publish .next
+e989998 feat(service): aggiunto riquadro CERTIFICATO DI PROPRIETÀ (350 AED) con CTA acquisto in IT/EN/AR
+9a86d48 fix(lang): mantiene la pagina corrente quando si cambia lingua (es. /service → /en/service)
+
+=== NODE/PNPM VERSIONS ===
+v22.17.0
+9.12.3
+
+=== PACKAGE MANAGER FILES ===
+ls: cannot access 'yarn.lock': No such file or directory
+package-lock.json
+pnpm-lock.yaml

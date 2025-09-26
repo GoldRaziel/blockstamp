@@ -287,7 +287,7 @@ export default function Page() {
 
 
      {/* GUIDE */}
-<section id="guida" className="space-y-6">
+<section id="guide" className="space-y-6">
   <h2 className="text-3xl font-semibold">Guide: protect your idea at its best</h2>
   <div className="grid md:grid-cols-3 gap-6">
     <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
@@ -393,3 +393,7 @@ export default function Page() {
     </div>
   );
 }
+
+{/* silent contact anchor */}
+<div id="contact" className="sr-only" aria-hidden="true"></div>
+<div id="contatti" className="sr-only" aria-hidden="true"></div>
