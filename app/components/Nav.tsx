@@ -28,8 +28,7 @@ export default function Nav() {
   const seg1 = pathname.split("/")[1];
   const locale: Locale = seg1 === "en" ? "en" : seg1 === "ar" ? "ar" : "it";
   const base = locale === "it" ? "" : `/${locale}`;
-  const homeBase = locale === "it" ? "/" : base;
-  const homeBase = locale === "it" ? "/" : base;
+    const homeBase = locale === "it" ? "/" : base;
   const t = LABELS[locale];
   const dir = locale === "ar" ? "rtl" : undefined;
   const isHome = (pathname || "/").replace(/\/+$/, "") === (base || "");
