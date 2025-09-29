@@ -35,7 +35,7 @@ export default function Nav() {
     <nav className="text-sm flex items-center flex-wrap gap-x-3 gap-y-1" dir={dir}>
   <Link href={`${base}#${t.ids.procedure}`} className="hover:underline whitespace-nowrap">{t.procedure}</Link>
   <span className="opacity-50">•</span>
-  <Link href={`${base}#${t.ids.guide}`} className="hover:underline whitespace-nowrap">{t.guide}</Link>
+  <a href={`${base}#${t.ids.guide}`} className="hover:underline whitespace-nowrap">{t.guide}</a>
   <span className="opacity-50">•</span>
   <Link href={`${base}/service`} className="hover:underline whitespace-nowrap">{t.service}</Link>
   <span className="opacity-50">•</span>
