@@ -3,6 +3,7 @@ import {useState, useEffect, useRef} from "react";
 import {usePathname} from "next/navigation";
 import Link from "next/link";
 
+<<<<<<< HEAD
 type Code = "it" | "en" | "ar";
 const FLAGS: Record<Code, string> = {
   it: "/flags/it.svg",
@@ -10,6 +11,18 @@ const FLAGS: Record<Code, string> = {
   ar: "/flags/ae.svg"
 };
 
+=======
+import {useEffect, useState} from "react";
+import Link from "next/link";
+
+/**
+ * LangDropdown — compatibile con App Router senza i18n di Next.
+ * Regole:
+ *  - IT = lingua di default → NESSUN prefisso (/)
+ *  - EN/AR → prefisso /en, /ar
+ *  - Mantiene il path corrente (senza duplicare o perdere segmenti)
+ */
+>>>>>>> parent of 162f86b (fix(i18n): EN come default (root), IT/AR con prefisso; selector robusto con navigazione forzata; typing service in Nav)
 export default function LangDropdown() {
   const pathname = usePathname() || "/";
   const seg1 = (pathname.split("/")[1] || "");
@@ -19,17 +32,31 @@ export default function LangDropdown() {
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+<<<<<<< HEAD
     function onDocClick(e: MouseEvent) {
       if (!open) return;
       const t = e.target as Node;
       if (menuRef.current && !menuRef.current.contains(t) && btnRef.current && !btnRef.current.contains(t)) {
         setOpen(false);
+=======
+    // Esegue solo client-side
+    let p = "/";
+    try {
+      p = window.location.pathname || "/";
+      // Se la path inizia con /en o /it o /ar, rimuovi il prefisso locale
+      const m = p.match(/^\/(en|it|ar)(?=\/|$)/);
+      if (m) {
+        // taglia il prefisso locale
+        p = p.slice(m[0].length);
+        if (!p.startsWith("/")) p = "/" + p;
+>>>>>>> parent of 162f86b (fix(i18n): EN come default (root), IT/AR con prefisso; selector robusto con navigazione forzata; typing service in Nav)
       }
     }
     document.addEventListener("click", onDocClick);
     return () => document.removeEventListener("click", onDocClick);
   }, [open]);
 
+<<<<<<< HEAD
     function hrefFor(code: Code) {
       // rileva primo segmento (se è lingua lo salta)
       const seg1 = (pathname.split("/")[1] || "");
@@ -77,6 +104,28 @@ export default function LangDropdown() {
           ))}
         </div>
       )}
+=======
+  if (!ready) return null;
+
+  const hrefFor = (loc: "it" | "en" | "ar") => {
+    // IT = root senza prefisso
+    if (loc === "it") return rest === "" ? "/" : rest || "/";
+    // EN/AR con prefisso e rest (evita //)
+    return `/${loc}${rest === "/" ? "" : rest}`;
+  };
+
+  return (
+    <div className="relative">
+      <div className="flex items-center gap-3 text-sm">
+        <span className="opacity-80">🌐</span>
+        {/* Link testuali: mantengono il path, cambiano solo la lingua */}
+        <Link prefetch={false} href={hrefFor("it")} aria-label="Italiano">IT</Link>
+        <span className="opacity-40">|</span>
+        <Link prefetch={false} href={hrefFor("en")} aria-label="English">EN</Link>
+        <span className="opacity-40">|</span>
+        <Link prefetch={false} href={hrefFor("ar")} aria-label="العربية">AR</Link>
+      </div>
+>>>>>>> parent of 162f86b (fix(i18n): EN come default (root), IT/AR con prefisso; selector robusto con navigazione forzata; typing service in Nav)
     </div>
   );
 }

@@ -6,7 +6,7 @@ import LangDropdown from "./LangDropdown";
 type Locale = "it" | "en" | "ar";
 
 const LABELS: Record<Locale, {
-  procedure: string; guide: string; service: string; faq: string; contact: string;
+  procedure: string; guide: string; faq: string; contact: string;
   ids: { procedure: string; guide: string; faq: string; contact: string; };
 }> = {
   it: {
