@@ -161,7 +161,7 @@ export default function Page() {
 
 
 <section id="upload" className="my-10">
-<section id="guide" className="space-y-6" dir="rtl" lang="ar">
+<section id="upload" className="space-y-6" dir="rtl" lang="ar">
   <h2 className="text-3xl font-semibold">الدليل: احمِ فكرتك بأفضل طريقة</h2>
 </section>
   <div className="grid md:grid-cols-2 gap-6 items-start">
