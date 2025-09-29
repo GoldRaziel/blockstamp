@@ -35,7 +35,7 @@ export default function LangDropdown() {
       const seg1 = (pathname.split("/")[1] || "");
       const isLocale = (seg1==="it"||seg1==="en"||seg1==="ar");
       const restPath = isLocale ? ("/" + pathname.split("/").slice(2).join("/")) : pathname;
-      if (code === "it") return restPath || "/";
+      if (code === "it") return `/it${restPath === "/" ? "" : restPath}`;
       return `/${code}${restPath === "/" ? "" : restPath}`;
   }
 
