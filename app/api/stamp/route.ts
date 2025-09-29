@@ -62,7 +62,7 @@ function t(loc: Loc) {
  *  - se la richiesta proviene da /ar/... (Referer), forza l'inglese
  *  - altrimenti usa la lingua già rilevata (loc)
  */
-function missingTxtFor(req: NextRequest, loc: Loc): string {
+const missingTxtFor = (req: NextRequest, loc: Loc): string => {
   const ref = req.headers.get("referer") || "";
   try {
     const u = new URL(ref);

@@ -35,7 +35,7 @@ export default function Nav() {
     <nav className="text-sm flex items-center flex-wrap gap-x-3 gap-y-1" dir={dir}>
   <Link href={`${base}#${t.ids.procedure}`} className="hover:underline whitespace-nowrap">{t.procedure}</Link>
   <span className="opacity-50">•</span>
-    <a href={`${base}#${t.ids.guide}`} onClick={(e) => { if (locale === "ar") { e.preventDefault(); const el = document.getElementById(t.ids.guide); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); } }} className="hover:underline whitespace-nowrap">{t.guide}</a>
+    <a href={`${base}#${t.ids.guide}`} onClick={(e) => { if (locale === "ar" && window.location.pathname.replace(/\/+\$/, "") === base.replace(/\/+\$/, "")) { e.preventDefault(); const el = document.getElementById(t.ids.guide); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); } }} className="hover:underline whitespace-nowrap">{t.guide}</a>
   <span className="opacity-50">•</span>
   <Link href={`${base}/service`} className="hover:underline whitespace-nowrap">{t.service}</Link>
   <span className="opacity-50">•</span>

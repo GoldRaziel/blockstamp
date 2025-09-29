@@ -36,7 +36,6 @@ export async function POST(req: Request) {
         allow_promotion_codes: true,
       locale: "auto",
       billing_address_collection: "required",
-      allow_promotion_codes: true,
       // payment_method_types opzionale su API recenti; rimuoverlo evita warning
     });
 
