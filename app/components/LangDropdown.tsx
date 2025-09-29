@@ -1,28 +1,25 @@
 "use client";
 
-import {useEffect, useState} from "react";
-import Link from "next/link";
+import { useEffect, useState } from "react";
 
 /**
- * LangDropdown — compatibile con App Router senza i18n di Next.
+ * LangDropdown — versione minimale e robusta.
  * Regole:
- *  - IT = lingua di default → NESSUN prefisso (/)
- *  - EN/AR → prefisso /en, /ar
- *  - Mantiene il path corrente (senza duplicare o perdere segmenti)
+ *  - EN = lingua di default → NESSUN prefisso (/)
+ *  - IT/AR → prefisso /it, /ar
+ * Nota: usa <a href> + onClick con location.assign per evitare qualsiasi problema di click ignorato in HOME.
  */
 export default function LangDropdown() {
   const [rest, setRest] = useState<string>("/");
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    // Esegue solo client-side
     let p = "/";
     try {
       p = window.location.pathname || "/";
       // Se la path inizia con /en o /it o /ar, rimuovi il prefisso locale
       const m = p.match(/^\/(en|it|ar)(?=\/|$)/);
       if (m) {
-        // taglia il prefisso locale
         p = p.slice(m[0].length);
         if (!p.startsWith("/")) p = "/" + p;
       }
@@ -34,23 +31,27 @@ export default function LangDropdown() {
 
   if (!ready) return null;
 
-  const hrefFor = (loc: "it" | "en" | "ar") => {
-    // IT = root senza prefisso
-    if (loc === "it") return rest === "" ? "/" : rest || "/";
-    // EN/AR con prefisso e rest (evita //)
+  const hrefFor = (loc: "en" | "it" | "ar") => {
+    if (loc === "en") return rest === "" ? "/" : rest || "/";
     return `/${loc}${rest === "/" ? "" : rest}`;
+  };
+
+  const go = (loc: "en" | "it" | "ar") => (e: React.MouseEvent<HTMLAnchorElement>) => {
+    // forza la navigazione per evitare problemi di click ignorato
+    e.preventDefault();
+    const href = hrefFor(loc);
+    window.location.assign(href);
   };
 
   return (
     <div className="relative">
       <div className="flex items-center gap-3 text-sm">
         <span className="opacity-80">🌐</span>
-        {/* Link testuali: mantengono il path, cambiano solo la lingua */}
-        <Link prefetch={false} href={hrefFor("it")} aria-label="Italiano">IT</Link>
+        <a href={hrefFor("en")} onClick={go("en")} aria-label="English">EN</a>
         <span className="opacity-40">|</span>
-        <Link prefetch={false} href={hrefFor("en")} aria-label="English">EN</Link>
+        <a href={hrefFor("it")} onClick={go("it")} aria-label="Italiano">IT</a>
         <span className="opacity-40">|</span>
-        <Link prefetch={false} href={hrefFor("ar")} aria-label="العربية">AR</Link>
+        <a href={hrefFor("ar")} onClick={go("ar")} aria-label="العربية">AR</a>
       </div>
     </div>
   );
