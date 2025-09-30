@@ -4,6 +4,7 @@ import { useState } from "react";
 
 export default function VerifyBox() {
   const [otsFile, setOtsFile] = useState<File | null>(null);
+  const [zipFile, setZipFile] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string>("");
   const [msgType, setMsgType] = useState<"ok" | "warn" | "error" | "">("");
@@ -39,7 +40,7 @@ export default function VerifyBox() {
           return;
         }
 
-        setMsg("Please wait 48–72 hours before verifying");
+        setMsg("Please wait 48–72 hours before verifying (status: pending; waiting for Bitcoin confirmations)");
         setMsgType("warn");
         return;
       }
@@ -56,7 +57,7 @@ export default function VerifyBox() {
         setMsgType("warn");
       }
     } catch {
-      setMsg("Please wait 48–72 hours before verifying");
+      setMsg("Please wait 48–72 hours before verifying (status: pending; waiting for Bitcoin confirmations)");
       setMsgType("warn");
     } finally {
       setBusy(false);
@@ -84,6 +85,8 @@ export default function VerifyBox() {
       </p>
 
       <div className="flex items-center gap-3">
+          <input id="zipPicker-en" type="file" accept=".zip" className="hidden" onChange={(e) => setZipFile(e.target.files?.[0] ?? null)} />
+          <button type="button" onClick={() => document.getElementById("zipPicker-en")?.click()} disabled={busy} className="px-4 py-2 rounded-xl font-semibold bg-white hover:bg-neutral-200 text-black disabled:opacity-60 disabled:cursor-not-allowed">UPLOAD ZIP</button>
         <input
           id="otsPicker-en"
           type="file"
@@ -92,14 +95,14 @@ export default function VerifyBox() {
           onChange={(e) => setOtsFile(e.target.files?.[0] ?? null)}
         />
 
-        {/* UPLOAD FILE = white */}
+        {/* UPLOAD .OTS = white */}
         <button
           type="button"
           onClick={pickFile}
           disabled={busy}
           className="px-4 py-2 rounded-xl font-semibold bg-white hover:bg-neutral-200 text-black disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          UPLOAD FILE
+          UPLOAD .OTS
         </button>
 
         {/* VERIFY = amber */}

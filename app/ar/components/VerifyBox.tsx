@@ -4,6 +4,7 @@ import { useState } from "react";
 
 export default function VerifyBox() {
   const [otsFile, setOtsFile] = useState<File | null>(null);
+  const [zipFile, setZipFile] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string>("");
   const [msgType, setMsgType] = useState<"ok" | "warn" | "error" | "">("");
@@ -39,7 +40,7 @@ export default function VerifyBox() {
           return;
         }
 
-        setMsg("يُرجى الانتظار 48–72 ساعة قبل التحقق");
+        setMsg("يُرجى الانتظار 48–72 ساعة قبل التحقق ‎(الحالة: معلّقة؛ بانتظار تأكيدات بيتكوين)");
         setMsgType("warn");
         return;
       }
@@ -56,7 +57,7 @@ export default function VerifyBox() {
         setMsgType("warn");
       }
     } catch {
-      setMsg("يُرجى الانتظار 48–72 ساعة قبل التحقق");
+      setMsg("يُرجى الانتظار 48–72 ساعة قبل التحقق ‎(الحالة: معلّقة؛ بانتظار تأكيدات بيتكوين)");
       setMsgType("warn");
     } finally {
       setBusy(false);
@@ -85,6 +86,8 @@ export default function VerifyBox() {
       </p>
 
       <div className="flex items-center gap-3">
+          <input id="zipPicker-ar" type="file" accept=".zip" className="hidden" onChange={(e) => setZipFile(e.target.files?.[0] ?? null)} />
+          <button type="button" onClick={() => document.getElementById("zipPicker-ar")?.click()} disabled={busy} className="px-4 py-2 rounded-xl font-semibold bg-white hover:bg-neutral-200 text-black disabled:opacity-60 disabled:cursor-not-allowed">UPLOAD ZIP</button>
         <input
           id="otsPicker-ar"
           type="file"
@@ -107,7 +110,7 @@ export default function VerifyBox() {
         <button
           type="button"
           onClick={handleVerify}
-          disabled={!otsFile || busy}
+          disabled={!zipFile || !otsFile || busy}
           className="px-4 py-2 rounded-xl font-semibold bg-amber-400 hover:bg-amber-300 text-black disabled:opacity-60 disabled:cursor-not-allowed"
         >
           تحقق
