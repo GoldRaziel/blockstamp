@@ -7,15 +7,9 @@ const SECRET = process.env.PORTAL_JWT_SECRET
   ? encoder.encode(process.env.PORTAL_JWT_SECRET)
   : undefined;
 
-function langFromPath(pathname: string): "it" | "en" | "ar" {
-  if (pathname.startsWith("/en/")) return "en";
-  if (pathname.startsWith("/ar/")) return "ar";
-  // IT è la root
-  return "it";
-}
-
+// Non usiamo più la lingua: qualsiasi accesso non autorizzato va alla home EN
 function servicePath(lang: "it" | "en" | "ar") {
-  return lang === "it" ? "/service" : `/${lang}/service`;
+  return "/en/";
 }
 
 export async function middleware(req: NextRequest) {
@@ -33,23 +27,23 @@ export async function middleware(req: NextRequest) {
     req.nextUrl.pathname.startsWith("/icons");
   if (skip) return NextResponse.next();
 
-  // proteggi solo i 3 path del portal
+  // proteggiamo i path del portal (root + it/en/ar)
   const isPortal =
     req.nextUrl.pathname === "/portal" ||
+    req.nextUrl.pathname === "/it/portal" ||
     req.nextUrl.pathname === "/en/portal" ||
     req.nextUrl.pathname === "/ar/portal";
 
   if (!isPortal) return NextResponse.next();
 
+  // Se manca la secret, o manca/è invalido il cookie -> redirect a /en/
+  const to = servicePath("en");
   if (!SECRET) {
-    // se manca la secret, meglio non bloccare tutto in prod ma rimandare a /service
-    const to = servicePath(langFromPath(req.nextUrl.pathname));
     return NextResponse.redirect(new URL(to, req.url));
   }
 
   const cookie = req.cookies.get(COOKIE)?.value;
   if (!cookie) {
-    const to = servicePath(langFromPath(req.nextUrl.pathname));
     return NextResponse.redirect(new URL(to, req.url));
   }
 
@@ -57,12 +51,11 @@ export async function middleware(req: NextRequest) {
     await jwtVerify(cookie, SECRET, { algorithms: ["HS256"] });
     return NextResponse.next();
   } catch {
-    const to = servicePath(langFromPath(req.nextUrl.pathname));
     return NextResponse.redirect(new URL(to, req.url));
   }
 }
 
-// Limita il middleware ai soli path del portal (più /api/portal-auth che lasciamo passare)
+// Limita il middleware ai soli path del portal (e /api/portal-auth che lasciamo passare)
 export const config = {
-  matcher: ["/portal", "/en/portal", "/ar/portal", "/api/portal-auth"],
+  matcher: ["/portal", "/it/portal", "/en/portal", "/ar/portal", "/api/portal-auth"],
 };
