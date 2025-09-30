@@ -3,6 +3,8 @@
 import { useState } from "react";
 
 export default function VerifyBox() {
+  const [zipFile, setZipFile] = useState<File | null>(null);
+
   const [otsFile, setOtsFile] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string>("");
@@ -14,7 +16,7 @@ export default function VerifyBox() {
   }
 
   async function handleVerify() {
-    if (!otsFile || busy) return;
+    if (!zipFile || !otsFile || busy) return;
     setBusy(true);
     setMsg("");
     setMsgType("");
@@ -39,7 +41,7 @@ export default function VerifyBox() {
           return;
         }
 
-        setMsg("attendi 48-72 ore prima di verificare");
+        setMsg("attendi 48–72 ore prima di verificare (stato: pending; si attendono le conferme su Bitcoin)");
         setMsgType("warn");
         return;
       }
@@ -56,7 +58,7 @@ export default function VerifyBox() {
         setMsgType("warn");
       }
     } catch {
-      setMsg("attendi 48-72 ore prima di verificare");
+      setMsg("attendi 48–72 ore prima di verificare (stato: pending; si attendono le conferme su Bitcoin)");
       setMsgType("warn");
     } finally {
       setBusy(false);
@@ -83,6 +85,8 @@ export default function VerifyBox() {
       </p>
 
       <div className="flex items-center gap-3">
+          <input id="zipPicker" type="file" accept=".zip" className="hidden" onChange={(e) => setZipFile(e.target.files?.[0] ?? null)} />
+          <button type="button" onClick={() => document.getElementById("zipPicker")?.click()} disabled={busy} className="px-4 py-2 rounded-xl font-semibold bg-white hover:bg-neutral-200 text-black disabled:opacity-60 disabled:cursor-not-allowed">UPLOAD ZIP</button>
         <input
           id="otsPicker"
           type="file"
@@ -91,28 +95,28 @@ export default function VerifyBox() {
           onChange={(e) => setOtsFile(e.target.files?.[0] ?? null)}
         />
 
-        {/* CARICA FILE = bianco */}
+        {/* UPLOAD .OTS = bianco */}
         <button
           type="button"
           onClick={pickFile}
           disabled={busy}
           className="px-4 py-2 rounded-xl font-semibold bg-white hover:bg-neutral-200 text-black disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          CARICA FILE
+          UPLOAD .OTS
         </button>
 
         {/* VERIFICA = amber */}
         <button
           type="button"
           onClick={handleVerify}
-          disabled={!otsFile || busy}
+          disabled={!zipFile || !otsFile || busy}
           className="px-4 py-2 rounded-xl font-semibold bg-amber-400 hover:bg-amber-300 text-black disabled:opacity-60 disabled:cursor-not-allowed"
         >
           VERIFICA
         </button>
 
         <span className="text-sky-200 text-sm truncate max-w-[50%]">
-          {otsFile ? otsFile.name : "Nessun file selezionato"}
+          {zipFile ? `ZIP: ${zipFile.name}` : "ZIP non selezionato"}{otsFile ? ` | OTS: ${otsFile.name}` : " | OTS non selezionato"}
         </span>
       </div>
 
