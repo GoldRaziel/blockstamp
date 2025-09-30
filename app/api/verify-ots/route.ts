@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     const base = process.env.OTS_API_BASE || "http://127.0.0.1:8000";
     const fd = new FormData();
     fd.append("ots", ots);
-  fd.append("zip", zip);
+  fd.append("file", zip);
 
     const upstream = await fetch(`${base}/verify`, { method: "POST", body: fd });
 

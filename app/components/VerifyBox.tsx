@@ -41,7 +41,7 @@ export default function VerifyBox() {
           return;
         }
 
-        setMsg("attendi 48-72 ore prima di verificare");
+        setMsg("attendi 48–72 ore prima di verificare (stato: pending; si attendono le conferme su Bitcoin)");
         setMsgType("warn");
         return;
       }
@@ -58,7 +58,7 @@ export default function VerifyBox() {
         setMsgType("warn");
       }
     } catch {
-      setMsg("attendi 48-72 ore prima di verificare");
+      setMsg("attendi 48–72 ore prima di verificare (stato: pending; si attendono le conferme su Bitcoin)");
       setMsgType("warn");
     } finally {
       setBusy(false);
