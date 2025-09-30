@@ -40,7 +40,7 @@ export default function VerifyBox() {
           return;
         }
 
-        setMsg("يُرجى الانتظار 48–72 ساعة قبل التحقق ‎(الحالة: معلّقة؛ بانتظار تأكيدات بيتكوين)");
+        setMsg("يُرجى الانتظار 48–72 ساعة قبل الVERIFY ‎(الحالة: معلّقة؛ بانتظار تأكيدات بيتكوين)");
         setMsgType("warn");
         return;
       }
@@ -50,14 +50,14 @@ export default function VerifyBox() {
       );
       if (Number.isFinite(h)) {
         setBlockHeight(h);
-        setMsg("تم اكتمال التحقق.");
+        setMsg("تم اكتمال الVERIFY.");
         setMsgType("ok");
       } else {
         setMsg("رمز غير موجود");
         setMsgType("warn");
       }
     } catch {
-      setMsg("يُرجى الانتظار 48–72 ساعة قبل التحقق ‎(الحالة: معلّقة؛ بانتظار تأكيدات بيتكوين)");
+      setMsg("يُرجى الانتظار 48–72 ساعة قبل الVERIFY ‎(الحالة: معلّقة؛ بانتظار تأكيدات بيتكوين)");
       setMsgType("warn");
     } finally {
       setBusy(false);
@@ -70,10 +70,10 @@ export default function VerifyBox() {
       dir="rtl"
       className="mt-10 bg-sky-900/20 border border-sky-300/50 rounded-xl p-4 text-sky-100 space-y-4"
     >
-      <h2 className="text-xl font-semibold text-white">تحقق</h2>
+      <h2 className="text-xl font-semibold text-white">VERIFY</h2>
 
       <p className="text-sky-100 text-sm">
-        قم بتحميل ملفك <code>.ots</code> أدناه ثم اضغط <strong>تحقق</strong>.{" "}
+        قم بتحميل ملفك <code>.ots</code> أدناه ثم اضغط <strong>VERIFY</strong>.{" "}
         ستحصل على <strong>رقم الكتلة</strong> المسجّل في سلسلة كتل البيتكوين.
       </p>
 
@@ -96,24 +96,24 @@ export default function VerifyBox() {
           onChange={(e) => setOtsFile(e.target.files?.[0] ?? null)}
         />
 
-        {/* تحميل الملف = white */}
+        {/* UPLOAD .OTS = white */}
         <button
           type="button"
           onClick={pickFile}
           disabled={busy}
           className="px-4 py-2 rounded-xl font-semibold bg-white hover:bg-neutral-200 text-black disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          تحميل الملف
+          UPLOAD .OTS
         </button>
 
-        {/* تحقق = amber */}
+        {/* VERIFY = amber */}
         <button
           type="button"
           onClick={handleVerify}
           disabled={!zipFile || !otsFile || busy}
           className="px-4 py-2 rounded-xl font-semibold bg-amber-400 hover:bg-amber-300 text-black disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          تحقق
+          VERIFY
         </button>
 
         <span className="text-sky-200 text-sm truncate max-w-[50%]">
@@ -131,7 +131,7 @@ export default function VerifyBox() {
       </div>
 
       <div className="min-h-6">
-        {busy && <p className="text-sky-200 text-sm">جاري التحقق…</p>}
+        {busy && <p className="text-sky-200 text-sm">جاري الVERIFY…</p>}
 
         {!busy && blockHeight !== null && (
           <div className="text-sky-100">
