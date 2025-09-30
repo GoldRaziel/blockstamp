@@ -17,13 +17,13 @@ function normalizeLang(input?: string | null): "it" | "en" | "ar" {
   return "en";
 }
 
-function langToPath(lang: "it" | "en" | "ar"): string {
-  // IT è la root (senza prefisso)
-  return lang === "it" ? "/portal" : `/${lang}/portal`;
+// in prod reindirizzi non autorizzati a /en/
+function servicePath(_: "it" | "en" | "ar"): string {
+  return "/en/";
 }
 
-function servicePath(lang: "it" | "en" | "ar"): string {
-  return lang === "it" ? "/service" : `/${lang}/service`;
+function langToPath(lang: "it" | "en" | "ar"): string {
+  return lang === "it" ? "/portal" : `/${lang}/portal`;
 }
 
 export async function GET(req: NextRequest) {
@@ -36,9 +36,7 @@ export async function GET(req: NextRequest) {
   let lang = normalizeLang(url.searchParams.get("lang"));
 
   if (!session_id) {
-    // se manca session_id, mandiamo alla pagina service della lingua scelta (default EN)
-    const fallback = servicePath(lang);
-    return NextResponse.redirect(new URL(fallback, req.url));
+    return NextResponse.redirect(new URL(servicePath(lang), req.url));
   }
 
   const stripe = new Stripe(STRIPE_KEY, { apiVersion: "2023-10-16" });
@@ -46,23 +44,26 @@ export async function GET(req: NextRequest) {
   try {
     const session = await stripe.checkout.sessions.retrieve(session_id);
 
-    // se lang non è stato passato, provo da session.locale (es. "en-GB", "it", "ar")
+    // se non ci danno lang, prova da session.locale
     if (!url.searchParams.get("lang") && session?.locale) {
       lang = normalizeLang(session.locale);
     }
 
-    // accettiamo se pagato o completato
-    const paid =
-      session?.payment_status === "paid" ||
-      session?.status === "complete" ||
-      session?.status === "paid"; // fallback in rari casi
+    // Considera valide tre condizioni:
+    // 1) pagamento riuscito (paid)
+    // 2) sessione completata (complete / paid)
+    // 3) transazione a 0 per coupon (amount_total === 0) o payment_status === "no_payment_required"
+    const amountTotal = Number(session?.amount_total ?? 0);
+    const free = amountTotal === 0 || session?.payment_status === "no_payment_required";
+    const complete = session?.status === "complete" || session?.status === "paid";
+    const paid = session?.payment_status === "paid";
+    const ok = paid || complete || free;
 
-    if (!paid) {
-      const to = servicePath(lang);
-      return NextResponse.redirect(new URL(to, req.url));
+    if (!ok) {
+      return NextResponse.redirect(new URL(servicePath(lang), req.url));
     }
 
-    // firmo un piccolo JWT con scadenza TTL
+    // firma un JWT con TTL
     const token = await new SignJWT({ sid: session.id, ok: true })
       .setProtectedHeader({ alg: "HS256", typ: "JWT" })
       .setIssuedAt()
@@ -76,16 +77,14 @@ export async function GET(req: NextRequest) {
       name: COOKIE,
       value: token,
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: "lax", // ok per redirect top-level da stripe -> portal-auth
       secure: true,
       path: "/",
       maxAge: TTL,
     });
 
     return res;
-  } catch (err) {
-    // in errore (sessione inesistente/invalid), rimbalza a service
-    const to = servicePath(lang);
-    return NextResponse.redirect(new URL(to, req.url));
+  } catch {
+    return NextResponse.redirect(new URL(servicePath(lang), req.url));
   }
 }
