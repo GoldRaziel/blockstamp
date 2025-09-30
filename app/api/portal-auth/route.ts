@@ -17,13 +17,12 @@ function normalizeLang(input?: string | null): "it" | "en" | "ar" {
   return "en";
 }
 
-// in prod reindirizzi non autorizzati a /en/
-function servicePath(_: "it" | "en" | "ar"): string {
-  return "/en/";
-}
-
 function langToPath(lang: "it" | "en" | "ar"): string {
   return lang === "it" ? "/portal" : `/${lang}/portal`;
+}
+
+function servicePath(_: "it" | "en" | "ar"): string {
+  return "/en/";
 }
 
 export async function GET(req: NextRequest) {
@@ -44,15 +43,10 @@ export async function GET(req: NextRequest) {
   try {
     const session = await stripe.checkout.sessions.retrieve(session_id);
 
-    // se non ci danno lang, prova da session.locale
     if (!url.searchParams.get("lang") && session?.locale) {
       lang = normalizeLang(session.locale);
     }
 
-    // Considera valide tre condizioni:
-    // 1) pagamento riuscito (paid)
-    // 2) sessione completata (complete / paid)
-    // 3) transazione a 0 per coupon (amount_total === 0) o payment_status === "no_payment_required"
     const amountTotal = Number(session?.amount_total ?? 0);
     const free = amountTotal === 0 || session?.payment_status === "no_payment_required";
     const complete = session?.status === "complete" || session?.status === "paid";
@@ -63,21 +57,32 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(new URL(servicePath(lang), req.url));
     }
 
-    // firma un JWT con TTL
     const token = await new SignJWT({ sid: session.id, ok: true })
       .setProtectedHeader({ alg: "HS256", typ: "JWT" })
       .setIssuedAt()
       .setExpirationTime(`${TTL}s`)
       .sign(SECRET);
 
-    const redirectUrl = new URL(langToPath(lang), req.url);
-    const res = NextResponse.redirect(redirectUrl);
+    const redirectPath = langToPath(lang);
+    const html = `<!doctype html><html><head>
+<meta charset="utf-8">
+<meta http-equiv="refresh" content="0;url=${redirectPath}">
+<script>location.replace("${redirectPath}");</script>
+<title>Redirecting…</title>
+</head><body>
+Redirecting… If you are not redirected, <a href="${redirectPath}">click here</a>.
+</body></html>`;
+
+    const res = new NextResponse(html, {
+      status: 200,
+      headers: { "content-type": "text/html; charset=utf-8" },
+    });
 
     res.cookies.set({
       name: COOKIE,
       value: token,
       httpOnly: true,
-      sameSite: "lax", // ok per redirect top-level da stripe -> portal-auth
+      sameSite: "lax",
       secure: true,
       path: "/",
       maxAge: TTL,
