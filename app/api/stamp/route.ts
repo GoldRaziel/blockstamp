@@ -183,7 +183,7 @@ export async function POST(req: NextRequest) {
   // receiptCode = SHA-256 dello ZIP
   const receiptCode = crypto.createHash("sha256").update(buf).digest("hex");
 
-  const otsUrl = process.env.OTS_SERVICE_URL;
+  const base = process.env.OTS_API_BASE || "http://127.0.0.1:8000";
   if (!otsUrl) {
     return new NextResponse(rtlWrap(loc, L.OTS_URL_MISSING), {
       status: 500,
@@ -196,7 +196,7 @@ export async function POST(req: NextRequest) {
 
   let upstream: Response;
   try {
-    upstream = await fetch(otsUrl, { method: "POST", body: fd });
+    upstream = await fetch(`${base}/stamp`, { method: "POST", body: fd });
   } catch {
     return new NextResponse(rtlWrap(loc, L.OTS_CONN_FAIL), {
       status: 502,

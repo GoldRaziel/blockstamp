@@ -6,6 +6,10 @@ export async function POST(req: NextRequest) {
   try {
     const form = await req.formData();
     const ots = form.get("ots");
+  const zip = form.get("zip");
+  if (!(zip instanceof Blob)) {
+    return NextResponse.json({ ok: false, error: "File .zip mancante" }, { status: 400 });
+  }
     if (!(ots instanceof Blob)) {
       return NextResponse.json({ ok: false, error: "File .ots mancante" }, { status: 400 });
     }
@@ -13,6 +17,7 @@ export async function POST(req: NextRequest) {
     const base = process.env.OTS_API_BASE || "http://127.0.0.1:8000";
     const fd = new FormData();
     fd.append("ots", ots);
+  fd.append("zip", zip);
 
     const upstream = await fetch(`${base}/verify`, { method: "POST", body: fd });
 
