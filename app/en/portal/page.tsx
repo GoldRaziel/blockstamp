@@ -27,7 +27,7 @@ export default function PortalPage() {
       `/${loc}/portal${sid ? `?session_id=${encodeURIComponent(sid)}` : ""}`;
 
     return (
-      <div className="relative text-sm">
+      <div className="beam beam-hero relative text-sm">
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
@@ -120,7 +120,7 @@ export default function PortalPage() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto pt-6 pb-24">
+    <div className="beam beam-hero max-w-3xl mx-auto pt-6 pb-24">
       {/* Header strip: logo (left) + language dropdown (right) */}
       <div className="mb-6 flex items-center justify-between">
         {/* Top-left logo, NOT clickable */}

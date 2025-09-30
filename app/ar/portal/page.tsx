@@ -27,7 +27,7 @@ export default function PortalPage() {
       `/${loc}/portal${sid ? `?session_id=${encodeURIComponent(sid)}` : ""}`;
 
     return (
-      <div className="relative text-sm" dir="ltr">
+      <div className="beam beam-hero relative text-sm" dir="ltr">
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
@@ -124,7 +124,7 @@ export default function PortalPage() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto pt-6 pb-24" dir="rtl">
+    <div className="beam beam-hero max-w-3xl mx-auto pt-6 pb-24" dir="rtl">
       {/* شريط علوي: الشعار (يسار بصريًا) + قائمة اللغة (يمين) */}
       <div className="mb-6 flex items-center justify-between" dir="ltr">
         {/* الشعار — غير قابل للنقر */}
