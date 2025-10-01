@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
 
     const url = new URL(req.url);
     const session_id = url.searchParams.get("session_id");
-    let lang = normalizeLang(url.searchParams.get("lang"));
+    let lang: "it" | "en" | "ar" = "en";
     if (!session_id) return NextResponse.redirect(new URL(servicePath(), req.url));
 
     const stripe = new Stripe(STRIPE_KEY, { apiVersion: "2024-06-20" });
@@ -58,9 +58,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(new URL(servicePath(), req.url));
     }
 
-    if (!url.searchParams.get("lang") && session?.locale) {
-      lang = normalizeLang(session.locale);
-    }
+    // force EN: ignore session.locale
 
     const amountTotal = Number(session?.amount_total ?? 0);
     const free = amountTotal === 0 || session?.payment_status === "no_payment_required";
