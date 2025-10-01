@@ -184,7 +184,7 @@ export async function POST(req: NextRequest) {
   const receiptCode = crypto.createHash("sha256").update(buf).digest("hex");
 
   const base = process.env.OTS_API_BASE || "http://127.0.0.1:8000";
-  if (!otsUrl) {
+  if (!base) {
     return new NextResponse(rtlWrap(loc, L.OTS_URL_MISSING), {
       status: 500,
       headers: { "Content-Language": loc },

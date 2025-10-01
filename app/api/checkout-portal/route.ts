@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     if (!STRIPE_KEY) {
       return NextResponse.json({ error: "Server misconfigured" }, { status: 500 });
     }
-    const stripe = new Stripe(STRIPE_KEY, { apiVersion: "2023-10-16" });
+    const stripe = new Stripe(STRIPE_KEY, { apiVersion: "2024-06-20" });
 
     const { searchParams } = new URL(req.url);
     const lang = normalizeLang(searchParams.get("lang"));

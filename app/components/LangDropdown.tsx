@@ -1,19 +1,21 @@
 "use client";
-import {useState, useEffect, useRef} from "react";
-import {usePathname} from "next/navigation";
+import { useState, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 type Code = "it" | "en" | "ar";
 const FLAGS: Record<Code, string> = {
   it: "/flags/it.svg",
   en: "/flags/gb.svg",
-  ar: "/flags/ae.svg"
+  ar: "/flags/ae.svg",
 };
 
 export default function LangDropdown() {
   const pathname = usePathname() || "/";
-  const seg1 = (pathname.split("/")[1] || "");
-  const current = (seg1==="it"||seg1==="en"||seg1==="ar") ? (seg1 as Code) : "it";
+  const seg1 = pathname.split("/")[1] || "";
+  const current: Code =
+    seg1 === "it" || seg1 === "en" || seg1 === "ar" ? (seg1 as Code) : "it";
+
   const [open, setOpen] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -22,7 +24,12 @@ export default function LangDropdown() {
     function onDocClick(e: MouseEvent) {
       if (!open) return;
       const t = e.target as Node;
-      if (menuRef.current && !menuRef.current.contains(t) && btnRef.current && !btnRef.current.contains(t)) {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(t) &&
+        btnRef.current &&
+        !btnRef.current.contains(t)
+      ) {
         setOpen(false);
       }
     }
@@ -30,29 +37,57 @@ export default function LangDropdown() {
     return () => document.removeEventListener("click", onDocClick);
   }, [open]);
 
-    function hrefFor(code: Code) {
-      // rileva primo segmento (se è lingua lo salta)
-      const seg1 = (pathname.split("/")[1] || "");
-      const isLocale = (seg1==="it"||seg1==="en"||seg1==="ar");
-      const restPath = isLocale ? ("/" + pathname.split("/").slice(2).join("/")) : pathname;
-      if (code === "it") return `/it${restPath === "/" ? "" : restPath}`;
-      return `/${code}${restPath === "/" ? "" : restPath}`;
+  function hrefFor(code: Code) {
+    // path reale senza prefisso locale
+    const first = pathname.split("/")[1] || "";
+    const isLocale = first === "it" || first === "en" || first === "ar";
+    const restPath = isLocale
+      ? ("/" + pathname.split("/").slice(2).join("/")) || "/"
+      : pathname || "/";
+
+    // IT = root, EN/AR = prefisso
+    const base = code === "it" ? "" : `/${code}`;
+    const path = restPath === "/" ? (base || "/") : `${base}${restPath}`;
+
+    // preserva SEMPRE _t (token portal)
+    let qs = "";
+    if (typeof window !== "undefined") {
+      const sp = new URLSearchParams(window.location.search);
+      const token = sp.get("_t");
+      qs = token
+        ? `?_t=${encodeURIComponent(token)}`
+        : window.location.search || "";
+    }
+    return `${path}${qs}`;
   }
 
   return (
     <div className="relative">
-      {/* Trigger minimal: bandierina + codice lingua (bianco), niente riquadro */}
       <button
         ref={btnRef}
-        onClick={() => setOpen(v => !v)}
+        onClick={() => setOpen((v) => !v)}
         className="inline-flex items-center gap-1 text-white hover:underline"
         aria-haspopup="listbox"
         aria-expanded={open}
         title="Language"
       >
-        <img src={FLAGS[current]} width="18" height="12" alt={current} className="inline-block rounded-[2px]" />
+        <img
+          src={FLAGS[current]}
+          width={18}
+          height={12}
+          alt={current}
+          className="inline-block rounded-[2px]"
+        />
         <span className="text-sm leading-none uppercase">{current}</span>
-        <svg width="12" height="12" viewBox="0 0 20 20" className="opacity-80"><path fill="currentColor" d="M5 7l5 5 5-5"/></svg>
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 20 20"
+          className="opacity-80"
+          aria-hidden="true"
+        >
+          <path fill="currentColor" d="M5 7l5 5 5-5" />
+        </svg>
       </button>
 
       {open && (
@@ -61,16 +96,25 @@ export default function LangDropdown() {
           className="absolute right-0 mt-2 w-28 rounded-md bg-black/80 border border-white/10 backdrop-blur p-1 shadow-lg z-50"
           role="listbox"
         >
-          {(["it","en","ar"] as Code[]).map(code => (
-            <Link href={hrefFor(code)} prefetch={false}
+          {(["it", "en", "ar"] as Code[]).map((code) => (
+            <Link
               key={code}
-              
-              className={`flex items-center gap-2 px-2 py-1.5 rounded hover:bg-white/10 text-white ${code===current ? "opacity-100" : "opacity-90"}`}
+              href={hrefFor(code)}
+              prefetch={false}
+              className={`flex items-center gap-2 px-2 py-1.5 rounded hover:bg-white/10 text-white ${
+                code === current ? "opacity-100" : "opacity-90"
+              }`}
               role="option"
-              aria-selected={code===current}
+              aria-selected={code === current}
               onClick={() => setOpen(false)}
             >
-              <img src={FLAGS[code]} width="18" height="12" alt={code} className="inline-block rounded-[2px]" />
+              <img
+                src={FLAGS[code]}
+                width={18}
+                height={12}
+                alt={code}
+                className="inline-block rounded-[2px]"
+              />
               <span className="text-sm leading-none uppercase">{code}</span>
             </Link>
           ))}

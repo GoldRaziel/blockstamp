@@ -50,7 +50,7 @@ export async function GET(req: NextRequest) {
     let lang = normalizeLang(url.searchParams.get("lang"));
     if (!session_id) return NextResponse.redirect(new URL(servicePath(), req.url));
 
-    const stripe = new Stripe(STRIPE_KEY, { apiVersion: "2023-10-16" });
+    const stripe = new Stripe(STRIPE_KEY, { apiVersion: "2024-06-20" });
     let session: Stripe.Checkout.Session | null = null;
     try {
       session = await stripe.checkout.sessions.retrieve(session_id);
@@ -64,7 +64,7 @@ export async function GET(req: NextRequest) {
 
     const amountTotal = Number(session?.amount_total ?? 0);
     const free = amountTotal === 0 || session?.payment_status === "no_payment_required";
-    const complete = session?.status === "complete" || session?.status === "paid";
+    const complete = session?.status === "complete";
     const paid = session?.payment_status === "paid";
     const ok = paid || complete || free;
     if (!ok) return NextResponse.redirect(new URL(servicePath(), req.url));
