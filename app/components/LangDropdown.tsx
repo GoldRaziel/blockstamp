@@ -46,7 +46,7 @@ export default function LangDropdown() {
       : pathname || "/";
 
     // IT = root, EN/AR = prefisso
-    const base = code === "it" ? "" : `/${code}`;
+    const base = `/${code}`;
     const path = restPath === "/" ? (base || "/") : `${base}${restPath}`;
 
     // preserva SEMPRE _t (token portal)
