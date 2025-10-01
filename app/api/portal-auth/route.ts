@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { SignJWT } from "jose";
 
-const COOKIE = process.env.PORTAL_COOKIE_NAME || "bs_portal";
-const TTL = parseInt(process.env.PORTAL_COOKIE_TTL || "172800", 10); // seconds (48h)
+const TTL = parseInt(process.env.PORTAL_COOKIE_TTL || "172800", 10);
 const STRIPE_KEY = process.env.STRIPE_SECRET_KEY;
 const encoder = new TextEncoder();
 const SECRET = process.env.PORTAL_JWT_SECRET
@@ -63,7 +62,8 @@ export async function GET(req: NextRequest) {
       .setExpirationTime(`${TTL}s`)
       .sign(SECRET);
 
-    const redirectPath = langToPath(lang);
+    const redirectPath = `${langToPath(lang)}?_t=${encodeURIComponent(token)}`;
+
     const html = `<!doctype html><html><head>
 <meta charset="utf-8">
 <meta http-equiv="refresh" content="0;url=${redirectPath}">
@@ -73,22 +73,10 @@ export async function GET(req: NextRequest) {
 Redirecting… If you are not redirected, <a href="${redirectPath}">click here</a>.
 </body></html>`;
 
-    const res = new NextResponse(html, {
+    return new NextResponse(html, {
       status: 200,
       headers: { "content-type": "text/html; charset=utf-8" },
     });
-
-    res.cookies.set({
-      name: COOKIE,
-      value: token,
-      httpOnly: true,
-      sameSite: "lax",
-      secure: true,
-      path: "/",
-      maxAge: TTL,
-    });
-
-    return res;
   } catch {
     return NextResponse.redirect(new URL(servicePath(lang), req.url));
   }
