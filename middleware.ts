@@ -40,12 +40,7 @@ export async function middleware(req: NextRequest) {
 
   if (!isPortal) return NextResponse.next();
 
-  // ⬅️ NEW: lascia passare le richieste di prefetch del client Next.js
-  if (req.headers.get("next-router-prefetch") === "1" || req.headers.get("x-nextjs-data") === "1") {
-    return NextResponse.next();
-  }
-
-  const SECRET = deriveSecret();
+  // ⬅️ NEW: lascia passare le richieste di prefetch del client Next.jsconst SECRET = deriveSecret();
   const homeUrl = new URL(toHome(), req.url);
   if (!SECRET) return NextResponse.redirect(homeUrl);
 
