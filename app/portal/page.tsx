@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { jwtVerify } from "jose";
 import PortalClient from "./PortalClient";
 
-const COOKIE = process.env.PORTAL_COOKIE_NAME || "bs_portal";
+const COOKIE = process.env.PORTAL_COOKIE_NAME || "bs_portal_v2";
 const TTL = parseInt(process.env.PORTAL_COOKIE_TTL || "172800", 10);
 
 // Copia della deriveSecret usata in middleware.ts
