@@ -12,12 +12,7 @@ function deriveSecret(): Uint8Array | null {
   return bytes;
 }
 
-function toHome(pathname: string): string {
-  if (pathname.startsWith("/en/") || pathname === "/en/portal") return "/en/";
-  if (pathname.startsWith("/ar/") || pathname === "/ar/portal") return "/ar/";
-  if (pathname.startsWith("/it/") || pathname === "/it/portal") return "/";
-  return "/en/";
-}
+function toHome(pathname: string): string { return "/en/"; }
 
 export async function middleware(req: NextRequest) {
   const { pathname, search } = req.nextUrl;
