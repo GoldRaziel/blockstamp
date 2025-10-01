@@ -22,28 +22,7 @@ export async function GET(req: NextRequest) {
       const host = url.hostname;
       const domain = host.endsWith("blockstamp.ae") ? ".blockstamp.ae" : host;
 
-      res.cookies.set({
-        name: "bs_portal",
-        value: "ok",
-        httpOnly: true,
-        sameSite: "lax",
-        secure: true,
-        path: "/",
-        domain,
-        maxAge: 60 * 30,
-      });
-
-      res.cookies.set({
-        name: "paid",
-        value: "1",
-        httpOnly: true,
-        sameSite: "lax",
-        secure: true,
-        path: "/",
-        domain,
-        maxAge: 60 * 30,
-      });
-    }
+      }
     return res;
   } catch (e: any) {
     return NextResponse.json({ ok: false, error: e?.message ?? "retrieve_error" }, { status: 400 });
