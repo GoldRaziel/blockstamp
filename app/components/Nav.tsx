@@ -27,12 +27,12 @@ export default function Nav() {
   const pathname = usePathname() || "/";
   const seg1 = pathname.split("/")[1];
   const locale: Locale = seg1 === "en" ? "en" : seg1 === "ar" ? "ar" : "it";
-  const base = locale === "it" ? "" : `/${locale}`;
-    const homeBase = locale === "it" ? "/" : base;
+  const base = locale === "it" ? "/it" : `/${locale}`;
+    const homeBase = base;
   const t = LABELS[locale];
   const dir = locale === "ar" ? "rtl" : undefined;
   const isHome = (pathname || "/").replace(/\/+$/, "") === (base || "");
-  const hashBase = locale === "it" ? (isHome ? "" : "/") : base;
+  const hashBase = base;
 
   return (
     <nav className="text-sm flex items-center flex-wrap gap-x-3 gap-y-1" dir={dir}>
