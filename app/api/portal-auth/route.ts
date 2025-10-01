@@ -79,15 +79,6 @@ export async function GET(req: NextRequest) {
 
     // ⬅️ NEW: imposta SUBITO il cookie (oltre all’handoff via _t)
     const res = htmlRedirect(redirectPath);
-    res.cookies.set({
-      name: process.env.PORTAL_COOKIE_NAME || "bs_portal_v2",
-      value: token,
-      httpOnly: true,
-      sameSite: "lax",
-      secure: true,
-      path: "/",
-      maxAge: TTL,
-    });
     return res;
   } catch {
     return NextResponse.redirect(new URL(servicePath(), req.url));

@@ -12,63 +12,42 @@ function deriveSecret(): Uint8Array | null {
   return bytes;
 }
 
-const COOKIE = process.env.PORTAL_COOKIE_NAME || "bs_portal_v2";
-const TTL = parseInt(process.env.PORTAL_COOKIE_TTL || "172800", 10);
-function toHome(): string { return "/en/"; }
+function toHome(pathname: string): string {
+  if (pathname.startsWith("/en/") || pathname === "/en/portal") return "/en/";
+  if (pathname.startsWith("/ar/") || pathname === "/ar/portal") return "/ar/";
+  if (pathname.startsWith("/it/") || pathname === "/it/portal") return "/";
+  return "/en/";
+}
 
 export async function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
-
-  // Lascia passare la route di handoff
+  const { pathname, search } = req.nextUrl;
+  // lascia passare l'handoff da Stripe
   if (pathname.startsWith("/api/portal-auth")) return NextResponse.next();
 
-  // Bypass asset
-  const skip =
-    pathname.startsWith("/_next") ||
-    pathname.startsWith("/favicon") ||
-    pathname.startsWith("/assets") ||
-    pathname.startsWith("/images") ||
-    pathname.startsWith("/icons");
-  if (skip) return NextResponse.next();
-
-  // Proteggi i path del portal
+  // solo i path portal sono protetti
   const isPortal =
     pathname === "/portal" ||
     pathname === "/it/portal" ||
     pathname === "/en/portal" ||
     pathname === "/ar/portal";
-
   if (!isPortal) return NextResponse.next();
 
-  // ⬅️ NEW: lascia passare le richieste di prefetch del client Next.jsconst SECRET = deriveSecret();
-  const homeUrl = new URL(toHome(), req.url);
-  if (!SECRET) return NextResponse.redirect(homeUrl);
+  const SECRET = deriveSecret();
+  if (!SECRET) return NextResponse.redirect(new URL(toHome(pathname), req.url));
 
-  // 1) Handoff via _t (token in query): valida, setta cookie e ripulisci URL
+  // valida SOLO il token in query (?_t=...)
   const url = new URL(req.url);
-  const tokenParam = url.searchParams.get("_t");
-  if (tokenParam) {
-    try {
-      await jwtVerify(tokenParam, SECRET, { algorithms: ["HS256"] });
-      url.searchParams.delete("_t");
-      const res = NextResponse.redirect(url);
-      res.cookies.set({
-        name: COOKIE, value: tokenParam, httpOnly: true, sameSite: "lax",
-        secure: true, path: "/", maxAge: TTL,
-      });
-      return res;
-    } catch {}
+  const token = url.searchParams.get("_t");
+  if (!token) {
+    return NextResponse.redirect(new URL(toHome(pathname), req.url));
   }
-
-  // 2) Cookie già presente e valido?
-  const cookie = req.cookies.get(COOKIE)?.value;
-  if (cookie) {
-    try { await jwtVerify(cookie, SECRET, { algorithms: ["HS256"] }); return NextResponse.next(); }
-    catch {}
+  try {
+    await jwtVerify(token, SECRET, { algorithms: ["HS256"] });
+    // token valido → lascia passare (non settiamo cookie, non riscriviamo URL qui)
+    return NextResponse.next();
+  } catch {
+    return NextResponse.redirect(new URL(toHome(pathname), req.url));
   }
-
-  // 3) Non autorizzato
-  return NextResponse.redirect(homeUrl);
 }
 
 export const config = {
