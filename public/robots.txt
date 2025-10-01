@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /portal
+Disallow: /en/portal
+Disallow: /it/portal
+Disallow: /ar/portal
