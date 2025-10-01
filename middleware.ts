@@ -44,7 +44,7 @@ export async function middleware(req: NextRequest) {
   const homeUrl = new URL(toHome(), req.url);
   if (!SECRET) return NextResponse.redirect(homeUrl);
 
-  // 1) Handoff via _t (token in query): valida, setta cookie e pulisci URL
+  // 1) Handoff via _t (token in query): valida, setta cookie e ripulisci URL
   const url = new URL(req.url);
   const tokenParam = url.searchParams.get("_t");
   if (tokenParam) {
@@ -72,23 +72,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-
-/* DEBUG: probe endpoint for Edge env */
-export async function middlewareProbe(req) {
-  const url = new URL(req.url);
-  if (url.pathname !== "/__portal_probe") return null;
-  const sk = process.env.STRIPE_SECRET_KEY || "";
-  const has = sk.length > 10;
-  const res = new (require("next/server")).NextResponse(JSON.stringify({ edgeHasStripeSecretKey: has }), { status: 200, headers: {"content-type":"application/json"}});
-  return res;
-}
-
-const _origMiddleware = exports.middleware;
-exports.middleware = async function(req){
-  const dbg = await middlewareProbe(req);
-  if (dbg) return dbg;
-  return _origMiddleware(req);
-}
-
   matcher: ["/portal", "/it/portal", "/en/portal", "/ar/portal", "/api/portal-auth"],
 };
