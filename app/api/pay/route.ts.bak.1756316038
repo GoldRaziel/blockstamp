@@ -47,7 +47,7 @@ export async function POST(req: Request) {
     const base = origin.replace(/\/+$/, ""); // rimuove eventuali slash finali
 
     // URL di ritorno dipendenti dal locale
-    const success_url = `${base}/${locale}/portal?session_id={CHECKOUT_SESSION_ID}`;
+    const success_url = `${base}/api/portal-auth?session_id={CHECKOUT_SESSION_ID}&lang=`;
     const cancel_url  = `${base}/${locale}/#pricing`;
 
     const session = await stripe.checkout.sessions.create({
