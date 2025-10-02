@@ -24,7 +24,7 @@ export default function PortalPageAR() {
     const [tok, setTok] = useState<string | null>(null);
     const [open, setOpen] = useState(false);
     useEffect(() => { try { const sp = new URLSearchParams(window.location.search); setTok(sp.get("_t")); } catch {} }, []);
-    const hrefFor = (loc: "it" | "en" | "ar") => `/${loc}/portal${tok ? \`?_t=\${encodeURIComponent(tok)}\` : ""}`;
+    const hrefFor = (loc: "it" | "en" | "ar") => "/" + loc + "/portal" + (tok ? ("?_t=" + encodeURIComponent(tok)) : "");;
     return (
       <div className="relative text-sm">
         <button type="button" onClick={() => setOpen(v => !v)}
