@@ -11,16 +11,7 @@ export default function PortalPage() {
   const [copied, setCopied] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  // Navbar lingua (dropdown a destra) — mantiene eventuale session_id
-  function LanguageDropdown() {
-    const [sid, setSid] = useState<string | null>(null);
-    const [open, setOpen] = useState(false);
-
-    useEffect(() => {
-      try {
-        const sp = new URLSearchParams(window.location.search);
-        setSid(sp.get("session_id"));
-      } catch {}
+  // Navbar lingua (dropdown a destra) — mantiene eventuale session_id catch {}
     }, []);
 
     const hrefFor = (loc: "it" | "en" | "ar") =>
@@ -131,7 +122,6 @@ export default function PortalPage() {
           alt="Blockstamp"
           className="h-auto max-h-14 md:max-h-20 w-auto origin-left md:scale-100 scale-[1.15] select-none pointer-events-none"
         />
-        <LanguageDropdown />
       </div>
 
       <h1 className="text-2xl md:text-3xl font-bold text-sky-100 mb-6">
