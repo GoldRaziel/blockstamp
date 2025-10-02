@@ -9,43 +9,7 @@ export default function PortalPage() {
   const [receiptCode, setReceiptCode] = useState<string>("");
   const [locked, setLocked] = useState(false);
   const [copied, setCopied] = useState(false);
-  const inputRef = useRef<HTMLInputElement | null>(null);
-
-  // Navbar lingua (dropdown a destra) — mantiene eventuale session_id catch {}
-    }, []);
-
-    const hrefFor = (loc: "it" | "en" | "ar") =>
-      `/${loc}/portal${sid ? `?session_id=${encodeURIComponent(sid)}` : ""}`;
-
-    return (
-      <div className="beam beam-hero relative text-sm">
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          className="flex items-center gap-2 px-3 py-2 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 text-sky-100"
-        >
-          <span>🌐 Lingua</span>
-          <span className="opacity-80">▼</span>
-        </button>
-
-        {open && (
-          <div className="absolute right-0 z-10 mt-2 w-44 rounded-md bg-black/70 border border-white/10 shadow-lg backdrop-blur">
-            <a href={hrefFor("it")} className="flex items-center gap-2 px-3 py-2 hover:bg-white/10">
-              <span>🇮🇹</span><span>Italiano</span>
-            </a>
-            <a href={hrefFor("en")} className="flex items-center gap-2 px-3 py-2 hover:bg-white/10">
-              <span>🇬🇧</span><span>English</span>
-            </a>
-            <a href={hrefFor("ar")} className="flex items-center gap-2 px-3 py-2 hover:bg-white/10">
-              <span>🇦🇪</span><span>العربية</span>
-            </a>
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  // Stabilizzatore: se arrivo con ?session_id, conferma e pulisci SOLO la query (mantieni locale/percorso)
+  const inputRef = useRef<HTMLInputElement | null>(null);  // Stabilizzatore: se arrivo con ?session_id, conferma e pulisci SOLO la query (mantieni locale/percorso)
   useEffect(() => {
     if (typeof window === "undefined") return;
     const sp = new URLSearchParams(window.location.search);
@@ -73,8 +37,7 @@ export default function PortalPage() {
 
       
       const apiUrl = "/api/stamp";
-      const seg = (typeof window !== "undefined" ? window.location.pathname.split("/")[1] : "") || "";
-      const locale = (seg === "en" || seg === "ar") ? seg : "it";
+    const locale = "en";
 
       const res = await fetch(apiUrl, { headers: { "x-locale": locale }, method: "POST", credentials: "include", body: fd });
       if (!res.ok) throw new Error(await res.text());
@@ -112,7 +75,7 @@ export default function PortalPage() {
 
   return (
     <div className="beam beam-hero max-w-3xl mx-auto pt-6 pb-24">
-      {/* Header strip: logo (sinistra) + dropdown lingua (destra) */}
+      {/* Header strip */}
       <div className="mb-6 flex items-center justify-between">
         {/* Logo non cliccabile */}
         <img
