@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 type ApiResp = {
   ok: boolean;
@@ -14,8 +14,11 @@ type ApiResp = {
 };
 
 type Dict = {
+  title: string;
   uploadOts: string;
   uploadZip: string;
+  chooseFile: string;
+  noFile: string;
   verifyNow: string;
   result: string;
   firstAnchor: string;
@@ -24,12 +27,16 @@ type Dict = {
   pendingTxt: string;
   okTxt: string;
   errorTxt: string;
+  needOts: string;
 };
 
-const DICTS: Record<"it"|"en"|"ar", Dict> = {
+const DICTS: Record<"it" | "en" | "ar", Dict> = {
   en: {
+    title: "VERIFY YOUR TIMESTAMP",
     uploadOts: "Upload your .ots file",
     uploadZip: "Upload your .zip file",
+    chooseFile: "Choose file",
+    noFile: "No file selected",
     verifyNow: "Verify now",
     result: "Result",
     firstAnchor: "Bitcoin block (first anchor)",
@@ -38,10 +45,14 @@ const DICTS: Record<"it"|"en"|"ar", Dict> = {
     pendingTxt: "PENDING — the proof is upgrading",
     okTxt: "OK",
     errorTxt: "ERROR",
+    needOts: "Please upload your .ots proof file.",
   },
   it: {
+    title: "VERIFICA IL TUO TIMESTAMP",
     uploadOts: "Carica il tuo file .ots",
     uploadZip: "Carica il tuo file .zip",
+    chooseFile: "Scegli file",
+    noFile: "Nessun file selezionato",
     verifyNow: "Verifica ora",
     result: "Esito",
     firstAnchor: "Blocco Bitcoin (primo ancoraggio)",
@@ -50,38 +61,53 @@ const DICTS: Record<"it"|"en"|"ar", Dict> = {
     pendingTxt: "PENDING — la prova è in aggiornamento",
     okTxt: "OK",
     errorTxt: "ERRORE",
+    needOts: "Carica il file di prova .ots.",
   },
   ar: {
-    uploadOts: "ارفع ملف .ots الخاص بك",
-    uploadZip: "ارفع ملف .zip الخاص بك",
-    verifyNow: "تحقق الآن",
+    title: "تحقّق من الطابع الزمني",
+    uploadOts: "ارفع ملف ‎.ots الخاص بك",
+    uploadZip: "ارفع ملف ‎.zip الخاص بك",
+    chooseFile: "اختر ملفًا",
+    noFile: "لم يتم اختيار أي ملف",
+    verifyNow: "تحقّق الآن",
     result: "النتيجة",
     firstAnchor: "كتلة البيتكوين (أقدم تثبيت)",
     alsoAnchored: "مثبّت أيضًا عند",
     sha256: "تجزئة SHA-256 للملف",
     pendingTxt: "قيد التحديث",
-    okTxt: "حسناً",
+    okTxt: "حسنًا",
     errorTxt: "خطأ",
+    needOts: "يرجى رفع ملف إثبات ‎.ots.",
   },
 };
 
-function detectLocale(pathname: string): "it"|"en"|"ar" {
-  if (pathname.startsWith("/ar")) return "ar";
-  if (pathname.startsWith("/en")) return "en";
-  return "it";
+// lingua dal path (post-hydration) per evitare mismatch SSR/CSR
+function detectLangFromPath(): "it" | "en" | "ar" {
+  if (typeof window === "undefined") return "en";
+  const p = window.location.pathname.toLowerCase();
+  if (p.startsWith("/it")) return "it";
+  if (p.startsWith("/ar")) return "ar";
+  if (p.startsWith("/en")) return "en";
+  return "en";
 }
 
 export default function VerifyBox() {
+  const [loc, setLoc] = useState<"en" | "it" | "ar">("en");
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    setLoc(detectLangFromPath());
+    setReady(true);
+  }, []);
+
+  const dict = useMemo(() => DICTS[loc], [loc]);
+  const dir = loc === "ar" ? "rtl" : "ltr";
+
   const [otsFile, setOtsFile] = useState<File | null>(null);
   const [zipFile, setZipFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [resp, setResp] = useState<ApiResp | null>(null);
   const [err, setErr] = useState<string | null>(null);
-
-  const { dict, dir } = useMemo(() => {
-    const loc = typeof window !== "undefined" ? detectLocale(window.location.pathname) : "it";
-    return { dict: DICTS[loc], dir: loc === "ar" ? "rtl" : "ltr" };
-  }, []);
 
   const others =
     resp?.all_block_heights && resp.block_height != null
@@ -95,7 +121,7 @@ export default function VerifyBox() {
     setResp(null);
     try {
       if (!otsFile) {
-        setErr("Please upload your .ots proof file.");
+        setErr(dict.needOts);
         return;
       }
       const form = new FormData();
@@ -116,78 +142,131 @@ export default function VerifyBox() {
   return (
     <div
       dir={dir}
-      className="
-        rounded-2xl
-        bg-[#0e2431]/70 border border-sky-400/50
-        shadow-md
-        p-6 md:p-8
-      "
+      className="rounded-2xl bg-[#0e2431]/70 border border-sky-400/50 shadow-md p-6 md:p-8"
     >
-      {/* Titolo allineato ai box della HOME: peso bold, dimensione come 'SEGUI LE ISTRUZIONI', colore amber-400 */}
-      <h3 className="text-2xl font-bold tracking-tight mb-6 text-amber-400">
-        VERIFY YOUR TIMESTAMP
+      <h3 className="text-xl md:text-2xl font-bold tracking-tight mb-6 text-amber-400">
+        {dict.title}
       </h3>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm mb-1 font-medium">{dict.uploadOts} *</label>
-          <input
-            type="file"
-            accept=".ots"
-            onChange={(e) => setOtsFile(e.target.files?.[0] ?? null)}
-            className="block w-full rounded-xl border border-white/15 bg-black/20 p-2"
-            required
-          />
+      {!ready ? (
+        <div className="animate-pulse space-y-4">
+          <div className="h-10 rounded-xl bg-white/10" />
+          <div className="h-10 rounded-xl bg-white/10" />
+          <div className="h-10 w-32 rounded-xl bg-amber-400/60" />
         </div>
+      ) : (
+        <>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* OTS picker — stile quasi nativo, testi traducibili */}
+            <div>
+              <label className="block text-sm mb-2 font-medium">{dict.uploadOts} *</label>
+              <FilePickerRow
+                accept=".ots"
+                onChange={(f) => setOtsFile(f)}
+                buttonLabel={dict.chooseFile}
+                noFileText={dict.noFile}
+                dir={dir}
+              />
+            </div>
 
-        <div>
-          <label className="block text-sm mb-1 font-medium">{dict.uploadZip}</label>
-          <input
-            type="file"
-            onChange={(e) => setZipFile(e.target.files?.[0] ?? null)}
-            className="block w-full rounded-xl border border-white/15 bg-black/20 p-2"
-          />
-        </div>
+            {/* ZIP picker */}
+            <div>
+              <label className="block text-sm mb-2 font-medium">{dict.uploadZip}</label>
+              <FilePickerRow
+                accept="*/*"
+                onChange={(f) => setZipFile(f)}
+                buttonLabel={dict.chooseFile}
+                noFileText={dict.noFile}
+                dir={dir}
+              />
+            </div>
 
-        <div className="flex items-center gap-3">
-          <button
-            type="submit"
-            disabled={loading || !otsFile}
-            className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-semibold disabled:opacity-50"
-          >
-            {loading ? "..." : dict.verifyNow}
-          </button>
-        </div>
-      </form>
+            <div className="flex items-center gap-3">
+              <button
+                type="submit"
+                disabled={loading || !otsFile}
+                className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-semibold disabled:opacity-50"
+              >
+                {loading ? "..." : dict.verifyNow}
+              </button>
+            </div>
+          </form>
 
-      {/* Output */}
-      <div className="mt-6 space-y-2 text-sm">
-        {err && <p className="text-red-400">{err}</p>}
-        {resp && (
-          <>
-            <Row label={dict.result} value={prettyStatus(resp, dict)} />
-            {"block_height" in resp && (
-              <Row label={dict.firstAnchor} value={resp.block_height ?? "—"} />
+          {/* Output */}
+          <div className="mt-6 space-y-2 text-sm">
+            {err && <p className="text-red-400">{err}</p>}
+            {resp && (
+              <>
+                <Row label={dict.result} value={prettyStatus(resp, dict)} />
+                {"block_height" in resp && (
+                  <Row label={dict.firstAnchor} value={resp.block_height ?? "—"} />
+                )}
+                {others && others.length > 0 && (
+                  <Row label={dict.alsoAnchored} value={<span>{others.join(", ")}</span>} />
+                )}
+                {resp?.target_sha256 && <Row mono label={dict.sha256} value={resp.target_sha256} />}
+                {resp?.status === "error" && resp?.stderr && resp.stderr.trim() && (
+                  <details className="mt-2">
+                    <summary className="cursor-pointer text-white/70">Error details</summary>
+                    <pre className="mt-2 whitespace-pre-wrap text-white/70 text-xs">
+                      {resp.stderr}
+                    </pre>
+                  </details>
+                )}
+              </>
             )}
-            {others && others.length > 0 && (
-              <Row label={dict.alsoAnchored} value={<span>{others.join(", ")}</span>} />
-            )}
-            {resp?.target_sha256 && <Row mono label={dict.sha256} value={resp.target_sha256} />}
-
-            {/* Mostra dettagli errore solo in caso di errore */}
-            {resp?.status === "error" && resp?.stderr && resp.stderr.trim() && (
-              <details className="mt-2">
-                <summary className="cursor-pointer text-white/70">Error details</summary>
-                <pre className="mt-2 whitespace-pre-wrap text-white/70 text-xs">{resp.stderr}</pre>
-              </details>
-            )}
-          </>
-        )}
-      </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
 
+/** ---------- File picker “quasi nativo” ma traducibile ---------- */
+function FilePickerRow({
+  accept,
+  onChange,
+  buttonLabel,
+  noFileText,
+  dir,
+}: {
+  accept: string;
+  onChange: (f: File | null) => void;
+  buttonLabel: string;
+  noFileText: string;
+  dir: "ltr" | "rtl";
+}) {
+  const [fileName, setFileName] = useState<string | null>(null);
+  const id = React.useId();
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0] ?? null;
+    setFileName(f ? f.name : null);
+    onChange(f);
+  }
+
+  return (
+    <div className={`flex items-center gap-3 ${dir === "rtl" ? "flex-row-reverse" : ""}`}>
+      {/* Pulsante bianco come richiesto */}
+      <label
+        htmlFor={id}
+        className="cursor-pointer inline-flex items-center justify-center px-3 py-2 rounded-lg bg-white hover:bg-white/90 text-black font-medium"
+      >
+        {buttonLabel}
+      </label>
+
+      {/* Campo testo file selezionato */}
+      <div className="flex-1 rounded-lg border border-white/15 bg-black/20 min-h-[40px] px-3 py-2 text-sm text-white/80 overflow-hidden">
+        <span className="break-all">{fileName ?? noFileText}</span>
+      </div>
+
+      {/* input file nascosto */}
+      <input id={id} type="file" accept={accept} className="sr-only" onChange={handleChange} />
+    </div>
+  );
+}
+
+/** ---------- UI helpers ---------- */
 function Row({
   label,
   value,
