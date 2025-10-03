@@ -295,3 +295,5 @@ function prettyStatus(r: ApiResp, dict: Dict) {
   if (s === "error") return dict.errorTxt;
   return s.toUpperCase();
 }
+
+
