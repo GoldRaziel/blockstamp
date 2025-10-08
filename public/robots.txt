@@ -3,3 +3,5 @@ Disallow: /portal
 Disallow: /en/portal
 Disallow: /it/portal
 Disallow: /ar/portal
+
+Sitemap: https://blockstamp.ae/sitemap.xml
