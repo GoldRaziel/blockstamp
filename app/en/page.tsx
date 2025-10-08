@@ -5,23 +5,6 @@ import { ArrowDownCircleIcon } from "@heroicons/react/24/outline";
 import VerifyBox from "../components/VerifyBox";
 import { useEffect, useState } from "react";
 import PriceBox from "./components/PriceBox";
-
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Intellectual property protection with blockchain | Blockstamp",
-  description: "Bitcoin timestamp to protect works, ideas and documents: proof of existence, public verification and a downloadable certificate. Simple and reliable.",
-  alternates: { canonical: "https://blockstamp.ae/en" },
-  robots: { index: true, follow: true },
-  openGraph: {
-    title: "Intellectual property protection with blockchain | Blockstamp",
-    description: "Bitcoin timestamp to protect works, ideas and documents: proof of existence, public verification and a downloadable certificate. Simple and reliable.",
-    url: "https://blockstamp.ae/en",
-    type: "website"
-  }
-};
-
-
 function toHex(buffer: ArrayBuffer) {
   const bytes = new Uint8Array(buffer);
   let out = "";
