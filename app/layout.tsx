@@ -5,7 +5,10 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import DisableContextMenu from "./components/DisableContextMenu";
 
+const GSC = process.env.NEXT_PUBLIC_GSC || "";
+
 export const metadata: Metadata = {
+  verification: { google: GSC },
   metadataBase: new URL("https://blockstamp.ae"),
   robots: { index: true, follow: true },
   alternates: { canonical: "https://blockstamp.ae", languages: { "it": "https://blockstamp.ae/", "en": "https://blockstamp.ae/en", "ar": "https://blockstamp.ae/ar", "x-default": "https://blockstamp.ae/" } },
