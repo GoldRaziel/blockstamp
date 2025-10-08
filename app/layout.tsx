@@ -6,6 +6,9 @@ import Image from "next/image";
 import DisableContextMenu from "./components/DisableContextMenu";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://blockstamp.ae"),
+  robots: { index: true, follow: true },
+  alternates: { canonical: "https://blockstamp.ae", languages: { "it": "https://blockstamp.ae/", "en": "https://blockstamp.ae/en", "ar": "https://blockstamp.ae/ar", "x-default": "https://blockstamp.ae/" } },
   title: "BLOCKSTAMP — Proof of Existence",
   description: "Hash locale, prova di esistenza su blockchain. Privacy by design.",
   openGraph: {
