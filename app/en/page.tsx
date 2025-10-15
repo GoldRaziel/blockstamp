@@ -4,6 +4,7 @@ import PayButton from "./components/PayButton";
 import { ArrowDownCircleIcon } from "@heroicons/react/24/outline";
 import VerifyBox from "../components/VerifyBox";
 import { useEffect, useState } from "react";
+import Head from "next/head";
 import PriceBox from "./components/PriceBox";
 function toHex(buffer: ArrayBuffer) {
   const bytes = new Uint8Array(buffer);
@@ -391,6 +392,15 @@ export default function Page() {
       <div className="beam beam-footer"></div>
       {/* SEO rich data (invisible) */}
       {(() => { const SeoRich = require("./components/SeoRich").default; return <SeoRich />; })()}
-    </div>
+          <Head>
+        {/* SEO language and hreflang hints (no visual impact) */}
+        <meta httpEquiv="content-language" content="en" />
+        <meta name="language" content="en" />
+        <link rel="alternate" href="https://blockstamp.ae/en" hrefLang="en" />
+        <link rel="alternate" href="https://blockstamp.ae/" hrefLang="it" />
+        <link rel="alternate" href="https://blockstamp.ae/ar" hrefLang="ar" />
+        <link rel="alternate" href="https://blockstamp.ae/en" hrefLang="x-default" />
+      </Head>
+</div>
   );
 }
