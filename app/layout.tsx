@@ -1,3 +1,5 @@
+import GAds from "./components/GAds";
+import Script from "next/script";
 import Nav from "./components/Nav";
 // app/layout.tsx
 import "./globals.css";
@@ -73,7 +75,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </span>
   </div>
 </footer>
-      </body>
+        <GAds />
+  </body>
     </html>
   );
 }
