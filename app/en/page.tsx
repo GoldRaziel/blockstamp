@@ -6,6 +6,7 @@ import VerifyBox from "../components/VerifyBox";
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import PriceBox from "./components/PriceBox";
+import { fireAdsConversion } from "../lib/gads";
 function toHex(buffer: ArrayBuffer) {
   const bytes = new Uint8Array(buffer);
   let out = "";
@@ -128,6 +129,7 @@ export default function Page() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Errore durante l'invio.");
       setServerHash(json.hash);
+      fireAdsConversion(1200, 'AED');
       if (typeof window !== 'undefined' && window.gtag) {
         window.gtag('event','conversion',{
           'send_to':'AW-17655044695/NPTJCPab4a0bENe0yuJB',
