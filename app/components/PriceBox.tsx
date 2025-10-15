@@ -38,7 +38,7 @@ export default function PriceBox({ onPay }: Props) {
 </div>
 
 
-      <div className="text-base font-semibold">Protezione Blockchain</div>
+      <div className="text-base font-semibold">Marca temporale Bitcoin per la prova di anteriorità</div>
 
         <p className="text-sm opacity-90">Ecco cosa otterrai con il nostro servizio:</p>
       <ul className="list-disc pl-5 text-sm space-y-1 opacity-90">

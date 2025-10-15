@@ -38,7 +38,7 @@ export default function PriceBox({ onPay }: Props) {
 </div>
 
 
-      <div className="text-base font-semibold">حماية عبر البلوكتشين</div>
+      <div className="text-base font-semibold">ختم زمني على بيتكوين لإثبات الأسبقية</div>
 
         <p className="text-sm opacity-90 text-right">إليك ما ستحصل عليه من خدمتنا:</p>
       <ul className="list-disc pr-5 text-sm space-y-1 opacity-90 text-right">
