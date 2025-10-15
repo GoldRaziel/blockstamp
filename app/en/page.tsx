@@ -389,8 +389,8 @@ export default function Page() {
 
 
       <div className="beam beam-footer"></div>
-    </div>
       {/* SEO rich data (invisible) */}
       {(() => { const SeoRich = require("./components/SeoRich").default; return <SeoRich />; })()}
+    </div>
   );
 }
