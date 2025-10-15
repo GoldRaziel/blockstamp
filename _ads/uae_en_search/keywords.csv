@@ -1,0 +1,10 @@
+Campaign,Ad group,Match type,Keyword
+UAE_EN_Search_Blockstamp,Core Exact,Exact,[bitcoin timestamping]
+UAE_EN_Search_Blockstamp,Core Exact,Exact,[blockchain timestamp]
+UAE_EN_Search_Blockstamp,Core Exact,Exact,[proof of existence]
+UAE_EN_Search_Blockstamp,Core Exact,Exact,[opentimestamps]
+UAE_EN_Search_Blockstamp,Core Phrase,Phrase,"bitcoin timestamping"
+UAE_EN_Search_Blockstamp,Core Phrase,Phrase,"blockchain timestamp"
+UAE_EN_Search_Blockstamp,Core Phrase,Phrase,"timestamp a file on bitcoin"
+UAE_EN_Search_Blockstamp,Brand Exact,Exact,[blockstamp]
+UAE_EN_Search_Blockstamp,Brand Exact,Exact,[blockstamp ae]
