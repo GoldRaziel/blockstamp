@@ -128,6 +128,15 @@ export default function Page() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Errore durante l'invio.");
       setServerHash(json.hash);
+      if (typeof window !== 'undefined' && window.gtag) {
+        window.gtag('event','conversion',{
+          'send_to':'AW-17655044695/NPTJCPab4a0bENe0yuJB',
+          'value':1200,
+          'currency':'AED',
+          'transaction_id':''
+        });
+      }
+
     } catch (e: any) {
       console.error(e);
       setError(e?.message || "Errore durante l'invio al server.");
