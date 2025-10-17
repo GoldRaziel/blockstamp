@@ -1,3 +1,4 @@
+import GAds from "../components/GAds";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
